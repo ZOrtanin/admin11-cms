@@ -167,7 +167,7 @@
 <!-- Герой -->
 
 
-<main >
+<!-- <main > -->
 
 <!-- Вводный текст -->
 <div class="container marketing pb-5 pt-5" >
@@ -496,24 +496,25 @@
 
 
     <div class="col-12 col-md">  
-
+      <form action="post/" method="POST">
+        {% csrf_token %}
         <h4 class="mb-5">Обратная связь</h4>
           <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <input name="name" type="text" class="form-control" id="floatingInput" placeholder="123">
             <label for="floatingInput">Имя</label>
           </div>
           <div class="form-floating mb-3">
-            <input type="tel" class="form-control" id="floatingTel" placeholder="+" maxlength="18" data-tel-input>
+            <input name="telephone" type="tel" class="form-control" id="floatingTel" placeholder="+" maxlength="18" data-tel-input>
             <label for="floatingTel">Телефон</label>
           </div>
           <div class="form-floating mb-3">
-            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+            <textarea name="massage" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
             <label for="floatingTextarea2">Сообщение</label>
           </div>
           <div class="form-floating">
-            <button type="button" class="btn btn-warning btn-lg">Отправить</button>
+            <button type="submit" class="btn btn-warning btn-lg">Отправить</button>
           </div>
-          
+        </form>  
     </div>
 
     <div class="col-1 d-none d-md-block"></div>
@@ -522,7 +523,7 @@
 <!-- Контакты -->
 
 </div>
-</main>
+<!-- </main> -->
 
 <!-- FOOTER --> 
 <div class="container">

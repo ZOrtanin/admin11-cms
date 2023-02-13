@@ -3,6 +3,7 @@ from .views import *
 
 urlpatterns = [    
     path('',title),
+    path('post/',postOut),
 ]
 
-# hendler404 = pageNotFound
+#hendler404 = pageNotFound
