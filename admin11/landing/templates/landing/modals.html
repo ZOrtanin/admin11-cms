@@ -1,0 +1,34 @@
+
+
+<!-- Модальное окно -->
+
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="ModalLabel">Вызвать админа</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="FormControlInput1" class="form-label">Телефон</label>
+          <input type="tel" class="form-control" id="FormControlInput1" placeholder="+" maxlength="18" data-tel-input>
+        </div>
+        <div class="mb-3">
+          <label for="FormControlInput1" class="form-label">Email</label>
+          <input type="email" class="form-control" id="FormControlInput1" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+          <label for="FormControlTextarea1" class="form-label">Сообщение</label>
+          <textarea class="form-control" id="FormControlTextarea1" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <button type="button" class="btn btn-warning">Вызвать</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Модальное окно -->

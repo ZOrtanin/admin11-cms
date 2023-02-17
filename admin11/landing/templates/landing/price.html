@@ -1,0 +1,145 @@
+{% load static %}
+<!-- Цены -->
+
+<div class="container-fluid bg-dark" >
+
+  <div class="container text-secondary px-4 py-5 ">
+      <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h1 class="display-5 fw-normal fw-bolder" style="color:gold">{{price.H1}}</h1>
+        <p class="fs-5 text-muted">{{price.p}}</p>
+      </div>    
+
+      <div class="row row-cols-1 row-cols-lg-4 mb-4 text-center">
+
+        <div class="col">
+
+          <form class="card p-2 m-0 m-xl-5 mb-4">
+            
+            <i class="bi bi-laptop fs-3"></i>
+            <label for="firstName" class="form-label">Компьютеров</label>
+            <div class="input-group mb-3">
+              <button id="rmv_comp" type="submit" class="btn btn-warning"><i class="bi bi-dash"></i></button>
+              <input id="comps" type="text" class="form-control text-center" placeholder="1" value="1">
+              <button id="add_comp" type="submit" class="btn btn-warning"><i class="bi bi-plus"></i></button>
+            </div>
+            <i class="bi bi-hdd-network fs-3"></i>
+            <label for="firstName" class="form-label">Серверов</label>
+            <div class="input-group">
+              <button id="rmv_server" type="submit" class="btn btn-warning"><i class="bi bi-dash"></i></button>
+              <input id="servers" type="text" class="form-control text-center" placeholder="1" value="1">
+              <button id="add_server" type="submit" class="btn btn-warning"><i class="bi bi-plus"></i></button>
+            </div>
+          </form>
+        </div>
+
+        {% for item in price.rates %}
+          
+          <div class="col">
+            {% if item.highlighting == 'True' %}
+              <div class="card mb-4 rounded-3 shadow-sm border-warning ">
+                <div class="card-header py-3 text-bg-warning border-warning">
+            {% else %}
+              <div class="card mb-4 rounded-3 shadow-sm">
+                 <div class="card-header py-3">
+            {% endif %}
+             
+                <h4 class="my-0 fw-normal">{{item.label}}</h4>
+              </div>
+              <div class="card-body">
+                {% if item.price.comp is defined %}
+                  <h1 class="card-title pricing-card-title">₽ {{ item.price }}</h1>
+                  <img src="{% static 'landing/'%}{{item.image}}" class="mb-3">
+                {% elif item.price.comp == '2000' %}
+                  <h1 class="card-title pricing-card-title">₽<f id='price-opt'>8000</f></h1>
+                  <img src="{% static 'landing/'%}{{item.image}}" class="mb-3">
+                {% elif item.price.comp == '3000' %}
+                  <h1 class="card-title pricing-card-title">₽<f id='price-max'>9000</f></h1>
+                  <img src="{% static 'landing/'%}{{item.image}}" >
+                {% endif %}
+                
+                
+
+                {% autoescape off %}
+                  {{ item.description }}
+                {% endautoescape %}            
+                
+                
+                  <button id="btnStandart" type="button" class="w-100 btn btn-lg btn{{item.button.fill}}-warning" data-bs-toggle="modal" data-bs-target="#Modal" data-mytitle="Вызвать админа">{{item.button.label}}</button>
+                
+                 
+              </div>
+            </div>
+          </div>
+
+        {% endfor %}
+
+       <!--  <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3">
+              <h4 class="my-0 fw-normal">Минимум</h4>
+            </div>
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title">₽ 4000</h1>
+              <img src="{% static 'landing/'%}images/minimum.svg" class="mb-3">
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>Оплата почасовая</li>
+                <li>2000 ₽/час</li>
+                <li>Выезд по заявке</li>
+                <li>Мин. сделака 4000 ₽</li>
+                <li class="text-decoration-line-through">Выезд по графику</li>                
+                <li class="text-decoration-line-through">Оплата ежемесячная</li>
+                               
+              </ul>
+              <button id="btnStandart" type="button" class="w-100 btn btn-lg btn-outline-warning" data-bs-toggle="modal" data-bs-target="#Modal" data-mytitle="Вызвать админа">Вызвать админа</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm border-warning ">
+            <div class="card-header py-3 text-bg-warning border-warning">
+              <h4 class="my-0 fw-normal">Оптимум</h4>
+            </div>
+            
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title">₽ <f id='price-opt'>8000</f><small class="text-muted fw-light">/мес</small></h1>
+              <img src="{% static 'landing/'%}images/optimum.svg" class="mb-3">
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>Оплата ежемесячная</li>
+                <li>1000-4000 ₽/компьютер</li>
+                <li>Выезд по графику</li>
+                <li>Выезд на аварию</li>
+                <li>Оплаченное время работы:</li> 
+                <li><f id='time-work'>1.5</f> часа</li>
+              </ul>
+              <button id="BtnOptimum" type="button" class="w-100 btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#Modal" data-mytitle="Оформить">Заказать</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card mb-4 rounded-3 shadow-sm ">
+            <div class="card-header py-3  ">
+              <h4 class="my-0 fw-normal">Максимум</h4>
+            </div>
+
+            <div class="card-body">
+              <h1 class="card-title pricing-card-title">₽ <f id='price-max'>9000</f><small class="text-muted fw-light">/мес</small></h1>
+              <img src="{% static 'landing/'%}images/maximum.svg" >
+              <ul class="list-unstyled mt-3 mb-4">
+                <li>Оплата ежемесячная</li>
+                <li>от 2000 ₽/компьютер</li>
+                <li>Выезд по заявке</li>
+                <li>Выезд на аварию</li>
+                <li>Оплаченное время работы:</li>
+                <li>Время не ограничено</li>
+              </ul>
+              <button id="btnMaximum" type="button" class="w-100 btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#Modal" data-mytitle="Оформить">Оформить</button>
+            </div>
+          </div>
+        </div> -->
+
+      </div>
+    </div>
+</div>
+<!-- Цены -->

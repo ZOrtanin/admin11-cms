@@ -1,0 +1,65 @@
+{% load static %}
+
+<!-- Контакты -->
+<a name="contacts"></a>
+<div class="container px-4 py-5">
+  <div class="row g-5">
+    <div class="col-1 d-none d-md-block"></div>
+
+
+    <div class="col-12 col-md">
+
+      <h4 class="mb-5">Контакты</h4>
+      <div class="card" >
+        <div class="card-body">          
+          <div class="mb-4">
+            <h6>Адрес :</h6>
+            <small class="text-muted">Республика Коми, г.Ухта, ул. Западная, 18, офис 6</small>
+          </div> 
+          <div class="mb-4">
+            <h6>Телефоны :</h6>
+            <small class="text-muted">+7 (8216) 74 40 65</small>
+          </div>  
+          <div class="mb-4">
+            <h6>Эл. почта :</h6>
+            <small class="text-muted"><a href="info@admin11.ru">info@admin11.ru</a></small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="col d-none d-md-block align-self-center">
+
+      <img src="{% static 'landing/'%}images/contact.svg" class="rounded mx-auto d-block">
+
+    </div>
+
+
+    <div class="col-12 col-md">  
+      <form action="post/" method="POST">
+        {% csrf_token %}
+        <h4 class="mb-5">Обратная связь</h4>
+          <div class="form-floating mb-3">
+            <input name="name" type="text" class="form-control" id="floatingInput" placeholder="123">
+            <label for="floatingInput">Имя</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input name="telephone" type="tel" class="form-control" id="floatingTel" placeholder="+" maxlength="18" data-tel-input>
+            <label for="floatingTel">Телефон</label>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea name="message" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+            <label for="floatingTextarea2">Сообщение</label>
+          </div>
+          <div class="form-floating">
+            <button type="submit" class="btn btn-warning btn-lg">Отправить</button>
+          </div>
+        </form>  
+    </div>
+
+    <div class="col-1 d-none d-md-block"></div>
+  </div>
+</div>
+<!-- Контакты -->
