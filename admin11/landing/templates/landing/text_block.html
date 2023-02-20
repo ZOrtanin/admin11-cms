@@ -4,30 +4,26 @@
 <a name="about"></a>
 <div class="bg-dark text-light px-1 px-md-4 py-5 ">
     <div class="container px-4 py-5" id="hanging-icons">
-    <h2 class="pb-2 display-5">Важно знать</h2>
-      <p class="lead opacity-8 text-muted">В рамках абонентского обслуживания мы выполняем диагностику компьютерной техники, периферических устройств, офисной техники, установку и настройку офисной техники, восстановление данных, лечение от вирусов, чистку системных блоков, настройку Wi-Fi, настройку почтовых клиентов, поиск и установку необходимых драйверов, срочный ремонт оборудования, разграничение прав доступа к ресурсам и на уровне ОС, создание механизма резервирования данных и сервисов, периодическое сервисное обслуживание и многое другое! 
-  С полным перечнем услуг, выполняемых по договору абонентского обслуживания, вы можете ознакомиться, оставив заявку через форму обратной связи на сайте.</p>
+    <h2 class="pb-2 display-5">{{Important.H1}}</h2>
+      <p class="lead opacity-8 text-muted">{{Important.description}}</p>
 
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
       
-      <div class="col d-flex align-items-start">
-        <div class="icon-square d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-          <i class="bi bi-terminal"></i>
+      {% for item in Important.column %}
+        <div class="col d-flex align-items-start">
+          <div class="icon-square d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+            <i class="bi bi-{{item.icon}}"></i>
+          </div>
+          <div>
+            <h3 class="fs-3">{{item.label}}</h3>
+            {% autoescape off %}
+              {{ item.description }}
+            {% endautoescape %} 
+          </div>
         </div>
-        <div>
-          <h3 class="fs-3">Администрирование</h3>
-          <p>— рабочих мест пользователей</p>
-          <p>— серверов на базе Windows/Linux/FreeBSD</p>
-          <p>— систем резервного копирования</p>
-          <p>— локальных сетей</p>
-          <p>— Телефонии (цифровой и аналоговой)</p>
-          <p>— доступа в интернет (разрешение, лимит по скорости, фильтры, и др.)</p>
-          
-          
-        </div>
-      </div>
+      {% endfor %}
 
-      <div class="col d-flex align-items-start">
+     <!--  <div class="col d-flex align-items-start">
         <div class="icon-square d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
           <i class="bi bi-diagram-3"></i>
         </div>
@@ -59,7 +55,7 @@
             
 
         </div>
-      </div>
+      </div> -->
 
     </div>
 

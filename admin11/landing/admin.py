@@ -10,6 +10,16 @@ class LandingAdmin(admin.ModelAdmin):
 
 admin.site.register(landing,LandingAdmin)
 
+class BidsAdmin(admin.ModelAdmin):
+	list_display = ('id', 'name','message','which','time_create','status')
+	list_display_links = ('id', 'name')
+	# search_fields = ('title', 'content')
+	# list_editable = ('is_published' ,)
+	list_filter = ('time_create','status','which')
+admin.site.register(bids,BidsAdmin)
+#admin.site.register(bids)
+
 admin.site.register(Files)
+
 #admin.site.register(Category)
 #admin.site.register(Brick)

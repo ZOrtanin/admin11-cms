@@ -207,7 +207,7 @@ btnRmvServer.addEventListener("click",rmver);
 // -------------------- Модальные окна ------------------
 
 let btnMaximum = document.getElementById('btnMaximum');
-let btnOptimum = document.getElementById('BtnOptimum');
+let btnOptimum = document.getElementById('btnOptimum');
 let btnStandart = document.getElementById('btnStandart');
 
 let modalLable = document.getElementById('ModalLabel');
@@ -223,7 +223,44 @@ btnMaximum.addEventListener("click", newLable);
 
 
 
+// -------------------- Отправка форм -------------------
+
+let btnSubmits = document.querySelectorAll('.btnSubmits');
+
+function sendForm(event){
+  event.preventDefault();
+  let form = this.parentNode.parentNode;
+  let url_post = form.attributes['action'].value;
+  console.log(form.name.value);
+
+  $.ajax({
+    type:'POST',
+    url: url_post,
+    data:{
+      csrfmiddlewaretoken: form.csrfmiddlewaretoken.value,
+      name: form.name.value, 
+      telephone: form.telephone.value,
+      message: form.message.value,
+      form_name: form.form_name.value
+    },
+    success:function(response){
+     console.log('work');         
+    },
+    complete:function(response){
+     console.log(response);
+    },
+    error: function(resp){
+      console.log(resp);
+    }
+
+  })
 
 
+}
 
+//btnSubmits.addEventListener("click", sendForm);
+
+btnSubmits.forEach((l) => {  
+     l.addEventListener('click', sendForm);  
+})
 

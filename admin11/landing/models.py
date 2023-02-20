@@ -43,8 +43,8 @@ class Files(models.Model):
 	type_file = models.TextField(blank=True,verbose_name="Тип файла",choices=TYPE_FILE_UP)
 	data = models.FileField(upload_to="files/%Y/%m/%d/",blank=False,verbose_name="Фаил")	
 	time_create = models.DateTimeField(auto_now_add=True,verbose_name="Время загрузки")
-	time_update = models. DateTimeField (auto_now=True,verbose_name="Последнее обновление")
-	is_published = models. BooleanField(default=True,verbose_name="Опубликованно")
+	time_update = models.DateTimeField(auto_now=True,verbose_name="Последнее обновление")
+	is_published = models.BooleanField(default=True,verbose_name="Опубликованно")
 
 	def __str__(self):
 		return self.title
@@ -56,6 +56,37 @@ class Files(models.Model):
 		verbose_name = 'Фаил'
 		verbose_name_plural = 'Файлы'
 
+class bids(models.Model):
+	STATUS_BID = [
+        ('new', 'Новая'),
+        ('processing', 'Обработка'),
+        ('completed', 'Завершенна'),        
+    ]
+
+	name = models.CharField(max_length=100, db_index=True,verbose_name="Имя",blank=True)
+	last_name = models.CharField(max_length=100, db_index=True,verbose_name="Фамилия",blank=True)
+	mail = models.CharField(max_length=100, db_index=True,verbose_name="Почта",blank=True)
+	tel = models.CharField(max_length=100, db_index=True,verbose_name="Телефон",blank=True)
+	message = models.CharField(max_length=100, db_index=True,verbose_name="Сообщение",null=True,blank=True)	
+	which = models.CharField(max_length=100, db_index=True,verbose_name="Форма отправки",blank=True)
+	ip = models.CharField(max_length=100, db_index=True,verbose_name="IP",blank=True)
+	country = models.CharField(max_length=100, db_index=True,verbose_name="Страна",blank=True)
+	os = models.CharField(max_length=100, db_index=True,verbose_name="Операционная система",blank=True)
+	browser = models.CharField(max_length=200, db_index=True,verbose_name="Браузер",blank=True)
+	data = models.FileField(upload_to="files/%Y/%m/%d/",blank=True,verbose_name="Фаил")
+	time_create = models.DateTimeField(auto_now_add=True,verbose_name="Время отправки",blank=True)
+	time_update = models.DateTimeField(auto_now=True,verbose_name="Последнее обновление",blank=True)
+	status = models.TextField(blank=True,verbose_name="Статус",choices=STATUS_BID)
+
+	def __str__(self):
+		return self.name
+
+	def get_absolute_url(self):
+		return reverse ('post', kwargs={'post_id': self.pk})
+
+	class Meta:
+		verbose_name = 'Заявка'
+		verbose_name_plural = 'Заявки'
 
 
 class Category(models.Model):

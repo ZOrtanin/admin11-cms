@@ -64,7 +64,7 @@
                 {% endautoescape %}            
                 
                 
-                  <button id="btnStandart" type="button" class="w-100 btn btn-lg btn{{item.button.fill}}-warning" data-bs-toggle="modal" data-bs-target="#Modal" data-mytitle="Вызвать админа">{{item.button.label}}</button>
+                  <button id="btn{{item.index}}" type="button" class="w-100 btn btn-lg btn{{item.button.fill}}-warning" data-bs-toggle="modal" data-bs-target="#Modal" data-mytitle="{{item.button.label}}">{{item.button.label}}</button>
                 
                  
               </div>

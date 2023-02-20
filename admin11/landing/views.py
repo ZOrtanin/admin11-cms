@@ -56,8 +56,12 @@ def postOut(request):
 		name = request.POST['name']
 		tel = request.POST['telephone']
 		message = request.POST['message']
+		from_name = request.POST['form_name']
+		browser = request.META.get('HTTP_USER_AGENT')
+		ip = request.META.get('REMOTE_ADDR')
+		print(name+' '+tel+' '+message+' '+from_name)
 	except:
-		return HttpResponse('Ошибка формы')
+	 	return HttpResponse('Ошибка формы')
 
 
 	if request.POST['name'] == '' :
@@ -68,6 +72,18 @@ def postOut(request):
 	
 	if errors != '' :
 		return HttpResponse(errors)
+
+	p = bids(
+		name=name,
+		last_name='',
+		tel=tel,
+		message=message,
+		which=from_name,
+		browser=browser,
+		ip=ip,
+		status='new'
+		)
+	p.save()
 
 	print(request.POST)
 	return HttpResponse('Cообщение отправленно '+str(tel)+' '+name)
