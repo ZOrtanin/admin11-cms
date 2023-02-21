@@ -123,6 +123,13 @@ body{
   min-height: 323px;
 }
 
+.modal:nth-of-type(even) {
+    z-index: 1052 !important;
+}
+.modal-backdrop.show:nth-of-type(even) {
+    z-index: 1051 !important;
+}
+
 /*#BtnUpTop a{
   background: linear-gradient( #fff 50%, rgb(255, 193, 7) 50%) !important; 
 }*/

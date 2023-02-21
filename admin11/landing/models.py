@@ -67,7 +67,7 @@ class bids(models.Model):
 	last_name = models.CharField(max_length=100, db_index=True,verbose_name="Фамилия",blank=True)
 	mail = models.CharField(max_length=100, db_index=True,verbose_name="Почта",blank=True)
 	tel = models.CharField(max_length=100, db_index=True,verbose_name="Телефон",blank=True)
-	message = models.CharField(max_length=100, db_index=True,verbose_name="Сообщение",null=True,blank=True)	
+	message = models.TextField(db_index=True,verbose_name="Сообщение",null=True,blank=True)	
 	which = models.CharField(max_length=100, db_index=True,verbose_name="Форма отправки",blank=True)
 	ip = models.CharField(max_length=100, db_index=True,verbose_name="IP",blank=True)
 	country = models.CharField(max_length=100, db_index=True,verbose_name="Страна",blank=True)

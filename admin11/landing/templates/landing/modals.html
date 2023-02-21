@@ -1,34 +1,65 @@
 
 
 <!-- Модальное окно -->
-
-<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="ModalAlerts" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="ModalLabel">Вызвать админа</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header">  
+          <h1 class="col modal-title fs-5" id="ModalLabel">Оповещения</h1>        
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="mb-3">
-          <label for="FormControlInput1" class="form-label">Телефон</label>
-          <input type="tel" class="form-control" id="FormControlInput1" placeholder="+" maxlength="18" data-tel-input>
-        </div>
-        <div class="mb-3">
-          <label for="FormControlInput1" class="form-label">Email</label>
-          <input type="email" class="form-control" id="FormControlInput1" placeholder="name@example.com">
-        </div>
-        <div class="mb-3">
-          <label for="FormControlTextarea1" class="form-label">Сообщение</label>
-          <textarea class="form-control" id="FormControlTextarea1" rows="3"></textarea>
+        <div class="container-fluid">
+          <div class="row" id="AlertsMessage">
+            
+          </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button type="button" class="btn btn-warning">Вызвать</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="post/" method="POST">
+        {% csrf_token %}
+        <input name="form_name" type="hidden" value="Модальное окно">
+        <input name="price_tarif" id='price_tarif' type="hidden" value="">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="ModalLabel">Вызвать админа</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="FormControlInput1" class="form-label">Имя</label>
+            <input type="text" name="name" class="form-control" id="FormControlInput1" >
+          </div>
+          <div class="mb-3">
+            <label for="FormControlInput1" class="form-label">Телефон</label>
+            <input type="tel" name="telephone" class="form-control" id="FormControlInput1" placeholder="+" maxlength="18" data-tel-input>
+          </div>
+          <div class="mb-3">
+            <label for="FormControlInput1" class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" id="FormControlInput1" placeholder="name@example.com">
+          </div>
+          <div class="mb-3">
+            <label for="FormControlTextarea1" class="form-label">Сообщение</label>
+            <textarea class="form-control" name="message" id="FormControlTextarea1" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
+          <button type="submit" class="btnSubmits btn btn-warning" >Вызвать</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- Модальное окно -->

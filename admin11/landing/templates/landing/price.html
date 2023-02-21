@@ -47,7 +47,7 @@
               </div>
               <div class="card-body">
                 {% if item.price.comp is defined %}
-                  <h1 class="card-title pricing-card-title">₽ {{ item.price }}</h1>
+                  <h1 class="card-title pricing-card-title">₽<f> {{ item.price }}</f></h1>
                   <img src="{% static 'landing/'%}{{item.image}}" class="mb-3">
                 {% elif item.price.comp == '2000' %}
                   <h1 class="card-title pricing-card-title">₽<f id='price-opt'>8000</f></h1>
@@ -64,7 +64,7 @@
                 {% endautoescape %}            
                 
                 
-                  <button id="btn{{item.index}}" type="button" class="w-100 btn btn-lg btn{{item.button.fill}}-warning" data-bs-toggle="modal" data-bs-target="#Modal" data-mytitle="{{item.button.label}}">{{item.button.label}}</button>
+                  <button id="btn{{item.index}}" type="button" class="w-100 btn btn-lg btn{{item.button.fill}}-warning" data-bs-toggle="modal" data-bs-target="#Modal" data-mytitle="{{item.button.label}}" data-tarif="{{item.label}}">{{item.button.label}}</button>
                 
                  
               </div>

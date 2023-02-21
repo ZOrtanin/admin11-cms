@@ -59,8 +59,8 @@ window.addEventListener('scroll', function() {
   }
 
   // Запускаем анимацию обводки при появлении на экране
-  console.log(pageYOffset);
-  console.log(pageYOffset/(document.body.scrollHeight/100));
+  //console.log(pageYOffset);
+  //console.log(pageYOffset/(document.body.scrollHeight/100));
   if (pageYOffset/(document.body.scrollHeight/100) > 43 && flag_an == true ){          
     an_revolver.beginElement();         
   }
@@ -211,10 +211,21 @@ let btnOptimum = document.getElementById('btnOptimum');
 let btnStandart = document.getElementById('btnStandart');
 
 let modalLable = document.getElementById('ModalLabel');
+let modalPrice = document.getElementById('price_tarif');
 
 function newLable(event){
-  //console.log(this.dataset.mytitle);
+  console.log(comps.value);
+  console.log(servers.value);
+  price = this.parentNode.getElementsByTagName('f')[0].innerHTML;
+
+  if (typeof this.parentNode.getElementsByTagName('f')[1] !== 'undefined') {
+    time = this.parentNode.getElementsByTagName('f')[1].innerHTML;
+  }else{
+    time = '';
+  }
+
   modalLable.innerHTML=this.dataset.mytitle;
+  modalPrice.value="Тариф: "+this.dataset.tarif+"\nКомпьютеров: "+comps.value+"\nСерверов: "+servers.value+"\nЦена: "+price+"\nВремя: "+time+"\n------------\n\n";
 }
 
 btnStandart.addEventListener("click", newLable);
@@ -232,6 +243,7 @@ function sendForm(event){
   let form = this.parentNode.parentNode;
   let url_post = form.attributes['action'].value;
   console.log(form.name.value);
+  let err = [];
 
   $.ajax({
     type:'POST',
@@ -240,14 +252,54 @@ function sendForm(event){
       csrfmiddlewaretoken: form.csrfmiddlewaretoken.value,
       name: form.name.value, 
       telephone: form.telephone.value,
-      message: form.message.value,
+      message: modalPrice.value+form.message.value,
       form_name: form.form_name.value
     },
     success:function(response){
      console.log('work');         
     },
-    complete:function(response){
-     console.log(response);
+    complete:function(response,err){
+     console.log(response.responseText);
+
+     if (response.responseText=='Cообщение отправленно'){
+       $('#Modal').modal('hide');
+       form.name.value = '';
+       form.telephone.value = '';
+       modalPrice.value = '';
+       form.message.value='';
+       form.form_name.value='';
+
+       console.log(form.elements);
+
+       $('#AlertsMessage').html('Сообщение отправленно');
+       $('#ModalAlerts').modal('show');
+
+       for (let i = 0; i < form.elements.length; i++) {
+        console.log(form.elements[i]); 
+          if (form.elements[i].nodeName === "INPUT") {    
+            form.elements[i].style.cssText += 'background-color:#fff';
+          }
+        }
+
+     }else{
+      console.log(response.responseText);
+      err = response.responseText.split('/');
+
+      $('#AlertsMessage').html('Не все поля заполнены!');
+      // $('#ModalAlerts').modal({
+      //   focus:true,
+      //   show:true
+      // });
+      $('#ModalAlerts').modal('show');
+
+      err.forEach((l) => {      
+        //console.log();
+        form[l].style.cssText += 'background-color:#ffc107';
+      })
+
+      
+
+     }
     },
     error: function(resp){
       console.log(resp);

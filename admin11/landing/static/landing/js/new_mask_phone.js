@@ -12,17 +12,17 @@
 
 document.addEventListener("DOMContentLoaded",function(){
 
-  console.log("Привет");
+  //console.log("Привет");
 
   let phtoneinputs = document.querySelectorAll('input[data-tel-input]');
-  console.log(phtoneinputs); 
+  //console.log(phtoneinputs); 
 
   let getInputNumberValue = function(input){
     return input.value.replace(/\D/g,"");
   }
 
   let onMyKeyDownInput = function(e){
-    console.log('keyDown');
+    //console.log('keyDown');
     let input = e.target,
         inputNumbersValue = getInputNumberValue(input),
         selectionStart = input.selectionStart,
@@ -45,24 +45,24 @@ document.addEventListener("DOMContentLoaded",function(){
   }
 
   let onPhoneKeyDownInput = function(e){
-    console.log('keyDown');
+    //console.log('keyDown');
     let input = e.target,
         inputNumbersValue = getInputNumberValue(input),
         selectionStart = input.selectionStart,
         formattedInputValue = input.value;
    
     if (e.key == "Backspace" &&  formattedInputValue.substr(formattedInputValue.length-1) == '-'){
-       console.log('<-');
+       //console.log('<-');
        formattedInputValue = formattedInputValue.substr(0,formattedInputValue.length-1)
     }
 
     if (e.key == "Backspace" &&  formattedInputValue.substr(formattedInputValue.length-1) == ' '){
-       console.log('<-');
+       //console.log('<-');
        formattedInputValue = formattedInputValue.substr(0,formattedInputValue.length-1)
     }
 
     if (e.key == "Backspace" &&  formattedInputValue.substr(formattedInputValue.length-1) == '('){
-       console.log('<-');
+       //console.log('<-');
        formattedInputValue = "";
     }
 
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded",function(){
       // not russian number
 
       formattedInputValue = "+" + inputNumbersValue.substring(0,16);
-      console.log(formattedInputValue.substr(0,3));
+      //console.log(formattedInputValue.substr(0,3));
 
       if (formattedInputValue.substr(0,3) == '+90'){
         formattedInputValue = formattedInputValue.substr(0,3) + " (";

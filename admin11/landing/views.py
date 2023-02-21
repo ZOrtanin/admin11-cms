@@ -54,29 +54,37 @@ def postOut(request):
 
 	try:
 		name = request.POST['name']
-		tel = request.POST['telephone']
-		message = request.POST['message']
+		#tel = request.POST['telephone']
+		#message = request.POST['message']
 		from_name = request.POST['form_name']
 		browser = request.META.get('HTTP_USER_AGENT')
-		ip = request.META.get('REMOTE_ADDR')
-		print(name+' '+tel+' '+message+' '+from_name)
+		ip = request.META.get('REMOTE_ADDR')		
 	except:
 	 	return HttpResponse('Ошибка формы')
 
 
+	arr_filds = ['email','telephone','message','last_name']
+	for i in range(len(arr_filds)):
+		if arr_filds[i] not in request.POST:
+			globals()[arr_filds[i]] = ''
+		else:
+			globals()[arr_filds[i]] = request.POST[arr_filds[i]]
+
+
 	if request.POST['name'] == '' :
-		errors = '<p>Напишите свое имя</p>'
+		errors = 'name/'
 
 	if request.POST['telephone'] == '' :
-		errors += '<p>Напишите свой телефон</p>'
+		errors += 'telephone/'
 	
 	if errors != '' :
 		return HttpResponse(errors)
 
 	p = bids(
 		name=name,
-		last_name='',
-		tel=tel,
+		last_name=last_name,
+		mail=email,
+		tel=telephone,
 		message=message,
 		which=from_name,
 		browser=browser,
@@ -85,8 +93,9 @@ def postOut(request):
 		)
 	p.save()
 
-	print(request.POST)
-	return HttpResponse('Cообщение отправленно '+str(tel)+' '+name)
+	# print(locals())
+	# print(telephone)
+	return HttpResponse('Cообщение отправленно')
 
 def pageNotFound(request,exception):
 	#return HttpResponseNotFound('Страница не найдена')
