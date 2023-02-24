@@ -210,7 +210,7 @@ let btnMaximum = document.getElementById('btnMaximum');
 let btnOptimum = document.getElementById('btnOptimum');
 let btnStandart = document.getElementById('btnStandart');
 
-let modalLable = document.getElementById('ModalLabel');
+let modalLable = document.querySelectorAll('.ModalLabel')[0];
 let modalPrice = document.getElementById('price_tarif');
 
 function newLable(event){
@@ -223,7 +223,7 @@ function newLable(event){
   }else{
     time = '';
   }
-
+  console.log(modalLable);
   modalLable.innerHTML=this.dataset.mytitle;
   modalPrice.value="Тариф: "+this.dataset.tarif+"\nКомпьютеров: "+comps.value+"\nСерверов: "+servers.value+"\nЦена: "+price+"\nВремя: "+time+"\n------------\n\n";
 }
