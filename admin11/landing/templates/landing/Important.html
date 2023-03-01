@@ -1,0 +1,64 @@
+{% load static %}
+
+<!-- Не понятный текст -->
+<a name="about"></a>
+<div class="bg-dark text-light px-1 px-md-4 py-5 ">
+    <div class="container px-4 py-5" id="hanging-icons">
+    <h2 class="pb-2 display-5">{{Important.H1}}</h2>
+      <p class="lead opacity-8 text-muted">{{Important.description}}</p>
+
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+      
+      {% for item in Important.column %}
+        <div class="col d-flex align-items-start">
+          <div class="icon-square d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+            <i class="bi bi-{{item.icon}}"></i>
+          </div>
+          <div>
+            <h3 class="fs-3">{{item.label}}</h3>
+            {% autoescape off %}
+              {{ item.description }}
+            {% endautoescape %} 
+          </div>
+        </div>
+      {% endfor %}
+
+     <!--  <div class="col d-flex align-items-start">
+        <div class="icon-square d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+          <i class="bi bi-diagram-3"></i>
+        </div>
+        
+        <div>
+          <h3 class="fs-3">Проектирование</h3>
+          <p>— мультимедийных залов</p>
+          <p>— компьютерных сетей</p>
+          <p>— телефонных сетей</p>
+          <p>— IP-телефонии</p>
+          <p>— видеонаблюдения</p>
+          <p>— Модернизация существующей инфраструктуры</p> 
+        </div>
+      </div>      
+
+      <div class="col d-flex align-items-start">
+        <div class="icon-square d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+         <i class="bi bi-motherboard"></i>
+        </div>
+        <div>
+          <h3 class="fs-3">Монтаж</h3>
+          <p>— Проекторов</p>
+          <p>— Интерактивных досок</p>
+          <p>— Экранов и моторизованных экранов</p>
+          <p>— Компьютерных сетей</p>
+          <p>— Телекоммуникационного оборудования</p>
+          <p>— Систем IP-телефонии</p>
+          <p>— Видеонаблюдения</p>
+            
+
+        </div>
+      </div> -->
+
+    </div>
+
+  </div>
+</div>
+<!-- Не понятный текст -->

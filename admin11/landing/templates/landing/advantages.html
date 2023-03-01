@@ -1,0 +1,106 @@
+{% load static %}
+
+<!-- 4 причины -->
+<a name="features"></a>
+<div class="container px-4 py-5 ">
+  
+
+  <div class="row row-cols-1 row-cols-lg-12">
+    
+    <div class="col col-lg-4">
+      <div class="col pt-5">
+        <div class="mypath position-relative ">
+          <svg id="svg1" width="214" height="68" viewBox="0 0 214 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="check" stroke-dasharray= "533" stroke-dashoffset="533" d="M146.5 7.99998C125.5 3.16665 42.7 -4.40001 17.5 12C-14 32.5 6.00012 56.5 46.5001 63C87 69.5 180 68 207 46.5C234 25 153 8 76.5 15" stroke="#FFC107" stroke-width="3" stroke-linecap="round">
+              <animate id="p1" attributeName="stroke-dashoffset" begin="svg1" 
+           values="533; 0" dur="2s" repeatCount="1"  fill="freeze"  calcMode="linear"/>
+
+            </path>
+          </svg>
+        </div>
+        <h2 class="pb-2">{{advantages.H2}}</h2>
+        <div class=" d-flex flex-column align-items-start gap-2">
+          <h2 class="fw-bold display-5">{{advantages.H1}}</h2>
+          <p class="text-muted fs-5">{{advantages.description}}</p>
+          <!-- <a href="#" class="btn btn-primary btn-lg">Заказать</a> -->
+        </div>
+      </div>
+    </div>
+
+    <div id='mouse_muve' class=" col col-lg-8 mt-5">
+      <div class="row">
+
+        <div class="col-2 align-self-end d-none d-xl-block">
+          <img src="{% static 'landing/'%}images/push.svg" class="rounded float-end">
+        </div>
+
+        <div class="col-12 col-xl-10">
+          <div class="row bg-light p-3 p-md-5 rounded-5 shadow position-relative flex-column-reverse flex-md-column">
+
+
+
+            <ul class="nav nav-pills nav-fill bg-light " id="pills-tab" role="tablist">
+
+              {% for item in advantages.slider %}
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link list-group-item-light rounded-4 {{ item.visible }}" id="pills-{{item.index}}-tab" data-bs-toggle="pill" data-bs-target="#pills-{{item.index}}" type="button" role="tab" aria-controls="pills-{{item.index}}" aria-selected="true"><k class="d-none d-md-block me-md-0">{{item.label}}</k></button>
+                </li>
+              {% endfor %}
+
+              <!-- <li class="nav-item" role="presentation">
+                <button class="nav-link list-group-item-light rounded-4" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false"><k class="d-none d-md-block">Цена</k></button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link list-group-item-light rounded-4" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false"><k class="d-none d-md-block">Сервис</k></button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link list-group-item-light rounded-4" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" ><k class="d-none d-md-block">Опыт</k></button>
+              </li> -->
+            </ul>
+
+            
+
+            <div class="tab-content" id="pills-tabContent">
+              {% for item in advantages.slider %}
+
+                <div class="tab-pane fade {{ item.visible }} show" id="pills-{{item.index}}" role="tabpanel" aria-labelledby="pills-{{item.index}}-tab" tabindex="0">
+                  <div class="d-flex flex-column gap-2 p-md-5" >
+                    <h3>{{item.label}}</h3>
+                    <p class="text-muted ">{{item.description}}</p>
+                  </div>
+                </div>
+              {% endfor %}
+              <!-- <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                <div class="d-flex flex-column gap-2 p-md-5" >
+                  <h3>Цена</h3>
+                  <p>Аутсорсинговые услуги всегда дешевле, чем содержание штатных специалистов. Вопрос цены особенно важен в нестабильной экономической ситуации. ИТ-аутсорсинг в компании «СИСАДМИН» — это тот случай, когда вы получаете двойную выгоду: сокращаете расходы на ИТ-обслуживание в разы и заметно повышаете качество обслуживания.</p>
+                </div>
+              </div>
+
+              <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
+                <div class="d-flex flex-column gap-2 p-md-5" >
+                  <h3>Сервис</h3>
+                  <p>Мы заинтересованы в том, чтобы ваш компьютерный парк был работоспособным, эффективным и прослужил вам как можно дольше. Мы поможем вам оптимизировать затраты на содержание вашей ИТ-инфраструктуры, дадим взвешенные профессиональные рекомендации и решим любые технические проблемы в кратчайшие сроки.</p>
+                </div>
+              </div>
+
+              <div class="tab-pane fade" id="pills-disabled" role="tabpanel" aria-labelledby="pills-disabled-tab" tabindex="0">
+                 <div class="d-flex flex-column gap-2 p-md-5" >
+                  <h3>Опыт</h3>
+                  <p>Работая с разными заказчиками, мы сталкиваемся с огромным количеством разноплановых задач и накапливаем уникальный разносторонний опыт, поэтому тратим значительно меньше времени на диагностику и устранение уже знакомых проблем.</p>
+                </div>
+              </div> -->
+
+            </div>
+
+            
+            <img src="{% static 'landing/'%}{{advantages.image_to_slider}}" class="position-absolute top-100 start-50 translate-middle d-none d-md-block" style="width:200px;">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- 4 причины -->

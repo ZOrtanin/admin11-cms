@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load poll_extras %}
 
 <!doctype html>
 <html class="no-js" lang="ru">
@@ -11,7 +11,7 @@
   <meta name="description" content="">
   <meta name="author" content="Kukolschikov Egor">
   <meta name="generator" content="Hugo 0.104.2">
-  <title>ООО Сисадмин — Обслуживание информационых систем</title>
+  <title>{{title}}</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/carousel/">    
 
@@ -30,23 +30,17 @@
 
 
 
-  {% include 'landing/modals.html' %}
 
-  {% include 'landing/header.html' %}
 
-  {% include 'landing/hero.html' %}
+{% for item in all %}  
+ 
+  {% myinclude item.title as thame %}
+  
+  {% include thame %}
 
-  {% include 'landing/introductory.html' %}
+{% endfor %}
 
-  {% include 'landing/price.html' %}
-
-  {% include 'landing/four_reasons.html' %}
-
-  {% include 'landing/text_block.html' %}
-
-  {% include 'landing/contacts.html' %}
-
-  {% include 'landing/footer.html' %}
+  
 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>

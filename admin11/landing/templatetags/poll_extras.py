@@ -45,3 +45,14 @@ def get_form(value):
 
 
 	return mark_safe(fields)
+
+
+
+@register.filter(name='myjoin')
+def cut(value):	
+	return 'landing/'+value+'.html'
+
+@register.simple_tag(name='myinclude')
+def my_include(value):
+	print(value)
+	return 'landing/'+value+'.html'

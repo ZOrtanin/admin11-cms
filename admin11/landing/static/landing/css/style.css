@@ -128,10 +128,10 @@ body{
 }*/
 
 .modal:nth-of-type(even) {
-    z-index: 1050 !important;
+    z-index: 1052 !important;
 }
 .modal-backdrop.show:nth-of-type(even) {
-    z-index: 1049 !important;
+    z-index: 1052 !important;
 }
 
 /*#BtnUpTop a{

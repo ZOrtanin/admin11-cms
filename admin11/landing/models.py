@@ -2,21 +2,24 @@ from django.db import models
 
 # Create your models here.
 class landing(models.Model):
-	YEAR_IN_SCHOOL_CHOICES = [
-        ('FRESHMAN', 'Freshman'),
-        ('SOPHOMORE', 'Sophomore'),
-        ('JUNIOR', 'Junior'),
-        ('SENIOR', 'Senior'),
-        ('GRADUATE', 'Graduate'),
+	TYPE_BLOCK = [
+        ('themes', 'Типизированный'),
+        ('null', 'Пустой'),
+        ('html', 'Произвольный'),
+        ('js', 'JS'),
+        ('scc', 'Cтили'),
     ]
 
 
 	title = models.CharField(max_length=255,verbose_name="Заголовок")
+	name = models.CharField(max_length=255,blank=True,null=True,verbose_name="Название")
 	content = models.TextField(blank=True,verbose_name="Настройки")
 	photo = models.URLField(max_length=255,blank=True,verbose_name="Изображения")	
 	time_create = models.DateTimeField(auto_now_add=True,verbose_name="Время создания")
 	time_update = models.DateTimeField(auto_now=True,verbose_name="Последнее обновление")
-	is_published = models.BooleanField(default=True,verbose_name="Опубликованно")
+	order = models.IntegerField(blank=True,null=True,verbose_name="Порядок")
+	type_block = models.CharField(max_length=255,verbose_name="Тип",blank=True,null=True,choices=TYPE_BLOCK)
+	is_published = models.BooleanField(default=True,verbose_name="Видимость")
 	
 
 	def __str__(self):

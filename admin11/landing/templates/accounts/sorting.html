@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Drag and drop sorting</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+    .sortable li {
+      cursor: move;
+      padding: 10px;
+      margin: 10px;
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      list-style: none;
+    }
+  </style>
+  <script>
+    $(function() {
+      var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+      
+      // Устанавливаем обработчик события drag-and-drop на элементах списка
+      $(".sortable").sortable({
+        axis: "y", // Указываем ось перемещения элементов (вертикальную)
+        update: function(event, ui) {
+          
+          // При окончании перемещения элементов отправляем запрос на сервер
+          var sort_order = $(this).sortable("serialize");
+          
+          $.ajax({
+              type: "POST",
+              url: "/sort/",
+              data: {
+                  sort_order: sort_order,
+                  csrfmiddlewaretoken: csrftoken
+                    },
+              success:function(response){
+                 console.log('work');         
+                },
+              complete:function(response,err){
+                console.log(response.responseText);
+                //console.log("ошибка");
+               },
+              error: function(xhr){
+                  // Обрабатываем ошибку
+                  //console.log(xhr.responseText);
+                  console.log("ошибка");
+                  //var err = eval("(" + xhr.responseText + ")");
+                  //alert("Произошла ошибка: " + err.Message);
+              }
+          });
+        }
+      });
+      $(".sortable").disableSelection(); // Отключаем выделение текста при перемещении элементов
+    });
+  </script>
+</head>
+<body>
+  {% csrf_token %}
+  <ul class="sortable">
+    {% for item in items %}
+      <li id="item_{{ item.title }}_{{ item.id }}">{{ item.title }} {{ item.name }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
