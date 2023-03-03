@@ -1,11 +1,19 @@
 from django.http import HttpResponse,HttpResponseNotFound
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import logout
+
 from django.urls import reverse_lazy
-from django.shortcuts import render
-from django.views.generic import ListView
+from django.shortcuts import render,redirect
+from django.views.generic import ListView, DetailView, CreateView
 
 from .models import *
+from .utils import *
+from .forms import *
+#from .urls import *
 
 import json
 
@@ -37,6 +45,35 @@ class LandingHome(ListView):
 
 	def get_queryset(self):
 		return landing.objects.filter(is_published=True).order_by('order')
+
+class RegisterUser(DataMixin, CreateView):
+	form_class = RegisterUserForm
+	template_name = 'accounts/darkpan/signup.html'
+	success_url = reverse_lazy('landing:login')
+	
+	def get_context_data(self, *, object_list=None, **kwargs) :
+		context = super () .get_context_data(**kwargs)
+		c_def = self.get_user_context (title="Регистрация")
+
+		return dict(list(context.items ()) + list(c_def.items ()))
+
+class LoginUser(DataMixin, LoginView):
+	form_class = AuthenticationForm
+	template_name = 'accounts/darkpan/signin.html'
+
+	def get_context_data(self, *, object_list=None, **kwargs) :
+		context = super().get_context_data(**kwargs)
+		c_def = self.get_user_context(title="Авторизация")
+
+		return dict(list (context.items ()) + list(c_def.items ()))
+
+	def get_success_url(self):
+		return reverse_lazy('landing:dashboard')
+		#return redirect('/')
+
+def logout_user(request):
+	logout(request)
+	return redirect('landing:login')
 
 # Create your views here.
 def title(request):
@@ -74,12 +111,56 @@ class SortingHome(LoginRequiredMixin,ListView):
 
 class DashboardPage(LoginRequiredMixin,ListView):
 	model = landing
-	template_name = 'accounts/darkpan/index.html'
+	template_name = 'accounts/darkpan/dashboard.html'
 	context_object_name ='items'
 	ordering = ['order']
 	login_url = '/admin/'
+
+	def get_context_data(self,*, object_list=None, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['orders'] = bids.objects.order_by("-id")[0:5]
+		context['orders_count'] =bids.objects.count()
+		return context
 	
-	
+class EditMode(LoginRequiredMixin,ListView):
+	model = landing
+	template_name = 'accounts/darkpan/edit_mode.html'
+	context_object_name ='all'	
+	login_url = '/admin/'
+
+	def get_context_data(self,*, object_list=None, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		blocks = landing.objects.filter(is_published=True).order_by('order')
+		new_dictData = {}
+
+		context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
+
+		for i in range(len(blocks)):
+			#print(blocks[i].title)
+
+			settings_block = blocks.filter(title=blocks[i].title)[0].content
+			if settings_block != '':
+				context[blocks[i].title] = json.loads(settings_block)
+			else:
+				context[blocks[i].title] = ''
+		
+		return context
+
+	def get_queryset(self):
+		return landing.objects.filter(is_published=True).order_by('order')
+
+class OrderPage(LoginRequiredMixin,ListView):
+	model = landing
+	template_name = 'accounts/darkpan/order.html'
+
+class UsersPage(LoginRequiredMixin,ListView):
+	model = landing
+	template_name = 'accounts/darkpan/users.html'
+
+class FilesPage(LoginRequiredMixin,ListView):
+	model = landing
+	template_name = 'accounts/darkpan/files.html'
 
 # def sorting(request):
 

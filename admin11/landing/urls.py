@@ -1,5 +1,7 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 
 from .views import *
 
@@ -7,12 +9,23 @@ app_name = 'landing'
 
 
 urlpatterns = [    
-    path('',LandingHome.as_view()),
-    path('dashboard/',DashboardPage.as_view()),
-    path('sorting/',SortingHome.as_view()),
-    path('post/',postOut),
+    path('',LandingHome.as_view(),name='home'),
+
+    path('login/',LoginUser.as_view(),name='login'),
+    path('signup/',RegisterUser.as_view(),name='signup'),
+    path('logout/',logout_user,name='logout'),
+
+    path('dashboard/',DashboardPage.as_view(),name='dashboard'),
+    path('edit/',EditMode.as_view(),name='edit'),
+    path('sorting/',SortingHome.as_view(),name='sorting'),
+    path('post/',postOut,name='postform'),
     path('sort/',sort_blocks),
-    path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
+
+    path('orders/',OrderPage.as_view(),name='order'),
+    path('users/',UsersPage.as_view(),name='users'),
+    path('files/',FilesPage.as_view(),name='files'),
+
+    #path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html'), name='login'),
 ]
 
 #hendler404 = pageNotFound
