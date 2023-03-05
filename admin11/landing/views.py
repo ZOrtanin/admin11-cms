@@ -109,7 +109,7 @@ class SortingHome(LoginRequiredMixin,ListView):
 	login_url = '/admin/'
 	#raise_exception = True
 
-class DashboardPage(LoginRequiredMixin,ListView):
+class DashboardPage(LoginRequiredMixin,DataMixin,ListView):
 	model = landing
 	template_name = 'accounts/darkpan/dashboard.html'
 	context_object_name ='items'
@@ -118,11 +118,15 @@ class DashboardPage(LoginRequiredMixin,ListView):
 
 	def get_context_data(self,*, object_list=None, **kwargs):
 		context = super().get_context_data(**kwargs)
+		print(self.request.user)
+		context['user'] = self.request.user
 		context['orders'] = bids.objects.order_by("-id")[0:5]
 		context['orders_count'] =bids.objects.count()
+		c_def = self.get_user_context(title="Панель упровления",selected="landing:dashboard")
+		context = dict(list(context.items())+list(c_def.items()))
 		return context
 	
-class EditMode(LoginRequiredMixin,ListView):
+class EditMode(LoginRequiredMixin,DataMixin,ListView):
 	model = landing
 	template_name = 'accounts/darkpan/edit_mode.html'
 	context_object_name ='all'	
@@ -150,17 +154,48 @@ class EditMode(LoginRequiredMixin,ListView):
 	def get_queryset(self):
 		return landing.objects.filter(is_published=True).order_by('order')
 
-class OrderPage(LoginRequiredMixin,ListView):
+class OrderPage(LoginRequiredMixin,DataMixin,ListView):
 	model = landing
 	template_name = 'accounts/darkpan/order.html'
 
-class UsersPage(LoginRequiredMixin,ListView):
+	def get_context_data(self,*, object_list=None, **kwargs):
+		context = super().get_context_data(**kwargs)
+		print(self.request.user)
+		context['user'] = self.request.user
+		context['orders'] = bids.objects.order_by("-id")
+		context['orders_count'] =bids.objects.count()
+		c_def = self.get_user_context(title="Заявки",selected="landing:order")
+		context = dict(list(context.items())+list(c_def.items()))
+		return context
+
+
+class UsersPage(LoginRequiredMixin,DataMixin,ListView):
 	model = landing
 	template_name = 'accounts/darkpan/users.html'
 
-class FilesPage(LoginRequiredMixin,ListView):
+	def get_context_data(self,*, object_list=None, **kwargs):
+		context = super().get_context_data(**kwargs)
+		print(self.request.user)
+		context['user'] = self.request.user
+		context['orders'] = bids.objects.order_by("-id")
+		context['orders_count'] =bids.objects.count()
+		c_def = self.get_user_context(title="Посетители",selected="landing:users")
+		context = dict(list(context.items())+list(c_def.items()))
+		return context
+
+class FilesPage(LoginRequiredMixin,DataMixin,ListView):
 	model = landing
 	template_name = 'accounts/darkpan/files.html'
+
+	def get_context_data(self,*, object_list=None, **kwargs):
+		context = super().get_context_data(**kwargs)
+		print(self.request.user)
+		context['user'] = self.request.user
+		context['orders'] = bids.objects.order_by("-id")
+		context['orders_count'] =bids.objects.count()
+		c_def = self.get_user_context(title="Файлы",selected="landing:files")
+		context = dict(list(context.items())+list(c_def.items()))
+		return context
 
 # def sorting(request):
 
