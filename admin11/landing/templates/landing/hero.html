@@ -13,21 +13,21 @@
         </div>       
 
         <div class="col-12 col-lg-5 pr-lg-5">
-          <h6>- {{ hero.warning}}</h6>
-          <h1 class="display-5 fw-bolder lh-1 mb-4">{{hero.H1}} 
+          <h6>- {{ all.hero.warning}}</h6>
+          <h1 class="display-5 fw-bolder lh-1 mb-4">{{ all.hero.H1 }} 
             <strong class="d-block font-weight-bold h1">{{hero.H2}}</strong>
           </h1>
             
           
-          <p class="lead opacity-8">{{ hero.p}}</p>
+          <p class="lead opacity-8">{{ all.hero.p}}</p>
           <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-            <a class="btn btn-dark btn-lg px-4 me-md-2" href="{{ hero.Button.link}}">{{ hero.Button.label}}</a>                     
+            <a class="btn btn-dark btn-lg px-4 me-md-2" href="{{ all.hero.Button.link}}">{{ all.hero.Button.label}}</a>                     
           </div>
         </div>    
 
         <div class="col-12 col-lg-6 pr-lg-5 d-block d-lg-none p">
 
-              <img src="{% static 'landing/'%}{{ hero.image }}" class="rounded mx-auto d-block" alt="Admin11"  loading="lazy">           
+              <img src="{% static 'landing/'%}{{ .allhero.image }}" class="rounded mx-auto d-block" alt="Admin11"  loading="lazy">           
         </div>            
 
     </div>
