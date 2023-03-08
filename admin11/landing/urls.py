@@ -10,6 +10,7 @@ app_name = 'landing'
 
 urlpatterns = [    
     path('',LandingHome.as_view(),name='home'),
+    path('post/',postOut,name='postform'),
 
     path('login/',LoginUser.as_view(),name='login'),
     path('signup/',RegisterUser.as_view(),name='signup'),
@@ -18,10 +19,15 @@ urlpatterns = [
     path('dashboard/',DashboardPage.as_view(),name='dashboard'),
     path('edit/',EditMode.as_view(),name='edit'),
     path('sorting/',SortingHome.as_view(),name='sorting'),
-    path('post/',postOut,name='postform'),
+   
     path('sort/',sort_blocks),
 
     path('orders/',OrderPage.as_view(),name='order'),
+    path('orders/<int:order_id>/',getOrderOut,name='order_id'),
+    path('orders/edit/<int:order_id>/',OrderEdit,name='order_id_edit'),
+    path('orders/del/<int:order_id>/',OrderDel,name='order_id_del'),
+
+
     path('users/',UsersPage.as_view(),name='users'),
     path('files/',FilesPage.as_view(),name='files'),
 

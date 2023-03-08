@@ -1,0 +1,52 @@
+{% csrf_token %}
+<div class="container-fluid">
+                <div class="row">
+                    <div class="col-7">
+                    	<dl class="row mb-0">			
+					        <dt class="col-sm-3">Имя:</dt>
+					        <dd class="col-sm-9">{{ order.name }}</dd>
+					        <dt class="col-sm-3">Фамилия:</dt>
+					        <dd class="col-sm-9">{{ order.last_name }}</dd>
+					        <dt class="col-sm-3">Телефон:</dt>
+					        <dd class="col-sm-9">{{ order.tel }}</dd>
+					        <dt class="col-sm-3">Форма:</dt>
+					        <dd class="col-sm-9">{{ order.which }}</dd>					        
+					        <dt class="col-sm-3">IP:</dt>
+					        <dd class="col-sm-9">{{ order.ip }}</dd>
+					        <dt class="col-sm-3">Страна:</dt>
+					        <dd class="col-sm-9">{{ order.country }}</dd>
+					        <dt class="col-sm-3">ОС:</dt>
+					        <dd class="col-sm-9">{{ order.os }}</dd>
+					        <dt class="col-sm-3">Браузер:</dt>
+					        <dd class="col-sm-9">{{ order.browser }}</dd>
+					        <dt class="col-sm-3">Создания:</dt>
+					        <dd class="col-sm-9">{{ order.time_create }}</dd>
+					        <dt class="col-sm-3">Обновление:</dt>
+					        <dd class="col-sm-9">{{ order.time_update }}</dd>
+					        <dt class="col-sm-3">Статус:</dt>
+					        <dd class="col-sm-9">
+					        <select name="status" class="form-select mb-3" aria-label="Default select example">
+					        	{% for item in order.STATUS_BID %}
+					        		{% if order.status in item.0 %}
+				                		<option value="{{ item.0 }}" selected="">{{ item.1 }}</option>
+				                	{% else %}
+				                		<option value="{{ item.0 }}">{{ item.1 }}</option>
+				                	{% endif %}
+				                {% endfor %}
+				                <!-- <option value="1">One</option>
+				                <option value="2">Two</option>
+				                <option value="3">Three</option> -->
+				            </select>
+				            </dd>
+				    		
+					    </dl>
+                    </div>
+                    <div class="col-5 text-light bg-dark p-3 rounded" style="height: 381px;">
+                    	<p>Коментарии :</p>
+                    	<p style=" height: 320px; overflow-x:auto; white-space: pre-wrap;">{{ order.message }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                <textarea name="text-attach" class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 150px;"></textarea>
+                </div>
+            </div> 

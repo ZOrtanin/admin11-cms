@@ -16,6 +16,7 @@ from .forms import *
 #from .urls import *
 
 import json
+from datetime import datetime
 
 
 class LandingHome(ListView):
@@ -169,6 +170,52 @@ class OrderPage(LoginRequiredMixin,DataMixin,ListView):
 		return context
 
 
+@login_required
+def getOrderOut(request, order_id):
+	order = bids.objects.get(id=order_id)	
+	out_line = {}
+	out_line['order'] = order
+
+	print(order.STATUS_BID[0][0])
+
+	return render(request,'modals/order.html',out_line)
+
+@login_required
+def OrderEdit(request, order_id):
+	print(request.POST)
+	print(order_id)
+	order = bids.objects.get(id=order_id)
+
+
+	if order.status != request.POST['status']:
+		order.status = request.POST['status']
+		order.message = order.message 
+		order.message +='\n-------\n'
+
+		for item in order.STATUS_BID:
+			if item[0] in request.POST['status']:
+				order.message +='Изменен статус на \n'+ item[1] +'\n'
+
+		order.message += str(datetime.now())
+
+	if request.POST['text-attach'] != '':
+		order.message = order.message 
+		order.message +='\n-------\n'
+		order.message +='Заметка:\n'
+		order.message += request.POST['text-attach']+'\n'
+		order.message += str(datetime.now())
+
+	order.save()
+
+	return redirect('landing:order')
+
+@login_required
+def OrderDel(request, order_id):
+	record = bids.objects.get(id = order_id)
+	record.delete()
+
+	return redirect('landing:order')
+
 class UsersPage(LoginRequiredMixin,DataMixin,ListView):
 	model = landing
 	template_name = 'accounts/darkpan/users.html'
@@ -210,7 +257,7 @@ class FilesPage(LoginRequiredMixin,DataMixin,ListView):
 
 # 	return render(request,'landing/sorting.html',new_dictData)
 
-
+@login_required
 def postOut(request):
 	errors = ''
 	print(request.POST)
