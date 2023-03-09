@@ -91,6 +91,18 @@ class bids(models.Model):
 		verbose_name = 'Заявка'
 		verbose_name_plural = 'Заявки'
 
+class visitors(models.Model):
+	ip = models.CharField(max_length=100, db_index=True,verbose_name="IP",blank=True)
+	browser = models.CharField(max_length=200, db_index=True,verbose_name="Браузер",blank=True)
+	time_create = models.DateTimeField(auto_now_add=True,verbose_name="Время посещения",blank=True)
+	time_out = models.CharField(max_length=100, db_index=True,verbose_name="Время ухода",blank=True)
+
+	def __str__(self):
+		return self.ip
+
+	class Meta:
+		verbose_name = 'Посетитель'
+		verbose_name_plural = 'Посетители'
 
 class Category(models.Model):
 	name = models.CharField(max_length=100, db_index=True)

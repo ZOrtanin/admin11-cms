@@ -13,10 +13,6 @@ btn_order.forEach(item =>{
       item.addEventListener('click', selectOrder)
   });
 
-btn_del.forEach(item =>{
-      item.addEventListener('click', delOrder)
-  });
-
 function selectOrder () {
       //this.parentElement.classList.toggle('select-active');
 	console.log(this.dataset.idOrder);
@@ -24,11 +20,11 @@ function selectOrder () {
 	let order = this.dataset.idOrder;
 
 	$.ajax({
-    type:'POST',
-    url: this.dataset.path,
-    data:{
-      csrfmiddlewaretoken: csrftoken,
-    },
+          type:'POST',
+          url: this.dataset.path,
+          data:{
+            csrfmiddlewaretoken: csrftoken,
+          },
     success:function(response){
      console.log('work');         
     },
@@ -45,6 +41,13 @@ function selectOrder () {
   })
 }
 
+btn_del.forEach(item =>{
+      item.addEventListener('click', delOrder)
+  });
+
 function delOrder(){
-	
+	console.log(this.parentElement.parentElement);
+      this.parentElement.parentElement.remove()
 }
+
+

@@ -42,6 +42,15 @@ class LandingHome(ListView):
 			else:
 				context[blocks[i].title] = ''
 		
+		# print(self.request.user.is_authenticated)
+
+		if not self.request.user.is_authenticated:
+			visitor = visitors(
+			ip=self.request.META.get('REMOTE_ADDR'),
+			browser=self.request.META.get('HTTP_USER_AGENT'),		
+			)
+			visitor.save()
+
 		return context
 
 	def get_queryset(self):
@@ -169,7 +178,6 @@ class OrderPage(LoginRequiredMixin,DataMixin,ListView):
 		context = dict(list(context.items())+list(c_def.items()))
 		return context
 
-
 @login_required
 def getOrderOut(request, order_id):
 	order = bids.objects.get(id=order_id)	
@@ -224,8 +232,8 @@ class UsersPage(LoginRequiredMixin,DataMixin,ListView):
 		context = super().get_context_data(**kwargs)
 		print(self.request.user)
 		context['user'] = self.request.user
-		context['orders'] = bids.objects.order_by("-id")
-		context['orders_count'] =bids.objects.count()
+		context['visitors'] = visitors.objects.order_by("-id")
+		context['visitors_count'] = visitors.objects.count()
 		c_def = self.get_user_context(title="Посетители",selected="landing:users")
 		context = dict(list(context.items())+list(c_def.items()))
 		return context
@@ -337,7 +345,6 @@ def sort_blocks(request):
 	print(arr_out)
 
 	return HttpResponse('не получен список сортировки ')
-
 
 def pageNotFound(request,exception):
 	#return HttpResponseNotFound('Страница не найдена')

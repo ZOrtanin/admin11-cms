@@ -134,9 +134,10 @@
                                             <button type="button" class="btn btn-square btn-secondary getorder" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id-order="{{ item.id }}" data-path="/orders/{{ item.id }}/">
                                                 <i class="fa-regular fa-pen-to-square"></i>
                                             </button>
-                                            <button type="button" class="btn btn-square btn-outline-dark m-2 del"   data-id-order="{{ item.id }}" data-path="/orders/del/{{ item.id }}/">
+                                            <!-- <button type="button" class="btn btn-square btn-outline-dark m-2 del"   data-id-order="{{ item.id }}" data-path="/orders/del/{{ item.id }}/">
                                                 <i class="fa-solid fa-trash"></i>
-                                            </button>
+                                            </button> -->
+                                            <a href="del/{{ item.id }}/" class="btn btn-square btn-outline-dark m-2"><i class="fa-solid fa-trash"></i></a>
 
 
                                         </td>

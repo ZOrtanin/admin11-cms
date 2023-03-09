@@ -14,26 +14,20 @@
                             <thead>
                                 <tr class="text-white">
                                     <th scope="col">id</th>
-                                    <th scope="col">Имя</th>
-                                    <th scope="col">Время</th>
-                                    <th scope="col">Форма</th>
-                                    <th scope="col">Телефон</th>
-                                    <th scope="col">Статус</th>
-                                    <th scope="col"></th>
+                                    <th scope="col">ip</th>
+                                    <th scope="col">Браузер</th>                                    
+                                    <th scope="col">Время</th>                                    
                                 </tr>
                             </thead>
                             <tbody>                                
 
-                                {% for item in orders %}
+                                {% for item in visitors %}
                                   
                                     <tr>                                        
                                         <td>{{ item.id }}</td>
-                                        <td>{{ item.name }}</td>
+                                        <td>{{ item.ip }}</td>
+                                        <td>{{ item.browser }}</td>
                                         <td>{{ item.time_create }}</td>
-                                        <td>{{ item.which }}</td>
-                                        <td>{{ item.tel }}</td>
-                                        <td>{{ item.status }}</td>
-                                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
                                     </tr>
 
                                 {% endfor %}

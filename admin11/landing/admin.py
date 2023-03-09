@@ -34,6 +34,11 @@ class BidsAdmin(admin.ModelAdmin):
 admin.site.register(bids,BidsAdmin)
 #admin.site.register(bids)
 
+class VisitorsAdmin(admin.ModelAdmin):
+	list_display = ('ip', 'browser', 'time_create')
+
+admin.site.register(visitors,VisitorsAdmin)
+
 admin.site.register(Files)
 
 #admin.site.register(Category)
