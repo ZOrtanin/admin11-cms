@@ -4,65 +4,32 @@
 
 {% csrf_token %}
 
-            <!-- Модальное окно -->
-            <!-- <div id="model" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center" style="background-color: rgba(0,0,0,0.7)!important;z-index: 1040;">
-                <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-                    <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <a href="index.html" class="">
-                                <img src="img/logo.svg" style="width: 113px;">
-                            </a>
-                            <h3>Вход</h3>
-                        </div>
-                        <form method="post">
-                           
-                            
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" required="">
-                                <label for="floatingInput">Имя пользователя</label>
-                            </div>
-                            <div class="form-floating mb-4">
-                                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" autocomplete="current-password" required="">
-                                <label for="floatingPassword">Пароль</label>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                    <label class="form-check-label" for="exampleCheck1">Запомнить меня</label>
-                                </div>
-                                <a href="">Забыл пароль</a>
-                            </div>
-                            <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Вход</button>
-                            <p class="text-center mb-0">У Вас нет акаунта? <a href="{% url 'landing:signup' %}">Зарегестрируйтесь</a></p>
-                        </form>
+            <!-- Модальное окно -->           
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content bg-secondary rounded ">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Заказ #123123</h1>
+                        <button type="button" class="btn btn-square btn-secondary m-2" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-close" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <form method="post" class="form-edit" action="">
+                      <div class="modal-body">
+                          <h2 class="fs-5">Popover in a modal</h2>
+                          <p>This <button class="btn btn-secondary" data-bs-toggle="popover" title="Popover title" data-bs-content="Popover body content is set in this attribute.">button</button> triggers a popover on click.</p>
+                          <hr>
+                          <h2 class="fs-5">Tooltips in a modal</h2>
+                          <p><a href="#" data-bs-toggle="tooltip" title="Tooltip">This link</a> and <a href="#" data-bs-toggle="tooltip" title="Tooltip">that link</a> have tooltips on hover.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit"  class="btn btn-primary">Сохранить</button>
+                      </div>
+                      </form>
                     </div>
+                  </div>
                 </div>
-            </div> -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-                <div class="modal-content bg-secondary rounded ">
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Заказ #123123</h1>
-                    <button type="button" class="btn btn-square btn-secondary m-2" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="fa fa-close" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                  <form method="post" class="form-edit" action="">
-                  <div class="modal-body">
-                      <h2 class="fs-5">Popover in a modal</h2>
-                      <p>This <button class="btn btn-secondary" data-bs-toggle="popover" title="Popover title" data-bs-content="Popover body content is set in this attribute.">button</button> triggers a popover on click.</p>
-                      <hr>
-                      <h2 class="fs-5">Tooltips in a modal</h2>
-                      <p><a href="#" data-bs-toggle="tooltip" title="Tooltip">This link</a> and <a href="#" data-bs-toggle="tooltip" title="Tooltip">that link</a> have tooltips on hover.</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit"  class="btn btn-primary">Сохранить</button>
-                  </div>
-                  </form>
-                </div>
-              </div>
-            </div>
             <!-- Модальное окно -->
 
 

@@ -35,7 +35,7 @@ admin.site.register(bids,BidsAdmin)
 #admin.site.register(bids)
 
 class VisitorsAdmin(admin.ModelAdmin):
-	list_display = ('ip', 'browser', 'time_create')
+	list_display = ('ip', 'browser', 'time_create','time_out')
 
 admin.site.register(visitors,VisitorsAdmin)
 

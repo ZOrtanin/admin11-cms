@@ -1,9 +1,36 @@
 {% extends "accounts/darkpan/base.html" %}
 
 {% block content %}
-
+{% csrf_token %}
            
-
+            <!-- Модальное окно -->           
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content bg-secondary rounded ">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Заказ #123123</h1>
+                        <button type="button" class="btn btn-square btn-secondary m-2" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-close" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <form method="post" class="form-edit" action="">
+                      <div class="modal-body">
+                          <h2 class="fs-5">Popover in a modal</h2>
+                          <p>This <button class="btn btn-secondary" data-bs-toggle="popover" title="Popover title" data-bs-content="Popover body content is set in this attribute.">button</button> triggers a popover on click.</p>
+                          <hr>
+                          <h2 class="fs-5">Tooltips in a modal</h2>
+                          <p><a href="#" data-bs-toggle="tooltip" title="Tooltip">This link</a> and <a href="#" data-bs-toggle="tooltip" title="Tooltip">that link</a> have tooltips on hover.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <input type="hidden" name="page" value="dashboard">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit"  class="btn btn-primary">Сохранить</button>
+                      </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+            <!-- Модальное окно -->
 
             <!-- Общая статистика сайта -->
             <div class="container-fluid pt-4 px-4">
@@ -13,7 +40,7 @@
                             <i class="fa fa-users fa-2x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Уникалов</p>
-                                <h6 class="mb-0">234</h6>
+                                <h6 class="mb-0">{{visitors_count}}</h6>
                             </div>
                         </div>
                     </div>
@@ -22,7 +49,7 @@
                             <i class="fa fa-refresh fa-2x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">Обновлений стр.</p>
-                                <h6 class="mb-0">10234</h6>
+                                <h6 class="mb-0">{{reload_page_count}}</h6>
                             </div>
                         </div>
                     </div>
@@ -31,7 +58,7 @@
                             <i class="fa fa-laptop fa-2x text-primary"></i>
                             <div class="ms-3">
                                 <p class="mb-2">уникальных IP</p>
-                                <h6 class="mb-0">1234</h6>
+                                <h6 class="mb-0">{{ip_count}}</h6>
                             </div>
                         </div>
                     </div>
@@ -85,7 +112,7 @@
                         <a href="">Смотреть все</a>
                     </div>
                     <div class="table-responsive">
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                        <table class="table text-start align-middle table-borderless table-hover mb-0">
                             <thead>
                                 <tr class="text-white">
                                     <th scope="col">id</th>
@@ -107,8 +134,18 @@
                                         <td>{{ item.time_create }}</td>
                                         <td>{{ item.which }}</td>
                                         <td>{{ item.tel }}</td>
-                                        <td>{{ item.status }}</td>
-                                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+
+                                        {% for itemme in item.STATUS_BID %}
+                                            {% if item.status in itemme.0 %}
+                                                <td>{{ itemme.1 }}</td>                                                
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        <td>
+                                            <button type="button" class="btn btn-square btn-secondary getorder" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id-order="{{ item.id }}" data-path="/orders/{{ item.id }}/">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </button>
+                                        </td>
                                     </tr>
 
                                 {% endfor %}

@@ -15,8 +15,10 @@
                                 <tr class="text-white">
                                     <th scope="col">id</th>
                                     <th scope="col">ip</th>
+                                    <th scope="col">Посещений</th>
+                                    <th scope="col">Время</th> 
                                     <th scope="col">Браузер</th>                                    
-                                    <th scope="col">Время</th>                                    
+                                                                       
                                 </tr>
                             </thead>
                             <tbody>                                
@@ -26,8 +28,10 @@
                                     <tr>                                        
                                         <td>{{ item.id }}</td>
                                         <td>{{ item.ip }}</td>
-                                        <td>{{ item.browser }}</td>
+                                        <td>{{ item.time_out }}</td>
                                         <td>{{ item.time_create }}</td>
+                                        <td>{{ item.browser }}</td>
+                                        
                                     </tr>
 
                                 {% endfor %}

@@ -43,11 +43,15 @@ class LandingHome(ListView):
 				context[blocks[i].title] = ''
 		
 		# print(self.request.user.is_authenticated)
+		num_visits=self.request.session.get('num_visits', 0)
+		self.request.session['num_visits'] = num_visits+1
+		print(str(num_visits)+' <---')
 
 		if not self.request.user.is_authenticated:
 			visitor = visitors(
 			ip=self.request.META.get('REMOTE_ADDR'),
-			browser=self.request.META.get('HTTP_USER_AGENT'),		
+			browser=self.request.META.get('HTTP_USER_AGENT'),	
+			time_out=self.request.session.get('num_visits', 0)	
 			)
 			visitor.save()
 
@@ -132,6 +136,9 @@ class DashboardPage(LoginRequiredMixin,DataMixin,ListView):
 		context['user'] = self.request.user
 		context['orders'] = bids.objects.order_by("-id")[0:5]
 		context['orders_count'] =bids.objects.count()
+		context['visitors_count'] = visitors.objects.filter(time_out='1').count()
+		context['reload_page_count'] = visitors.objects.count()
+		context['ip_count'] = visitors.objects.values('ip').distinct().count()
 		c_def = self.get_user_context(title="Панель упровления",selected="landing:dashboard")
 		context = dict(list(context.items())+list(c_def.items()))
 		return context
@@ -149,6 +156,7 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
 		new_dictData = {}
 
 		context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
+		context['edit_mode']='True'
 
 		for i in range(len(blocks)):
 			#print(blocks[i].title)
@@ -214,6 +222,9 @@ def OrderEdit(request, order_id):
 		order.message += str(datetime.now())
 
 	order.save()
+
+	if request.POST['page']=='dashboard':
+		return redirect('landing:dashboard')
 
 	return redirect('landing:order')
 

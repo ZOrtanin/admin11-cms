@@ -2,11 +2,20 @@
 
 <!-- Навигация -->
 
-<div class="container-fluid header-transparent fixed-top bg-light" >
+
+
+ 
+{% if edit_mode == "True" %}
+  <div class="container-fluid header-transparent bg-light" style="position: absolute; top: 40px;">
+{% else %}
+  <div class="container-fluid header-transparent fixed-top bg-light" >
+{% endif %}
+
   <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-1">
+     
 
-      <nav class="shadow navbar navbar-expand-lg fixed-top bg-light"  >  
+      <nav class="shadow navbar navbar-expand-lg fixed-top bg-light" style="position: absolute; " >     
         <div class="container">
           
           <!-- Лого -->

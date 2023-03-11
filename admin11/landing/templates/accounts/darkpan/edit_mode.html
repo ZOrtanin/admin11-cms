@@ -1,149 +1,131 @@
 {% load static %}
 {% load poll_extras %}
-<!DOCTYPE html>
-<html lang="en">
+
+<!doctype html>
+<html class="no-js" lang="ru">
 
 <head>
-    <meta charset="utf-8">
-    <title>DarkPan - Bootstrap 5 Admin Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="description" content="">
+  <meta name="author" content="Kukolschikov Egor">
+  <meta name="generator" content="Hugo 0.104.2">
+  <title>{{title}}</title>
 
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/carousel/">    
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@500;700&display=swap" rel="stylesheet"> 
+  <link href=" {% static 'landing/'%}dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'landing/'%}css/style.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'landing/'%}css/carousel.css" rel="stylesheet">
+
+  <!-- Custom styles for icon -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+  <style>
+    .admin_pad{
+        position: fixed; 
+        z-index: 1034; 
+        top: 0; 
+        padding: 0; 
+        background-color: #191C24 !important;
+      }
+
+    .admin_pad .dropdown-menu{
+        top: 45px;
+    }
+
+    .text_color{
+        color: rgb(108, 114, 147);
+    }
+
+    .admin_pad a{
+        color: rgb(108, 114, 147) !important;
+        text-decoration: none;
+    }
+
+    .admin_pad a:hover{
+        background-color: #000 !important;
+    }
+
+    .edit_block{
+        border: solid 5px #191C24;
+        overflow: hidden;
+    }
+
+    .setings_block{                
+        background-color: #191C24;
+        width: 150px;
+        height: 50px;
+        border-radius: 9px;
+        border: solid 1px #fff; 
+        z-index: 1040;   
+        color: #fff;  
+/*        margin-top: -77px;*/
+        margin-left: 45%;  
+
+    }
+  </style>
     
-    <!-- Icon Font Stylesheet -->
-    <link rel="stylesheet" href="https://kit.fontawesome.com/7b04adc9a1.css" crossorigin="anonymous">
-    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet"> -->
-
-    <!-- Libraries Stylesheet -->
-    <link href="{% static 'accounts/'%}lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="{% static 'accounts/'%}lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{% static 'accounts/'%}css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="{% static 'accounts/'%}css/style.css" rel="stylesheet">
+  
 </head>
-
-<body style="background-color:#fff;">
-    <div class="container-fluid position-relative d-flex p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
+<body> 
+    <div class="container-fluid admin_pad" style=" ">
+        <nav class="navbar navbar-expand navbar-dark sticky-top py-0">
+            
+            <p class="text_color px-3" style="margin: auto 16px; font-size: 17.6px;">Режим редактирования сайта</p>
+            <a href="{% url 'landing:dashboard' %}" class="btn btn-outline-warning btn-sm">Выйти из режима</a>
+            <a href="{% url 'landing:dashboard' %}" class="btn btn-outline-warning btn-sm mx-3">Добавить блок</a>
+            <div class="navbar-nav align-items-center ms-auto">                   
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="">
+                        <!-- <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;"> -->
+                        <span class="d-none d-lg-inline-flex">{{ user.email }}</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0" style="background-color: #191C24 !important; color: rgb(108, 114, 147) !important;">
+                        <a href="{% url 'landing:dashboard' %}" class="dropdown-item" >Панель упровления</a>
+                        <a href="#" class="dropdown-item">Профиль</a>
+                        <a href="{% url 'landing:logout' %}" class="dropdown-item">Выход</a>
+                    </div>
+                </div>
             </div>
-        </div>
-        <!-- Spinner End -->
-
-
-        <!-- Sidebar Start -->
-        <!-- <div class="sidebar pe-4 pb-3">
-            <nav class="navbar bg-secondary navbar-dark">
-                <a href="index.html" class="navbar-brand mx-4 mb-3">
-                    <img src="{% static 'accounts/'%}img/logo.svg">
-                </a>
-                <div class="d-flex align-items-center ms-4 mb-4">
-                    <div class="position-relative">
-                        <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
-                    </div>
-                    <div class="ms-3">
-                        <h6 class="mb-0">Jhon Doe</h6>
-                        <span>Admin</span>
-                    </div>
-                </div>
-                <div class="navbar-nav w-100">
-                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                    <a href="widget.html" class="nav-item nav-link"><i class="fa fa-edit me-2"></i>Режим ред.</a>
-                    <a href="form.html" class="nav-item nav-link"><i class="fa fa-shopping-basket me-2"></i>Заявки</a>
-                    <a href="table.html" class="nav-item nav-link"><i class="fa fa-users me-2"></i>Посетители</a>
-                    <a href="chart.html" class="nav-item nav-link"><i class="fa fa-folder-open me-2"></i>Файлы</a>
-
-                </div>
-            </nav>
-        </div> -->
-        <!-- Sidebar End -->
-
-
-        <!-- Content Start -->
-        <div class="content open" style="background-color:#fff;">
-            <!-- Navbar Start -->
-            <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0" style="z-index:1031">
-                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
-                    <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
-                </a>
-                <a href="{% url 'landing:dashboard' %}" class="flex-shrink-0 me-3">
-                    <i class="fa fa-xmark"></i>
-                </a>
-                <a href="#" class="flex-shrink-0">
-                    <img src="{% static 'accounts/'%}img/logo.svg">
-                </a> 
-
-                <!-- <form class="d-none d-md-flex ms-4">
-                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
-                </form> -->
-                <div class="navbar-nav align-items-center ms-auto">                    
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img class="rounded-circle me-lg-2" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                            <span class="d-none d-lg-inline-flex">John Doe</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="{% url 'landing:dashboard' %}" class="dropdown-item">Панель упровления</a>
-                            <a href="#" class="dropdown-item">Settings</a>
-                            <a href="#" class="dropdown-item">Log Out</a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-            <!-- Navbar End -->
-
-            <div class="window" style="margin-top:100px;">
-            <iframe width="100%" align="left">
-                {% for item in all %}  
-                 
-                  {% myinclude item.title as thame %}
-                  
-                  {% include thame %}
-
-                {% endfor %}
-            </iframe>
-                
-            </div>
-
-
-           
-        </div>
-        <!-- Content End -->
-
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        </nav>
     </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://kit.fontawesome.com/7b04adc9a1.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'accounts/'%}lib/chart/chart.min.js"></script>
-    <script src="{% static 'accounts/'%}lib/easing/easing.min.js"></script>
-    <script src="{% static 'accounts/'%}lib/waypoints/waypoints.min.js"></script>
-    <script src="{% static 'accounts/'%}lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="{% static 'accounts/'%}lib/tempusdominus/js/moment.min.js"></script>
-    <script src="{% static 'accounts/'%}lib/tempusdominus/js/moment-timezone.min.js"></script>
-    <script src="{% static 'accounts/'%}lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+    {% for item in all %} 
+        <div class="edit_block" >
+            {% myinclude item.title as thame %}      
+            {% include thame %}
+            <div style="position: absolute; z-index:1040">
+                <div class="setings_block"> 
+                    {{item.title}}
 
-    <!-- Template Javascript -->
-    <script src="{% static 'accounts/'%}js/main.js"></script>
+                    <span class="button_setings bi bi-cog" style=""></span>
+                    <span class="button_disable bi bi-eye"></span>
+                    <span class="button_up bi bi-arrow-thick-top"></span>
+                    <span class="button_down bi bi-arrow-thick-bottom"></span>
+                     
+                </div> 
+            </div>
+                
+            
+                
+        </div>
+
+    {% endfor %}            
+                
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="{% static 'landing/'%}dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'landing/'%}js/main.js"></script>
+    <script src="{% static 'landing/'%}js/new_mask_phone.js"></script> 
+    <script src="{% static 'accounts/'%}js/admin.js"></script>
+
+  
+    <script type="text/javascript">
+    
+    </script>
+
 </body>
-
 </html>
