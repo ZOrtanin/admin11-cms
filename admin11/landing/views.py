@@ -230,7 +230,8 @@ class EditBlock(LoginRequiredMixin,DataMixin,ListView):
 		context['title'] = 'Редактирование блока'
 
 		# нужно передать id
-		landing_obj = get_object_or_404(landing, id=1)		
+		print(self.kwargs['id_block'])
+		landing_obj = get_object_or_404(landing, id=int(self.kwargs['id_block']))		
 		form = EditContentForm(instance=landing_obj)
 		#form = EditContentForm()
 		context['form'] = form		

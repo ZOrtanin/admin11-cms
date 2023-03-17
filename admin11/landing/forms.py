@@ -12,10 +12,28 @@ from django.template.loader import render_to_string
 
 import json
 
+
+def modulinput(string,value):
+
+	out_form = '<div class="mb-3">'
+
+	if string != '':
+		out_form += f'<label class="col-form-label"  for="id_name">{string}:</label>'
+
+	print(len(value))
+
+	if len(value) > 50 :
+		out_form +=f'<textarea class="form-control">{value}</textarea>'
+	else:
+		out_form +=f'<input class="form-control" type="text" value="{value}">'
+
+	out_form += '</div>'
+
+	return out_form
+
+
 class MyWidget(forms.widgets.Widget):
 	template_name = 'my_widget.html'
-
-
 
 	def __init__(self, attrs=None):
 		super().__init__(attrs)
@@ -29,18 +47,45 @@ class MyWidget(forms.widgets.Widget):
 		print(len(arr_filds))
 
 		for item in arr_filds:	
-			out_form += '<h3>'+str(item)+'</h3>'	
+			out_form += '<h3>'+str(item)+'</h3>'
 
-			for inp in arr_filds[item]:
-				print(str(inp) + ' - '+str(type(inp)))
+			if not isinstance(arr_filds[item], str):	
 
-				if isinstance(inp, str):
-					out_form += f'''
-					<p>
-    				<label for="id_name">{inp}:</label>
-    				<input type="text" name="name" value="{arr_filds[item][inp]}">
-  					</p>
-					'''
+				for inp in arr_filds[item]:
+					print(str(inp) + ' - '+str(type(inp)))
+
+					if isinstance(inp, str):
+						out_form += modulinput(inp,arr_filds[item][inp])
+						# out_form += f'''
+						# 		<div class="mb-3">
+						# 		<label class="col-form-label" for="id_name">{inp}:</label>
+						# 		<input class="form-control" type="text" name="name" value="{arr_filds[item][inp]}">
+						# 		</div>
+						# 		'''
+					else:
+						# out_form += '<p>'
+						# out_form += inp['label']
+
+						for string in inp:
+							# out_form += string
+							out_form += modulinput(string,inp[string])
+							# out_form += f'''
+							# 	<div class="mb-3">
+							# 	<label class="col-form-label" for="id_name">{string}:</label>
+							# 	<input class="form-control" type="text" name="name" value="{inp[string]}">
+							# 	</div>
+							# 	'''
+
+						# out_form += '</p>'
+
+			else:
+				out_form += modulinput('',arr_filds[item])
+				# out_form += f'''
+				# 		<div class="mb-3">    				
+	    		# 		<input class="form-control" type="text" name="name" value="{arr_filds[item]}">
+	  			# 		</div>
+				# 		'''
+
 
 		context['form'] = out_form
 

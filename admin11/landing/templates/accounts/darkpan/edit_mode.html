@@ -183,7 +183,7 @@
             <div class="setings_layer container-fluid">
                 <div class="setings_block"> 
                     {{item.title}}
-                    <span class="button_setings fa fa-cog" style=""></span>
+                    <span class="button_setings fa fa-cog" style="" data-id="{{item.id}}"></span>
                     {% if item.is_published %}
                         <span class="button_disable fa fa-eye-slash" data-id="{{item.id}}"></span>
                     {% else %}

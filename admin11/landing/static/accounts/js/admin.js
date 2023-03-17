@@ -186,7 +186,9 @@ btn_setings.forEach(item =>{
   });
 
 function ShowModal(){
-      Post('/edit/block/','',OpenWindow);
+      let id_block = this.dataset.id;
+      console.log(id_block);
+      Post('/edit/block/'+id_block+'/','',OpenWindow);
       console.log('');
 }
 
