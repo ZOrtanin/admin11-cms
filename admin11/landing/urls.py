@@ -18,6 +18,8 @@ urlpatterns = [
 
     path('dashboard/',DashboardPage.as_view(),name='dashboard'),
     path('edit/',EditMode.as_view(),name='edit'),
+    path('edit/block/',EditBlock.as_view(),name='edit_block'),
+    path('edit/published/<int:id_block>/',EditModeDisableBlock,name='published'),
     path('sorting/',SortingHome.as_view(),name='sorting'),
    
     path('sort/',sort_blocks),

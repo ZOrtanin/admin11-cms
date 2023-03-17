@@ -6,8 +6,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import logout
 
-from django.urls import reverse_lazy
-from django.shortcuts import render,redirect
+from django.urls import reverse_lazy,reverse
+from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView
 
 from .models import *
@@ -142,6 +142,7 @@ class DashboardPage(LoginRequiredMixin,DataMixin,ListView):
 		c_def = self.get_user_context(title="Панель упровления",selected="landing:dashboard")
 		context = dict(list(context.items())+list(c_def.items()))
 		return context
+
 	
 class EditMode(LoginRequiredMixin,DataMixin,ListView):
 	model = landing
@@ -152,7 +153,7 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
 	def get_context_data(self,*, object_list=None, **kwargs):
 		context = super().get_context_data(**kwargs)
 
-		blocks = landing.objects.filter(is_published=True).order_by('order')
+		blocks = landing.objects.all().order_by('order')
 		new_dictData = {}
 
 		context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
@@ -170,7 +171,89 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
 		return context
 
 	def get_queryset(self):
-		return landing.objects.filter(is_published=True).order_by('order')
+		return landing.objects.all().order_by('order')
+
+@login_required
+def EditModeDisableBlock(request,id_block):
+
+	block = landing.objects.get(id = id_block)
+	#print(block.)
+
+	if block.is_published == False:
+		block.is_published = True
+	else:	
+		block.is_published = False
+
+	block.save()
+
+	#return redirect('/edit/#'+block.title)
+	return HttpResponse('Good')
+
+@login_required
+def sort_blocks(request):	
+
+	# print(arr_out)
+	sorted_ids = request.POST.getlist('dataset')
+	json_sorted = json.loads(sorted_ids[0])
+
+	arr_out = []
+
+	for i in range(len(json_sorted)):
+		arr_out.append(json_sorted[str(i)]['id_element'])
+
+	# #blocks = landing.objects.all()
+
+	for i in range(len(arr_out)):
+		print(arr_out[i])
+		#blocks.filter(title=arr_out[i])[0].order = i
+
+		instance = landing.objects.filter(pk=arr_out[i])[0]
+		print(instance.order)
+		print(i)
+		instance.order = i
+		instance.save()
+
+	return HttpResponse('Список сортировки обновлен')
+
+def EditBlockFunc(request):
+	return HttpResponse('работает')
+
+class EditBlock(LoginRequiredMixin,DataMixin,ListView):
+	model = landing
+	template_name = 'modals/header.html'
+	context_object_name ='all'	
+	object_list = landing.objects.all()
+
+
+	def get_context_data(self,*, object_list=None, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context['title'] = 'Редактирование блока'
+
+		# нужно передать id
+		landing_obj = get_object_or_404(landing, id=1)		
+		form = EditContentForm(instance=landing_obj)
+		#form = EditContentForm()
+		context['form'] = form		
+		return context
+
+	def post(self, request, *args, **kwargs):        
+		# Отобразить шаблон и передать контекст данных
+		return render(request, self.template_name, self.get_context_data())
+
+	
+
+	# context_object_name ='all'
+	# form_class = EditContentForm
+	# login_url = '/admin/'
+
+	# def get_context_data(self,*, object_list=None, **kwargs):
+	# 	context = super().get_context_data(**kwargs)
+
+	# 	return context
+
+	# def get_queryset(self):
+	# 	return landing.objects.all()
+
 
 class OrderPage(LoginRequiredMixin,DataMixin,ListView):
 	model = landing
@@ -327,35 +410,7 @@ def postOut(request):
 	# print(telephone)
 	return HttpResponse('Cообщение отправленно')
 
-@login_required
-def sort_blocks(request):
-	
-	sorted_ids = request.POST.getlist('sort_order')
 
-	arr_tmp = sorted_ids[0].split('&')
-
-	arr_out = []
-
-	for i in range(len(arr_tmp)):
-		arr_out.append(arr_tmp[i].split('[]=')[1])
-
-	#blocks = landing.objects.all()
-
-	for i in range(len(arr_out)):
-		print(arr_out[i])
-		#blocks.filter(title=arr_out[i])[0].order = i
-
-		instance = landing.objects.filter(pk=arr_out[i])[0]
-		print(instance.order)
-		print(i)
-		instance.order = i
-		instance.save()
-
-	
-
-	print(arr_out)
-
-	return HttpResponse('не получен список сортировки ')
 
 def pageNotFound(request,exception):
 	#return HttpResponseNotFound('Страница не найдена')

@@ -27,6 +27,7 @@
           
           // При окончании перемещения элементов отправляем запрос на сервер
           var sort_order = $(this).sortable("serialize");
+          console.log(sort_order);
           
           $.ajax({
               type: "POST",
