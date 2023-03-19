@@ -20,13 +20,13 @@
           <div class="mb-4">
             <h6>Телефоны :</h6>
             {% for item in contacts.telefons %}
-              <small class="text-muted">{{item}}</small>
+              <small class="text-muted">{{item.int}}</small>
             {% endfor %}
           </div>  
           <div class="mb-4">
             <h6>Эл. почта :</h6>
             {% for item in contacts.emails %}
-              <small class="text-muted"><a href="{{item}}">{{item}}</a></small>
+              <small class="text-muted"><a href="{{item}}">{{item.str}}</a></small>
             {% endfor %}
           </div>
         </div>

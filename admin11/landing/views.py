@@ -36,9 +36,12 @@ class LandingHome(ListView):
 		for i in range(len(blocks)):
 			#print(blocks[i].title)
 
-			settings_block = blocks.filter(title=blocks[i].title)[0].content
-			if settings_block != '':
-				context[blocks[i].title] = json.loads(settings_block)
+			settings_block = blocks.filter(title=blocks[i].title)[0]
+			if settings_block.content != '':
+				if settings_block.type_block != 'html':
+					context[blocks[i].title] = json.loads(settings_block.content)
+				else:
+					context[blocks[i].title] = settings_block.content
 			else:
 				context[blocks[i].title] = ''
 		
@@ -162,9 +165,12 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
 		for i in range(len(blocks)):
 			#print(blocks[i].title)
 
-			settings_block = blocks.filter(title=blocks[i].title)[0].content
-			if settings_block != '':
-				context[blocks[i].title] = json.loads(settings_block)
+			settings_block = blocks.filter(title=blocks[i].title)[0]
+			if settings_block.content != '':
+				if settings_block.type_block != 'html':
+					context[blocks[i].title] = json.loads(settings_block.content)
+				else:
+					context[blocks[i].title] = settings_block.content
 			else:
 				context[blocks[i].title] = ''
 		
@@ -188,6 +194,14 @@ def EditModeDisableBlock(request,id_block):
 
 	#return redirect('/edit/#'+block.title)
 	return HttpResponse('Good')
+
+@login_required
+def EditModeSaveBlock(request,id_block):
+	block = landing.objects.get(id=id_block)
+	block.content = request.POST.getlist('content')[0]
+	block.save()
+	print(request.POST.getlist('content'))
+	return redirect('landing:edit')
 
 @login_required
 def sort_blocks(request):	

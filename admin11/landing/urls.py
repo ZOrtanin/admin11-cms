@@ -20,6 +20,7 @@ urlpatterns = [
     path('edit/',EditMode.as_view(),name='edit'),
     path('edit/block/<int:id_block>/',EditBlock.as_view(),name='edit_block'),
     path('edit/published/<int:id_block>/',EditModeDisableBlock,name='published'),
+    path('edit/save/<int:id_block>/',EditModeSaveBlock,name='edit_save'),
     path('sorting/',SortingHome.as_view(),name='sorting'),
    
     path('sort/',sort_blocks),

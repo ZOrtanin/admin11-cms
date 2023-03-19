@@ -35,7 +35,8 @@ def modulinput(string,value):
 class MyWidget(forms.widgets.Widget):
 	template_name = 'my_widget.html'
 
-	def __init__(self, attrs=None):
+	def __init__(self, type_block=None, attrs=None):
+		self.type_block = type_block
 		super().__init__(attrs)
 
 	def render(self, name, value, attrs=None, renderer=None):
@@ -43,48 +44,42 @@ class MyWidget(forms.widgets.Widget):
 		
 		out_form = ''
 
-		arr_filds = json.loads(value)
-		print(len(arr_filds))
+		print(self.get_context(name, value, attrs))
+		
+		print(str(self.type_block)+' --++')
 
-		for item in arr_filds:	
-			out_form += '<h3>'+str(item)+'</h3>'
+		if self.type_block != 'themes':
+			out_form = f'<textarea name="content" class="form-control" rows="20">{value}</textarea>'
+		else:
+			arr_filds = json.loads(value)
+			print(len(arr_filds))		
 
-			if not isinstance(arr_filds[item], str):	
+			for item in arr_filds:
+				out_form +=	'<div class="col-4">'
+				out_form += '<h3>'+str(item)+'</h3>'
 
-				for inp in arr_filds[item]:
-					print(str(inp) + ' - '+str(type(inp)))
+				if not isinstance(arr_filds[item], str):				
 
-					if isinstance(inp, str):
-						out_form += modulinput(inp,arr_filds[item][inp])
-						# out_form += f'''
-						# 		<div class="mb-3">
-						# 		<label class="col-form-label" for="id_name">{inp}:</label>
-						# 		<input class="form-control" type="text" name="name" value="{arr_filds[item][inp]}">
-						# 		</div>
-						# 		'''
-					else:
-						# out_form += '<p>'
-						# out_form += inp['label']
+					for inp in arr_filds[item]:
+						print(str(inp) + ' - '+str(type(inp)))
+						print('work2')
 
-						for string in inp:
-							# out_form += string
-							out_form += modulinput(string,inp[string])
-							# out_form += f'''
-							# 	<div class="mb-3">
-							# 	<label class="col-form-label" for="id_name">{string}:</label>
-							# 	<input class="form-control" type="text" name="name" value="{inp[string]}">
-							# 	</div>
-							# 	'''
+						if isinstance(inp, str):
+							print('work1 '+ str(type(inp)) + ' - ' + str(type(arr_filds[item])))
 
-						# out_form += '</p>'
+							out_form += modulinput(inp,arr_filds[item][inp])
 
-			else:
-				out_form += modulinput('',arr_filds[item])
-				# out_form += f'''
-				# 		<div class="mb-3">    				
-	    		# 		<input class="form-control" type="text" name="name" value="{arr_filds[item]}">
-	  			# 		</div>
-				# 		'''
+						else:						
+							out_form += '<div style="background-color:rgb(218, 230, 237);padding:5px ; border-radius: 9px; margin-bottom: 10px;">'
+							for string in inp:
+								
+								out_form += modulinput(string,inp[string])
+							out_form += '</div>'			
+
+				else:
+					out_form += modulinput('',arr_filds[item])
+			
+				out_form += '</div>'	
 
 
 		context['form'] = out_form
@@ -115,16 +110,30 @@ class EditContentFormTutor(forms.Form):
 
 
 class EditContentForm(forms.ModelForm):
-
-	#content = forms.CharField(widget=forms.Textarea(attrs={ 'cols':30,'rows': 10}))
-	content = forms.CharField(widget=MyWidget)
+	
+	#type_block = '123'
+	
 	
 	class Meta:
 		model = landing
-		fields = ['name','content','is_published']
+		fields = ['name','type_block','content','is_published']
 
-		# print('123')
-		# print(content)
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		#print(str(self.initial.get('type_block'))+' ---')
+
+		type_block = self.initial.get('type_block')
+		#content = forms.CharField(widget=MyWidget(type_block))
+
+		self.fields['content'].widget = MyWidget(type_block=type_block)
+
+	def get_type():
+		return self.initial.get('type_block')
+
+	#content = forms.CharField(widget=forms.Textarea(attrs={ 'cols':30,'rows': 10}))
+	#type_block = forms.CharField(widget=forms.Textarea(attrs={ 'cols':30,'rows': 10}))
+	# print('123')
+	# print(content)
 
 
 
