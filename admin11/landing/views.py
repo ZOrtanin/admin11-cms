@@ -17,419 +17,525 @@ from .forms import *
 
 import json
 from datetime import datetime
+from bs4 import BeautifulSoup
 
 
 class LandingHome(ListView):
-	model = landing
-	template_name = 'landing/index.html'
-	context_object_name ='all'
-	#extra_context = {'title':'ООО Сисадмин — Обслуживание информационых систем'}
+    model = landing
+    template_name = 'landing/index.html'
+    context_object_name ='all'
+    #extra_context = {'title':'ООО Сисадмин — Обслуживание информационых систем'}
 
-	def get_context_data(self,*, object_list=None, **kwargs):
-		context = super().get_context_data(**kwargs)
+    def get_context_data(self,*, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-		blocks = landing.objects.filter(is_published=True).order_by('order')
-		new_dictData = {}
+        blocks = landing.objects.filter(is_published=True).order_by('order')
+        new_dictData = {}
 
-		context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
+        context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
 
-		for i in range(len(blocks)):
-			#print(blocks[i].title)
+        for i in range(len(blocks)):
+            #print(blocks[i].title)
 
-			settings_block = blocks.filter(title=blocks[i].title)[0]
-			if settings_block.content != '':
-				if settings_block.type_block != 'html':
-					context[blocks[i].title] = json.loads(settings_block.content)
-				else:
-					context[blocks[i].title] = settings_block.content
-			else:
-				context[blocks[i].title] = ''
-		
-		# print(self.request.user.is_authenticated)
-		num_visits=self.request.session.get('num_visits', 0)
-		self.request.session['num_visits'] = num_visits+1
-		print(str(num_visits)+' <---')
+            settings_block = blocks.filter(title=blocks[i].title)[0]
+            if settings_block.content != '':
+                if settings_block.type_block != 'html':
+                    context[blocks[i].title] = json.loads(settings_block.content)
+                else:
+                    context[blocks[i].title] = settings_block.content
+            else:
+                context[blocks[i].title] = ''
+        
+        # print(self.request.user.is_authenticated)
+        num_visits=self.request.session.get('num_visits', 0)
+        self.request.session['num_visits'] = num_visits+1
+        print(str(num_visits)+' <---')
 
-		if not self.request.user.is_authenticated:
-			visitor = visitors(
-			ip=self.request.META.get('REMOTE_ADDR'),
-			browser=self.request.META.get('HTTP_USER_AGENT'),	
-			time_out=self.request.session.get('num_visits', 0)	
-			)
-			visitor.save()
+        if not self.request.user.is_authenticated:
+            visitor = visitors(
+            ip=self.request.META.get('REMOTE_ADDR'),
+            browser=self.request.META.get('HTTP_USER_AGENT'),    
+            time_out=self.request.session.get('num_visits', 0)    
+            )
+            visitor.save()
 
-		return context
+        return context
 
-	def get_queryset(self):
-		return landing.objects.filter(is_published=True).order_by('order')
+    def get_queryset(self):
+        return landing.objects.filter(is_published=True).order_by('order')
 
 class RegisterUser(DataMixin, CreateView):
-	form_class = RegisterUserForm
-	template_name = 'accounts/darkpan/signup.html'
-	success_url = reverse_lazy('landing:login')
-	
-	def get_context_data(self, *, object_list=None, **kwargs) :
-		context = super () .get_context_data(**kwargs)
-		c_def = self.get_user_context (title="Регистрация")
+    form_class = RegisterUserForm
+    template_name = 'accounts/darkpan/signup.html'
+    success_url = reverse_lazy('landing:login')
+    
+    def get_context_data(self, *, object_list=None, **kwargs) :
+        context = super () .get_context_data(**kwargs)
+        c_def = self.get_user_context (title="Регистрация")
 
-		return dict(list(context.items ()) + list(c_def.items ()))
+        return dict(list(context.items ()) + list(c_def.items ()))
 
 class LoginUser(DataMixin, LoginView):
-	form_class = AuthenticationForm
-	template_name = 'accounts/darkpan/signin.html'
+    form_class = AuthenticationForm
+    template_name = 'accounts/darkpan/signin.html'
 
-	def get_context_data(self, *, object_list=None, **kwargs) :
-		context = super().get_context_data(**kwargs)
-		c_def = self.get_user_context(title="Авторизация")
+    def get_context_data(self, *, object_list=None, **kwargs) :
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="Авторизация")
 
-		return dict(list (context.items ()) + list(c_def.items ()))
+        return dict(list (context.items ()) + list(c_def.items ()))
 
-	def get_success_url(self):
-		return reverse_lazy('landing:dashboard')
-		#return redirect('/')
+    def get_success_url(self):
+        return reverse_lazy('landing:dashboard')
+        #return redirect('/')
 
 def logout_user(request):
-	logout(request)
-	return redirect('landing:login')
+    logout(request)
+    return redirect('landing:login')
 
 # Create your views here.
 def title(request):
-	# key = request.GLOBAL
-	# print(key)
-	#return HttpResponse('Привет мир ')
+    # key = request.GLOBAL
+    # print(key)
+    #return HttpResponse('Привет мир ')
 
-	settings_header = landing.objects.filter(title='header')
+    settings_header = landing.objects.filter(title='header')
 
-	blocks = landing.objects.all()
+    blocks = landing.objects.all()
 
-	header = json.loads(blocks.filter(title='header')[0].content)
+    header = json.loads(blocks.filter(title='header')[0].content)
 
-	#print(blocks[0].title)
+    #print(blocks[0].title)
 
-	new_dictData = {}
+    new_dictData = {}
 
-	for i in range(len(blocks)):
-		#print(blocks[i].title)
+    for i in range(len(blocks)):
+        #print(blocks[i].title)
 
-		settings_block = blocks.filter(title=blocks[i].title)[0].content
-		new_dictData[blocks[i].title] = json.loads(settings_block)
+        settings_block = blocks.filter(title=blocks[i].title)[0].content
+        new_dictData[blocks[i].title] = json.loads(settings_block)
 
-	print(new_dictData['hero'])	
+    print(new_dictData['hero'])    
 
-	return render(request,'landing/index.html',new_dictData)
+    return render(request,'landing/index.html',new_dictData)
 
 class SortingHome(LoginRequiredMixin,ListView):
-	model = landing
-	template_name = 'accounts/sorting.html'
-	context_object_name ='items'
-	ordering = ['order']
-	login_url = '/admin/'
-	#raise_exception = True
+    model = landing
+    template_name = 'accounts/sorting.html'
+    context_object_name ='items'
+    ordering = ['order']
+    login_url = '/admin/'
+    #raise_exception = True
 
 class DashboardPage(LoginRequiredMixin,DataMixin,ListView):
-	model = landing
-	template_name = 'accounts/darkpan/dashboard.html'
-	context_object_name ='items'
-	ordering = ['order']
-	login_url = '/admin/'
+    model = landing
+    template_name = 'accounts/darkpan/dashboard.html'
+    context_object_name ='items'
+    ordering = ['order']
+    login_url = '/admin/'
 
-	def get_context_data(self,*, object_list=None, **kwargs):
-		context = super().get_context_data(**kwargs)
-		print(self.request.user)
-		context['user'] = self.request.user
-		context['orders'] = bids.objects.order_by("-id")[0:5]
-		context['orders_count'] =bids.objects.count()
-		context['visitors_count'] = visitors.objects.filter(time_out='1').count()
-		context['reload_page_count'] = visitors.objects.count()
-		context['ip_count'] = visitors.objects.values('ip').distinct().count()
-		c_def = self.get_user_context(title="Панель упровления",selected="landing:dashboard")
-		context = dict(list(context.items())+list(c_def.items()))
-		return context
+    def get_context_data(self,*, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(self.request.user)
+        context['user'] = self.request.user
+        context['orders'] = bids.objects.order_by("-id")[0:5]
+        context['orders_count'] =bids.objects.count()
+        context['visitors_count'] = visitors.objects.filter(time_out='1').count()
+        context['reload_page_count'] = visitors.objects.count()
+        context['ip_count'] = visitors.objects.values('ip').distinct().count()
+        c_def = self.get_user_context(title="Панель упровления",selected="landing:dashboard")
+        context = dict(list(context.items())+list(c_def.items()))
+        return context
 
-	
+    
 class EditMode(LoginRequiredMixin,DataMixin,ListView):
-	model = landing
-	template_name = 'accounts/darkpan/edit_mode.html'
-	context_object_name ='all'	
-	login_url = '/admin/'
+    model = landing
+    template_name = 'accounts/darkpan/edit_mode.html'
+    context_object_name ='all'    
+    login_url = '/admin/'
 
-	def get_context_data(self,*, object_list=None, **kwargs):
-		context = super().get_context_data(**kwargs)
+    def get_context_data(self,*, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-		blocks = landing.objects.all().order_by('order')
-		new_dictData = {}
+        blocks = landing.objects.all().order_by('order')
+        new_dictData = {}
 
-		context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
-		context['edit_mode']='True'
+        context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
+        context['edit_mode']='True'
 
-		for i in range(len(blocks)):
-			#print(blocks[i].title)
+        for i in range(len(blocks)):
+            #print(blocks[i].title)
 
-			settings_block = blocks.filter(title=blocks[i].title)[0]
-			if settings_block.content != '':
-				if settings_block.type_block != 'html':
-					context[blocks[i].title] = json.loads(settings_block.content)
-				else:
-					context[blocks[i].title] = settings_block.content
-			else:
-				context[blocks[i].title] = ''
-		
-		return context
+            settings_block = blocks.filter(title=blocks[i].title)[0]
+            if settings_block.content != '':
+                if settings_block.type_block != 'html':
+                    context[blocks[i].title] = json.loads(settings_block.content)
+                else:
+                    context[blocks[i].title] = settings_block.content
+            else:
+                context[blocks[i].title] = ''
+        
+        return context
 
-	def get_queryset(self):
-		return landing.objects.all().order_by('order')
+    def get_queryset(self):
+        return landing.objects.all().order_by('order')
 
 @login_required
 def EditModeDisableBlock(request,id_block):
 
-	block = landing.objects.get(id = id_block)
-	#print(block.)
+    block = landing.objects.get(id = id_block)
+    #print(block.)
 
-	if block.is_published == False:
-		block.is_published = True
-	else:	
-		block.is_published = False
+    if block.is_published == False:
+        block.is_published = True
+    else:    
+        block.is_published = False
 
-	block.save()
+    block.save()
 
-	#return redirect('/edit/#'+block.title)
-	return HttpResponse('Good')
+    #return redirect('/edit/#'+block.title)
+    return HttpResponse('Good')
 
 @login_required
 def EditModeSaveBlock(request,id_block):
-	block = landing.objects.get(id=id_block)
-	block.content = request.POST.getlist('content')[0]
-	block.save()
-	print(request.POST.getlist('content'))
-	return redirect('landing:edit')
+    block = landing.objects.get(id=id_block)
+    
+    if request.POST.getlist('content'):
+        block.content = request.POST.getlist('content')[0]
+        block.save()
+    else:
+        print('Ключа нет')
+        print(request.POST)
+        #print(request.POST.getlist('content_admin'))
+
+        # html = str(request.POST.getlist('content_admin'))       
+        # soup = BeautifulSoup('<div>'+html+'</div>','html.parser')        
+
+        # json_obj = parse_element_new(soup.find('div'))
+        # print(json_obj)
+
+        
+
+    print(request.POST.getlist('content'))
+    return redirect('landing:edit')
 
 @login_required
-def sort_blocks(request):	
+def sort_blocks(request):    
 
-	# print(arr_out)
-	sorted_ids = request.POST.getlist('dataset')
-	json_sorted = json.loads(sorted_ids[0])
+    # print(arr_out)
+    sorted_ids = request.POST.getlist('dataset')
+    json_sorted = json.loads(sorted_ids[0])
 
-	arr_out = []
+    arr_out = []
 
-	for i in range(len(json_sorted)):
-		arr_out.append(json_sorted[str(i)]['id_element'])
+    for i in range(len(json_sorted)):
+        arr_out.append(json_sorted[str(i)]['id_element'])
 
-	# #blocks = landing.objects.all()
+    # #blocks = landing.objects.all()
 
-	for i in range(len(arr_out)):
-		print(arr_out[i])
-		#blocks.filter(title=arr_out[i])[0].order = i
+    for i in range(len(arr_out)):
+        print(arr_out[i])
+        #blocks.filter(title=arr_out[i])[0].order = i
 
-		instance = landing.objects.filter(pk=arr_out[i])[0]
-		print(instance.order)
-		print(i)
-		instance.order = i
-		instance.save()
+        instance = landing.objects.filter(pk=arr_out[i])[0]
+        print(instance.order)
+        print(i)
+        instance.order = i
+        instance.save()
 
-	return HttpResponse('Список сортировки обновлен')
+    return HttpResponse('Список сортировки обновлен')
 
 def EditBlockFunc(request):
-	return HttpResponse('работает')
+    return HttpResponse('работает')
 
 class EditBlock(LoginRequiredMixin,DataMixin,ListView):
-	model = landing
-	template_name = 'modals/header.html'
-	context_object_name ='all'	
-	object_list = landing.objects.all()
+    model = landing
+    template_name = 'modals/header.html'
+    context_object_name ='all'    
+    object_list = landing.objects.all()
 
 
-	def get_context_data(self,*, object_list=None, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['title'] = 'Редактирование блока'
+    def get_context_data(self,*, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Редактирование блока'
 
-		# нужно передать id
-		print(self.kwargs['id_block'])
-		landing_obj = get_object_or_404(landing, id=int(self.kwargs['id_block']))		
-		form = EditContentForm(instance=landing_obj)
-		#form = EditContentForm()
-		context['form'] = form		
-		return context
+        # нужно передать id
+        print(self.kwargs['id_block'])
+        landing_obj = get_object_or_404(landing, id=int(self.kwargs['id_block']))        
+        form = EditContentForm(instance=landing_obj)
+        #form = EditContentForm()
+        context['form'] = form        
+        return context
 
-	def post(self, request, *args, **kwargs):        
-		# Отобразить шаблон и передать контекст данных
-		return render(request, self.template_name, self.get_context_data())
+    def post(self, request, *args, **kwargs):        
+        # Отобразить шаблон и передать контекст данных
+        return render(request, self.template_name, self.get_context_data())
 
-	
+    
 
-	# context_object_name ='all'
-	# form_class = EditContentForm
-	# login_url = '/admin/'
+    # context_object_name ='all'
+    # form_class = EditContentForm
+    # login_url = '/admin/'
 
-	# def get_context_data(self,*, object_list=None, **kwargs):
-	# 	context = super().get_context_data(**kwargs)
+    # def get_context_data(self,*, object_list=None, **kwargs):
+    #     context = super().get_context_data(**kwargs)
 
-	# 	return context
+    #     return context
 
-	# def get_queryset(self):
-	# 	return landing.objects.all()
+    # def get_queryset(self):
+    #     return landing.objects.all()
 
 
 class OrderPage(LoginRequiredMixin,DataMixin,ListView):
-	model = landing
-	template_name = 'accounts/darkpan/order.html'
+    model = landing
+    template_name = 'accounts/darkpan/order.html'
 
-	def get_context_data(self,*, object_list=None, **kwargs):
-		context = super().get_context_data(**kwargs)
-		print(self.request.user)
-		context['user'] = self.request.user
-		context['orders'] = bids.objects.order_by("-id")
-		context['orders_count'] =bids.objects.count()
-		c_def = self.get_user_context(title="Заявки",selected="landing:order")
-		context = dict(list(context.items())+list(c_def.items()))
-		return context
+    def get_context_data(self,*, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(self.request.user)
+        context['user'] = self.request.user
+        context['orders'] = bids.objects.order_by("-id")
+        context['orders_count'] =bids.objects.count()
+        c_def = self.get_user_context(title="Заявки",selected="landing:order")
+        context = dict(list(context.items())+list(c_def.items()))
+        return context
 
 @login_required
 def getOrderOut(request, order_id):
-	order = bids.objects.get(id=order_id)	
-	out_line = {}
-	out_line['order'] = order
+    order = bids.objects.get(id=order_id)    
+    out_line = {}
+    out_line['order'] = order
 
-	print(order.STATUS_BID[0][0])
+    print(order.STATUS_BID[0][0])
 
-	return render(request,'modals/order.html',out_line)
+    return render(request,'modals/order.html',out_line)
 
 @login_required
 def OrderEdit(request, order_id):
-	print(request.POST)
-	print(order_id)
-	order = bids.objects.get(id=order_id)
+    print(request.POST)
+    print(order_id)
+    order = bids.objects.get(id=order_id)
 
 
-	if order.status != request.POST['status']:
-		order.status = request.POST['status']
-		order.message = order.message 
-		order.message +='\n-------\n'
+    if order.status != request.POST['status']:
+        order.status = request.POST['status']
+        order.message = order.message 
+        order.message +='\n-------\n'
 
-		for item in order.STATUS_BID:
-			if item[0] in request.POST['status']:
-				order.message +='Изменен статус на \n'+ item[1] +'\n'
+        for item in order.STATUS_BID:
+            if item[0] in request.POST['status']:
+                order.message +='Изменен статус на \n'+ item[1] +'\n'
 
-		order.message += str(datetime.now())
+        order.message += str(datetime.now())
 
-	if request.POST['text-attach'] != '':
-		order.message = order.message 
-		order.message +='\n-------\n'
-		order.message +='Заметка:\n'
-		order.message += request.POST['text-attach']+'\n'
-		order.message += str(datetime.now())
+    if request.POST['text-attach'] != '':
+        order.message = order.message 
+        order.message +='\n-------\n'
+        order.message +='Заметка:\n'
+        order.message += request.POST['text-attach']+'\n'
+        order.message += str(datetime.now())
 
-	order.save()
+    order.save()
 
-	if request.POST['page']=='dashboard':
-		return redirect('landing:dashboard')
+    if request.POST['page']=='dashboard':
+        return redirect('landing:dashboard')
 
-	return redirect('landing:order')
+    return redirect('landing:order')
 
 @login_required
 def OrderDel(request, order_id):
-	record = bids.objects.get(id = order_id)
-	record.delete()
+    record = bids.objects.get(id = order_id)
+    record.delete()
 
-	return redirect('landing:order')
+    return redirect('landing:order')
 
 class UsersPage(LoginRequiredMixin,DataMixin,ListView):
-	model = landing
-	template_name = 'accounts/darkpan/users.html'
+    model = landing
+    template_name = 'accounts/darkpan/users.html'
 
-	def get_context_data(self,*, object_list=None, **kwargs):
-		context = super().get_context_data(**kwargs)
-		print(self.request.user)
-		context['user'] = self.request.user
-		context['visitors'] = visitors.objects.order_by("-id")
-		context['visitors_count'] = visitors.objects.count()
-		c_def = self.get_user_context(title="Посетители",selected="landing:users")
-		context = dict(list(context.items())+list(c_def.items()))
-		return context
+    def get_context_data(self,*, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(self.request.user)
+        context['user'] = self.request.user
+        context['visitors'] = visitors.objects.order_by("-id")
+        context['visitors_count'] = visitors.objects.count()
+        c_def = self.get_user_context(title="Посетители",selected="landing:users")
+        context = dict(list(context.items())+list(c_def.items()))
+        return context
 
 class FilesPage(LoginRequiredMixin,DataMixin,ListView):
-	model = landing
-	template_name = 'accounts/darkpan/files.html'
+    model = landing
+    template_name = 'accounts/darkpan/files.html'
 
-	def get_context_data(self,*, object_list=None, **kwargs):
-		context = super().get_context_data(**kwargs)
-		print(self.request.user)
-		context['user'] = self.request.user
-		context['orders'] = bids.objects.order_by("-id")
-		context['orders_count'] =bids.objects.count()
-		c_def = self.get_user_context(title="Файлы",selected="landing:files")
-		context = dict(list(context.items())+list(c_def.items()))
-		return context
+    def get_context_data(self,*, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(self.request.user)
+        context['user'] = self.request.user
+        context['orders'] = bids.objects.order_by("-id")
+        context['orders_count'] =bids.objects.count()
+        c_def = self.get_user_context(title="Файлы",selected="landing:files")
+        context = dict(list(context.items())+list(c_def.items()))
+        return context
 
 # def sorting(request):
 
-# 	blocks = landing.objects.all()
-# 	new_dictData = {}
+#     blocks = landing.objects.all()
+#     new_dictData = {}
 
-# 	for i in range(len(blocks)):
-# 		#print(blocks[i].title)
+#     for i in range(len(blocks)):
+#         #print(blocks[i].title)
 
-# 		settings_block = blocks.filter(title=blocks[i].title)[0].content
-# 		new_dictData['items'][blocks[i].title] =settings_block
+#         settings_block = blocks.filter(title=blocks[i].title)[0].content
+#         new_dictData['items'][blocks[i].title] =settings_block
 
-# 	return render(request,'landing/sorting.html',new_dictData)
+#     return render(request,'landing/sorting.html',new_dictData)
 
 @login_required
 def postOut(request):
-	errors = ''
-	print(request.POST)
-		
+    errors = ''
+    print(request.POST)
+        
 
-	try:
-		name = request.POST['name']
-		#tel = request.POST['telephone']
-		#message = request.POST['message']
-		from_name = request.POST['form_name']
-		browser = request.META.get('HTTP_USER_AGENT')
-		ip = request.META.get('REMOTE_ADDR')		
-	except:
-	 	return HttpResponse('Ошибка формы')
-
-
-	arr_filds = ['email','telephone','message','last_name']
-	for i in range(len(arr_filds)):
-		if arr_filds[i] not in request.POST:
-			globals()[arr_filds[i]] = ''
-		else:
-			globals()[arr_filds[i]] = request.POST[arr_filds[i]]
+    try:
+        name = request.POST['name']
+        #tel = request.POST['telephone']
+        #message = request.POST['message']
+        from_name = request.POST['form_name']
+        browser = request.META.get('HTTP_USER_AGENT')
+        ip = request.META.get('REMOTE_ADDR')        
+    except:
+         return HttpResponse('Ошибка формы')
 
 
-	if request.POST['name'] == '' :
-		errors = 'name/'
+    arr_filds = ['email','telephone','message','last_name']
+    for i in range(len(arr_filds)):
+        if arr_filds[i] not in request.POST:
+            globals()[arr_filds[i]] = ''
+        else:
+            globals()[arr_filds[i]] = request.POST[arr_filds[i]]
 
-	if request.POST['telephone'] == '' :
-		errors += 'telephone/'
-	
-	if errors != '' :
-		return HttpResponse(errors)
 
-	p = bids(
-		name=name,
-		last_name=last_name,
-		mail=email,
-		tel=telephone,
-		message=message,
-		which=from_name,
-		browser=browser,
-		ip=ip,
-		status='new'
-		)
-	p.save()
+    if request.POST['name'] == '' :
+        errors = 'name/'
 
-	# print(locals())
-	# print(telephone)
-	return HttpResponse('Cообщение отправленно')
+    if request.POST['telephone'] == '' :
+        errors += 'telephone/'
+    
+    if errors != '' :
+        return HttpResponse(errors)
 
+    p = bids(
+        name=name,
+        last_name=last_name,
+        mail=email,
+        tel=telephone,
+        message=message,
+        which=from_name,
+        browser=browser,
+        ip=ip,
+        status='new'
+        )
+    p.save()
+
+    # print(locals())
+    # print(telephone)
+    return HttpResponse('Cообщение отправленно')
 
 
 def pageNotFound(request,exception):
-	#return HttpResponseNotFound('Страница не найдена')
-	return render(request,'landing/404.html')
+    #return HttpResponseNotFound('Страница не найдена')
+    return render(request,'landing/404.html')
+
+
+
+
+def parse_element(element):
+    # Создаем пустой объект для хранения атрибутов и дочерних элементов
+    obj = {}
+    
+    # Добавляем атрибуты элемента в объект
+    for attr, value in element.attrs.items():
+        obj[attr] = value
+    
+    # Обрабатываем дочерние элементы элемента
+    children = []
+    for child in element.children:
+        if child.name:
+            children.append(parse_element(child))
+        elif child.string:            
+            children.append(child.string.strip())
+
+    if children:
+        obj['children'] = children
+
+    return obj
+
+def parse_element_new(element):
+    obj = {}
+
+    for child in element.children:
+        
+        if child.name:
+            if 'name' in child.attrs:
+                print('')
+                print(child.attrs['name'])
+                print(child.attrs)
+                print('---^---')
+
+                if not 'type' in child.attrs:
+                    print('нет ключа')
+                    obj[child.attrs['name']] = parse_element_new(child)
+                else:
+                    print('есть ключь')
+                    obj[child.attrs['name']] = child.attrs['value']
+
+                # if child.attrs['class'] == ['form-control']:
+                #     print('work')
+                #     print(child.attrs)
+                #     obj[child.attrs['name']] = child.attrs['value']
+                # else:
+                
+                #print(child.attrs)
+
+                #parse_element_new(child)
+            else:
+                parse_element_new(child)
+                #print(child.attrs)
+            
+        elif child.string:
+            #print('----- '+str(len(child.string)))
+            print(child)
+            
+
+        
+
+    # # Создаем пустой объект для хранения атрибутов и дочерних элементов
+    # obj = {}
+    
+    # # Добавляем атрибуты элемента в объект
+    # if 'type' in element.attrs:    	
+    #     obj[element.attrs['name']] = element.attrs['value']
+    
+    # # Обрабатываем дочерние элементы элемента
+    # children = []
+    # for child in element.children:
+        
+    #     if child.name:             
+    #         children.append(parse_element_new(child))            
+
+    #     elif child.string:
+    #         children.append(child.string.strip())
+            
+
+    # if children:        
+    #     obj['children'] = children
+
+    return obj
+
+
+
+
+
 
 
 

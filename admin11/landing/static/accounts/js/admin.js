@@ -33,7 +33,7 @@ function Post(path,input,func){
 
           },
           complete:function(response,err){ 
-            console.log(response.responseText);
+            //console.log(response.responseText);
             func(response.responseText);
           },
           error: function(resp){
@@ -187,7 +187,9 @@ btn_setings.forEach(item =>{
 
 function ShowModal(){
       let id_block = this.dataset.id;
+      let form = modalSetingsWindow.querySelectorAll('.FormSettings')[0];
       console.log(id_block);
+      form.action = "save/"+id_block+"/";
       Post('/edit/block/'+id_block+'/','',OpenWindow);
       console.log('');
 }
@@ -195,7 +197,86 @@ function ShowModal(){
 function OpenWindow(value){
       let content = modalSetingsWindow.querySelectorAll('.modal-body')[0];
       modalSetings.show();
-
       content.innerHTML = value;
-
 }
+
+// Сохронение данных
+let btn_test = document.querySelectorAll('.button_save_test')[0];
+
+//let btn_test = document.querySelectorAll('.btnSubmitsForm')[0];
+
+btn_test.addEventListener('click',SaveSettings)
+
+function SaveSettings(){
+      console.log("Работает");
+      let form = modalSetingsWindow.querySelectorAll('.FormSettings')[0];
+      let inputs = form.querySelectorAll('.content_admin')[0];
+
+      let out = document.getElementsByName("content_admin")[0];
+      out.value = inputs.innerHTML;
+
+      console.log(inputs);
+}
+
+
+function TestSaveSettings(){
+      //document.getElementById('my-form').addEventListener('submit', function(event) {
+      // Отменяем стандартное действие браузера по отправке формы
+      //event.preventDefault();
+      let form = modalSetingsWindow.querySelectorAll('.FormSettings')[0].querySelectorAll('.content_admin')[0];
+
+
+      // Создаем объект для хранения данных формы
+      var formData = {};
+
+      // Получаем значения полей формы и добавляем их в объект
+      var inputs = form.querySelectorAll('input');
+      for (var i = 0; i < inputs.length; i++) {
+            formData[inputs[i].name] = inputs[i].value;
+      }
+
+      try{
+            var textarea = form.querySelector('textarea');
+            formData[textarea.name] = textarea.value;
+      }catch{}
+
+      // Создаем объект для хранения кнопки
+      // formData['Button'] = {
+      //     'link': form.querySelector('input[name="link"]').value,
+      //     'label': form.querySelector('input[name="label"]').value
+      // };
+
+      // form.forEach((item) => {
+      //   const label = item.querySelector('.label').value;
+      //   const link = item.querySelector('.link').value;
+      //   formData['Button'].push({ label, link });
+      // });
+
+      // Создаем JSON-строку из объекта
+      var json = JSON.stringify(formData);
+
+      // Выводим результат в консоль
+      console.log(json);
+      //});
+}
+
+// const form = document.querySelector('#myForm');
+
+// // Преобразование FormData в JSON
+// const data = {};
+// for (const [key, value] of formData.entries()) {
+//   data[key] = value;
+// }
+// const jsonData = JSON.stringify(data);
+
+
+
+
+
+
+
+
+
+
+
+

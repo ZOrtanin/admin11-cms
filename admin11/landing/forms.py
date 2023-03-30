@@ -13,19 +13,25 @@ from django.template.loader import render_to_string
 import json
 
 
-def modulinput(string,value):
+
+def modulinput(string,value,block,label=True):
 
 	out_form = '<div class="mb-3">'
 
-	if string != '':
-		out_form += f'<label class="col-form-label"  for="id_name">{string}:</label>'
+	# if string != '':
+	# 	print(label)
+	# 	out_form += f'<label class="col-form-label"  for="id_name">{string}:</label>'
 
-	print(len(value))
+	if label != False:
+		print(label)
+		out_form += f'<label class="col-form-label" for="id_name">{string}:</label>'
+
+	#print(len(value))
 
 	if len(value) > 50 :
-		out_form +=f'<textarea class="form-control">{value}</textarea>'
+		out_form +=f'<textarea class="form-control" type="text" name="{string}-{block}" rows="10">{value}</textarea>'
 	else:
-		out_form +=f'<input class="form-control" type="text" value="{value}">'
+		out_form +=f'<input class="form-control" type="text" name="{string}-{block}" value="{value}">'
 
 	out_form += '</div>'
 
@@ -42,51 +48,51 @@ class MyWidget(forms.widgets.Widget):
 	def render(self, name, value, attrs=None, renderer=None):
 		context = self.get_context(name, value, attrs)
 		
-		out_form = ''
+		out_form = '<div class="content_admin row">'
 
-		print(self.get_context(name, value, attrs))
+		#print(self.get_context(name, value, attrs))
 		
-		print(str(self.type_block)+' --++')
+		#print(str(self.type_block)+' --++')
 
 		if self.type_block != 'themes':
 			out_form = f'<textarea name="content" class="form-control" rows="20">{value}</textarea>'
 		else:
 			arr_filds = json.loads(value)
-			print(len(arr_filds))		
+			#print(len(arr_filds))		
 
 			for item in arr_filds:
-				out_form +=	'<div class="col-4">'
+				out_form +=	f'<div class="col-4 {item}" name="{item}">'
 				out_form += '<h3>'+str(item)+'</h3>'
 
 				if not isinstance(arr_filds[item], str):				
 
 					for inp in arr_filds[item]:
-						print(str(inp) + ' - '+str(type(inp)))
-						print('work2')
+						#print(str(inp) + ' - '+str(type(inp)))
+						#print('work2')
 
 						if isinstance(inp, str):
-							print('work1 '+ str(type(inp)) + ' - ' + str(type(arr_filds[item])))
+							#print('work1 '+ str(type(inp)) + ' - ' + str(type(arr_filds[item])))
 
-							out_form += modulinput(inp,arr_filds[item][inp])
+							out_form += modulinput(inp,arr_filds[item][inp],item)
 
 						else:						
 							out_form += '<div style="background-color:rgb(218, 230, 237);padding:5px ; border-radius: 9px; margin-bottom: 10px;">'
 							for string in inp:
 								
-								out_form += modulinput(string,inp[string])
+								out_form += modulinput(string,inp[string],item)
 							out_form += '</div>'			
 
 				else:
-					out_form += modulinput('',arr_filds[item])
+					out_form += modulinput(item,arr_filds[item],item,label=False)
+					
 			
 				out_form += '</div>'	
 
-
+		out_form += '</div>'
 		context['form'] = out_form
 
 		
 		return render_to_string(self.template_name, context)
-
 
 
 class RegisterUserForm(UserCreationForm):

@@ -131,9 +131,10 @@
     <div class="modal fade" id="ModalSetings" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <form action="save/9/" method="POST">            
+          <form action="save/9/" class="FormSettings" method="POST">            
             <input name="form_name" type="hidden" value="Модальное окно">
             <input name="price_tarif" id='price_tarif' type="hidden" value="">
+            <input name="content_admin" type="hidden" value="">
             <div class="modal-header">
               <h1 class="modal-title fs-5 ModalLabel" id="ModalLabel">Настройки шапки</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -142,8 +143,21 @@
               
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
-              <button type="submit" class="btnSubmitsForm btn btn-warning" >Сохранить</button>         
+                <fieldset name="clubfields" disabled>
+                   <legend>
+                      <label>
+                         <input type="checkbox" name="club" onchange="form.clubfields.disabled = !checked">
+                         Use Club Card
+                      </label>
+                   </legend>
+                   <p><label>Name on card: <input name="clubname" required></label></p>
+                   <p><label>Card number: <input name="clubnum" required pattern="[-0-9]+"></label></p>
+                   <p><label>Expiry date: <input name="clubexp" type="month"></label></p>
+                </fieldset>
+
+                <button type="button" class="btn btn-outline-secondary button_save_test" >Тест</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="submit" class="btnSubmitsForm btn btn-warning" >Сохранить</button>         
             </div>
           </form>
         </div>
