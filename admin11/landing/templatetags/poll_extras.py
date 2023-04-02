@@ -54,5 +54,10 @@ def cut(value):
 
 @register.simple_tag(name='myinclude')
 def my_include(value):
-	print(value)
+	#print(value)
 	return 'landing/'+value+'.html'
+
+
+@register.filter(name='my_type')
+def my_type(value):
+    return type(value).__name__

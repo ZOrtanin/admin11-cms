@@ -115,7 +115,7 @@ def title(request):
         settings_block = blocks.filter(title=blocks[i].title)[0].content
         new_dictData[blocks[i].title] = json.loads(settings_block)
 
-    print(new_dictData['hero'])    
+    #print(new_dictData['hero'])    
 
     return render(request,'landing/index.html',new_dictData)
 
@@ -169,7 +169,16 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
             settings_block = blocks.filter(title=blocks[i].title)[0]
             if settings_block.content != '':
                 if settings_block.type_block != 'html':
-                    context[blocks[i].title] = json.loads(settings_block.content)
+                    #print(blocks[i].title)
+
+                    if str(blocks[i].title) in 'header':
+                        context[blocks[i].title] = json.loads(str(settings_block.content).replace("'", '"'))
+                        
+                    else:
+                        context[blocks[i].title] = json.loads(settings_block.content)
+
+                    
+                    #print(context[blocks[i].title])
                 else:
                     context[blocks[i].title] = settings_block.content
             else:
@@ -205,7 +214,20 @@ def EditModeSaveBlock(request,id_block):
         block.save()
     else:
         print('Ключа нет')
-        print(request.POST)
+        #print(request.POST)
+        html = str(request.POST.getlist('content_admin'))
+        # print('')
+        # print(html)
+        # print('')
+        soup = BeautifulSoup('<div name="main">'+html+'</div>','html.parser')
+        json_obj = parse_element(soup.find('div'),0,'main')
+        out2 = str(json_obj).replace("'", '"')
+
+        print(out2)
+
+        block.content = out2
+        block.save()
+
         #print(request.POST.getlist('content_admin'))
 
         # html = str(request.POST.getlist('content_admin'))       
@@ -446,99 +468,63 @@ def pageNotFound(request,exception):
     #return HttpResponseNotFound('Страница не найдена')
     return render(request,'landing/404.html')
 
-
-
-
-def parse_element(element):
-    # Создаем пустой объект для хранения атрибутов и дочерних элементов
+def parse_element(element,level,level_name,item=[]):
     obj = {}
-    
+    name = level_name
+    flag = False
+    num=0  
+
     # Добавляем атрибуты элемента в объект
-    for attr, value in element.attrs.items():
-        obj[attr] = value
-    
-    # Обрабатываем дочерние элементы элемента
-    children = []
+    for attr, value in element.attrs.items():        
+        if attr == 'name':            
+            name = value
+
+        if attr == 'name' and value == 'item':
+            #print('+')
+            flag = True
+
+    mychild={}
     for child in element.children:
+
         if child.name:
-            children.append(parse_element(child))
-        elif child.string:            
-            children.append(child.string.strip())
-
-    if children:
-        obj['children'] = children
-
-    return obj
-
-def parse_element_new(element):
-    obj = {}
-
-    for child in element.children:
-        
-        if child.name:
-            if 'name' in child.attrs:
-                print('')
-                print(child.attrs['name'])
-                print(child.attrs)
-                print('---^---')
-
-                if not 'type' in child.attrs:
-                    print('нет ключа')
-                    obj[child.attrs['name']] = parse_element_new(child)
-                else:
-                    print('есть ключь')
-                    obj[child.attrs['name']] = child.attrs['value']
-
-                # if child.attrs['class'] == ['form-control']:
-                #     print('work')
-                #     print(child.attrs)
-                #     obj[child.attrs['name']] = child.attrs['value']
-                # else:
+            if level_name == name:                
                 
-                #print(child.attrs)
-
-                #parse_element_new(child)
+                new_element = parse_element(child,1,name,item=[])
             else:
-                parse_element_new(child)
-                #print(child.attrs)
-            
-        elif child.string:
-            #print('----- '+str(len(child.string)))
-            print(child)
+                new_element = parse_element(child,1,name,item)
             
 
+            if new_element != {}:
+                neme_first = list(new_element.keys())[0]
+
+                if 'type' in new_element and flag == False:
+                    #print(child.name)
+                    if child.name != 'textarea':
+                        obj[name] = new_element['value']
+                    else:
+                        obj[name] = child.text
+
+                elif flag == True:
+                    mychild[neme_first]= new_element[neme_first]                    
+
+                else:
+                    if level_name != name:
+                        obj[neme_first] = new_element[neme_first]
+                    else:
+                        obj[neme_first] = new_element
+            else:
+                obj[name] = name
+                
+    if flag == True :
+
+        item.append(mychild)
+        obj['item']=item
+        num+=1
         
 
-    # # Создаем пустой объект для хранения атрибутов и дочерних элементов
-    # obj = {}
-    
-    # # Добавляем атрибуты элемента в объект
-    # if 'type' in element.attrs:    	
-    #     obj[element.attrs['name']] = element.attrs['value']
-    
-    # # Обрабатываем дочерние элементы элемента
-    # children = []
-    # for child in element.children:
-        
-    #     if child.name:             
-    #         children.append(parse_element_new(child))            
-
-    #     elif child.string:
-    #         children.append(child.string.strip())
-            
-
-    # if children:        
-    #     obj['children'] = children
+    # Добавляем атрибуты элемента в объект
+    for attr, value in element.attrs.items():        
+        if 'type' in element.attrs:            
+            obj[attr]=value
 
     return obj
-
-
-
-
-
-
-
-
-
-
-

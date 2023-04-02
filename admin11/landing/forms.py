@@ -16,24 +16,28 @@ import json
 
 def modulinput(string,value,block,label=True):
 
-	out_form = '<div class="mb-3">'
+	if string != block :
 
-	# if string != '':
-	# 	print(label)
-	# 	out_form += f'<label class="col-form-label"  for="id_name">{string}:</label>'
+		out_form = f'<div name="{string}" class="mb-3">'
 
-	if label != False:
-		print(label)
-		out_form += f'<label class="col-form-label" for="id_name">{string}:</label>'
+		# if string != '':
+		# 	print(label)
+		# 	out_form += f'<label class="col-form-label"  for="id_name">{string}:</label>'
 
-	#print(len(value))
+		if label != False:
+			print(label)
+			out_form += f'<label class="col-form-label" for="id_name">{string}:</label>'
 
-	if len(value) > 50 :
-		out_form +=f'<textarea class="form-control" type="text" name="{string}-{block}" rows="10">{value}</textarea>'
+		#print(len(value))
+
+		if len(value) > 50 :
+			out_form +=f'<textarea class="form-control" type="text" name="{string}-{block}" rows="10">{value}</textarea>'
+		else:
+			out_form +=f'<input class="form-control" type="text" name="{string}-{block}" value="{value}">'
+
+		out_form += '</div>'
 	else:
-		out_form +=f'<input class="form-control" type="text" name="{string}-{block}" value="{value}">'
-
-	out_form += '</div>'
+		out_form=''
 
 	return out_form
 
@@ -46,6 +50,45 @@ class MyWidget(forms.widgets.Widget):
 		super().__init__(attrs)
 
 	def render(self, name, value, attrs=None, renderer=None):
+		context = self.get_context(name, value, attrs)
+		out_form = '<div class="content_admin row">'
+
+		if self.type_block != 'themes':
+			out_form += f'<textarea name="content" class="form-control" rows="20">{value}</textarea>'
+		else:
+			arr_filds = json.loads(value)
+
+			for item in arr_filds:
+				out_form +=	f'<div class="col-4 {item}" name="{item}">'
+				out_form += '<h3>'+str(item)+'</h3>'
+				
+				if 'item' in arr_filds[item]:
+					#print('есть')
+					for child in arr_filds[item]['item']:
+						#print(child)
+						out_form += '<div name="item" style="background-color:rgb(218, 230, 237);padding:5px ; border-radius: 9px; margin-bottom: 10px;">'
+						for inp in child:
+							#print(inp)
+							out_form += modulinput(inp,child[inp],item)
+						out_form += '</div>'
+				else:
+					print('нету')
+					#print(arr_filds[item])
+					for inp in arr_filds[item]:
+						#print(arr_filds[item][inp])
+						out_form += modulinput(inp,arr_filds[item][inp],item)
+				#print(type(arr_filds[item]))
+
+				out_form += '</div>'
+
+
+		out_form +='</div>'
+
+
+		context['form'] = out_form		
+		return render_to_string(self.template_name, context)
+
+	def render_old(self, name, value, attrs=None, renderer=None):
 		context = self.get_context(name, value, attrs)
 		
 		out_form = '<div class="content_admin row">'
@@ -76,9 +119,8 @@ class MyWidget(forms.widgets.Widget):
 							out_form += modulinput(inp,arr_filds[item][inp],item)
 
 						else:						
-							out_form += '<div style="background-color:rgb(218, 230, 237);padding:5px ; border-radius: 9px; margin-bottom: 10px;">'
-							for string in inp:
-								
+							out_form += '<div name="item" style="background-color:rgb(218, 230, 237);padding:5px ; border-radius: 9px; margin-bottom: 10px;">'
+							for string in inp:								
 								out_form += modulinput(string,inp[string],item)
 							out_form += '</div>'			
 

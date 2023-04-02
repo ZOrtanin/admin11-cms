@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load poll_extras %}
 <!-- Навигация -->
 
 
@@ -20,6 +20,8 @@
           
           <!-- Лого -->
           <div class="col-2">
+           
+            
             <a href="{{ logo.link }}" class="logo col-3 d-flex align-items-center col-md-3 mb-2  text-dark text-decoration-none"
             style="background-image: url( {% static 'landing/'%}{{ header.logo.image }} ) !important;"></a>
           </div>
@@ -44,7 +46,7 @@
               <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-center flex-grow-1 ps-5">
 
-                  {% for item in header.menu %}
+                  {% for item in header.menu.item %}
                     
                     <li class="nav-item">
                       <a class="menu-link nav-link link-secondary" href="{{  item.link }}" data-bs-dismiss="myOffcanvas">{{  item.label }}</a>
@@ -54,7 +56,7 @@
                   
                 </ul>
                 <div class="social-link col-md-3 text-lg-end ps-5">
-                  {% for item in header.social_link %}
+                  {% for item in header.social_link.item %}
                     <a href="" class="link-dark "><i class="bi bi-{{ item.label }}"></i></a>
                    
                   {% endfor %}
