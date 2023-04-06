@@ -210,10 +210,22 @@ btn_test.addEventListener('click',SaveSettings)
 function SaveSettings(){
       console.log("Работает");
       let form = modalSetingsWindow.querySelectorAll('.FormSettings')[0];
-      let inputs = form.querySelectorAll('.content_admin')[0];
+      
+      let inputs = form.querySelectorAll('input');
+      inputs.forEach(item =>{
+
+            console.log(item.value);
+            item.setAttribute('value', item.value);
+      });
+
+
+      let html = form.querySelectorAll('.content_admin')[0];
+
+
 
       let out = document.getElementsByName("content_admin")[0];
-      out.value = inputs.innerHTML;
+      
+      out.value = html.innerHTML;
 
       console.log(inputs);
 }

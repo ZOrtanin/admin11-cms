@@ -4,6 +4,8 @@ from landing.models import *
 #from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
+import json
+
 # Обязательная регистрация 
 register = template.Library()
 
@@ -56,6 +58,11 @@ def cut(value):
 def my_include(value):
 	#print(value)
 	return 'landing/'+value+'.html'
+
+@register.filter(name='strtoarr')
+def my_include(value):
+	#print(value)
+	return json.loads(value, strict=False)
 
 
 @register.filter(name='my_type')

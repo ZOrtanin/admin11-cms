@@ -162,6 +162,7 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
 
         context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
         context['edit_mode']='True'
+       
 
         for i in range(len(blocks)):
             #print(blocks[i].title)
@@ -170,12 +171,14 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
             if settings_block.content != '':
                 if settings_block.type_block != 'html':
                     #print(blocks[i].title)
+                    new_blocks = ['header','hero','introductory','price']
 
-                    if str(blocks[i].title) in 'header':
-                        context[blocks[i].title] = json.loads(str(settings_block.content).replace("'", '"'))
-                        
+                    if str(blocks[i].title) in new_blocks:
+                        context[blocks[i].title] = json.loads(settings_block.content, strict=False)
+                        context[blocks[i].id] = json.loads(settings_block.content, strict=False)
                     else:
-                        context[blocks[i].title] = json.loads(settings_block.content)
+                        context[blocks[i].title] = json.loads(settings_block.content, strict=False)
+                        context[blocks[i].id] = json.loads(settings_block.content, strict=False)
 
                     
                     #print(context[blocks[i].title])
@@ -221,11 +224,13 @@ def EditModeSaveBlock(request,id_block):
         # print('')
         soup = BeautifulSoup('<div name="main">'+html+'</div>','html.parser')
         json_obj = parse_element(soup.find('div'),0,'main')
-        out2 = str(json_obj).replace("'", '"')
+        
+        out2 = str(json_obj).replace('"', "'")
+        #out2 = out2.replace('"', "'")
 
-        print(out2)
+        print(out2.replace('\\', "  ").replace("'", '"').replace('  "', "'"))
 
-        block.content = out2
+        block.content = out2.replace('\\', "  ").replace("'", '"').replace('  "', "'")
         block.save()
 
         #print(request.POST.getlist('content_admin'))

@@ -1,15 +1,17 @@
 {% load static %}
+{% load poll_extras %}
+{% with block=item.content|strtoarr %}
 <!-- Вводный текст -->
 <div class="container marketing pb-5 pt-5" >
   <div class="row featurette">
     <div class="col-md-2"></div>
     <div class="col-md-5">
-      <h2 class="featurette-heading fw-normal lh-1">{{introductory.H1}} <span class="text-muted"></span></h2>
+      <h2 class="featurette-heading fw-normal lh-1">{{block.title.H1}} <span class="text-muted"></span></h2>
       
-      <p class="lead pt-5 pb-5">{{introductory.p}}<!--Компьютеры и периферийная техника есть в каждом офисе. Зачастую именно от их исправности и бесперебойной работы зависит эффективность бизнеса. Разорительно держать в штате целую армию специалистов для настройки, диагностики, ремонта, поддержания работы и модернизации компьютерной техники и программного обеспечения. Однако есть эффективный и экономный выход!  Мы возьмём на себя ваши проблемы по обслуживанию компьютеров и всех элементов ИТ-структуры. «Сисадмин» будет обеспечивать эффективную работу вашего бизнеса без больничных, отпусков и отгулов. За сумму меньшую, чем зарплата одного ИТ-специалиста, к вашим услугам команда профессионалов. --></p>
+      <p class="lead pt-5 pb-5">{{block.description.p}}<!--Компьютеры и периферийная техника есть в каждом офисе. Зачастую именно от их исправности и бесперебойной работы зависит эффективность бизнеса. Разорительно держать в штате целую армию специалистов для настройки, диагностики, ремонта, поддержания работы и модернизации компьютерной техники и программного обеспечения. Однако есть эффективный и экономный выход!  Мы возьмём на себя ваши проблемы по обслуживанию компьютеров и всех элементов ИТ-структуры. «Сисадмин» будет обеспечивать эффективную работу вашего бизнеса без больничных, отпусков и отгулов. За сумму меньшую, чем зарплата одного ИТ-специалиста, к вашим услугам команда профессионалов. --></p>
     </div>
     
-    <div class="col-md-5 text-center pt-5 overflow-hide d-none d-md-block" style="background-image: url('{% static 'landing/'%}{{introductory.image}}'); background-repeat: no-repeat; background-position: 0 center; ">
+    <div class="col-md-5 text-center pt-5 overflow-hide d-none d-md-block" style="background-image: url('{% static 'landing/'%}{{block.picture.image}}'); background-repeat: no-repeat; background-position: 0 center; ">
       <!-- <img src="images/error.svg" class="rounded pt-5 overflow-visible" style="width:100%"> -->
     </div>
 
@@ -18,3 +20,4 @@
   <!-- <hr class="featurette-divider"> -->
 </div>
 <!-- Вводный текст -->
+{% endwith %}

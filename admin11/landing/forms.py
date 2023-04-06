@@ -15,29 +15,42 @@ import json
 
 
 def modulinput(string,value,block,label=True):
+	out_form = ''
+	if str(type(value)) == "<class 'dict'>":
+		#print("work1")
+		#print(string)
+		#print(type(value))
 
-	if string != block :
-
-		out_form = f'<div name="{string}" class="mb-3">'
-
-		# if string != '':
-		# 	print(label)
-		# 	out_form += f'<label class="col-form-label"  for="id_name">{string}:</label>'
-
-		if label != False:
-			print(label)
-			out_form += f'<label class="col-form-label" for="id_name">{string}:</label>'
-
-		#print(len(value))
-
-		if len(value) > 50 :
-			out_form +=f'<textarea class="form-control" type="text" name="{string}-{block}" rows="10">{value}</textarea>'
-		else:
-			out_form +=f'<input class="form-control" type="text" name="{string}-{block}" value="{value}">'
-
+		out_form +=	f'<div class="col {string}" name="{string}">'
+		out_form += '<h3>'+str(string)+'</h3>'
+		for inp in value:
+			out_form += modulinput(inp,value[inp],block)
 		out_form += '</div>'
+
 	else:
-		out_form=''
+
+		if string != block :
+
+			out_form = f'<div name="{string}" class="mb-3">'
+
+			# if string != '':
+			# 	print(label)
+			# 	out_form += f'<label class="col-form-label"  for="id_name">{string}:</label>'
+
+			if label != False:
+				print(label)
+				out_form += f'<label class="col-form-label" for="id_name">{string}:</label>'
+
+			#print(len(value))
+
+			if len(value) > 50 :
+				out_form +=f'<textarea class="form-control" type="text" name="{string}-{block}" rows="10">{value}</textarea>'
+			else:
+				out_form +=f'<input class="form-control" type="text" name="{string}-{block}" value="{value}">'
+
+			out_form += '</div>'
+		else:
+			out_form=''
 
 	return out_form
 
@@ -52,16 +65,19 @@ class MyWidget(forms.widgets.Widget):
 	def render(self, name, value, attrs=None, renderer=None):
 		context = self.get_context(name, value, attrs)
 		out_form = '<div class="content_admin row">'
+		
 
 		if self.type_block != 'themes':
 			out_form += f'<textarea name="content" class="form-control" rows="20">{value}</textarea>'
 		else:
-			arr_filds = json.loads(value)
+			print(str(value))
+			arr_filds = json.loads(value, strict=False)
+			print(arr_filds)
 
 			for item in arr_filds:
 				out_form +=	f'<div class="col-4 {item}" name="{item}">'
 				out_form += '<h3>'+str(item)+'</h3>'
-				
+				#print('work')
 				if 'item' in arr_filds[item]:
 					#print('есть')
 					for child in arr_filds[item]['item']:
@@ -72,7 +88,7 @@ class MyWidget(forms.widgets.Widget):
 							out_form += modulinput(inp,child[inp],item)
 						out_form += '</div>'
 				else:
-					print('нету')
+					#print('нету')
 					#print(arr_filds[item])
 					for inp in arr_filds[item]:
 						#print(arr_filds[item][inp])
