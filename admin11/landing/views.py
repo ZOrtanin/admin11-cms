@@ -171,7 +171,7 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
             if settings_block.content != '':
                 if settings_block.type_block != 'html':
                     #print(blocks[i].title)
-                    new_blocks = ['header','hero','introductory','price']
+                    new_blocks = ['header','hero','introductory','price','Important']
 
                     if str(blocks[i].title) in new_blocks:
                         context[blocks[i].title] = json.loads(settings_block.content, strict=False)
@@ -510,7 +510,10 @@ def parse_element(element,level,level_name,item=[]):
                         obj[name] = child.text
 
                 elif flag == True:
-                    mychild[neme_first]= new_element[neme_first]                    
+                    if len(new_element) > 1:                                        
+                        mychild[neme_first]= new_element
+                    else:                        
+                        mychild[neme_first]= new_element[neme_first]                    
 
                 else:
                     if level_name != name:
