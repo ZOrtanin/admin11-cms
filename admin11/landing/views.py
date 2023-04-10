@@ -146,7 +146,6 @@ class DashboardPage(LoginRequiredMixin,DataMixin,ListView):
         c_def = self.get_user_context(title="Панель упровления",selected="landing:dashboard")
         context = dict(list(context.items())+list(c_def.items()))
         return context
-
     
 class EditMode(LoginRequiredMixin,DataMixin,ListView):
     model = landing
@@ -171,11 +170,12 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
             if settings_block.content != '':
                 if settings_block.type_block != 'html':
                     #print(blocks[i].title)
-                    new_blocks = ['header','hero','introductory','price','Important']
+                    new_blocks = ['header','hero','introductory','price','Important','advantages']
 
                     if str(blocks[i].title) in new_blocks:
-                        context[blocks[i].title] = json.loads(settings_block.content, strict=False)
-                        context[blocks[i].id] = json.loads(settings_block.content, strict=False)
+                        pass
+                        # context[blocks[i].title] = json.loads(settings_block.content, strict=False)
+                        # context[blocks[i].id] = json.loads(settings_block.content, strict=False)
                     else:
                         context[blocks[i].title] = json.loads(settings_block.content, strict=False)
                         context[blocks[i].id] = json.loads(settings_block.content, strict=False)
@@ -311,7 +311,6 @@ class EditBlock(LoginRequiredMixin,DataMixin,ListView):
 
     # def get_queryset(self):
     #     return landing.objects.all()
-
 
 class OrderPage(LoginRequiredMixin,DataMixin,ListView):
     model = landing
@@ -467,7 +466,6 @@ def postOut(request):
     # print(locals())
     # print(telephone)
     return HttpResponse('Cообщение отправленно')
-
 
 def pageNotFound(request,exception):
     #return HttpResponseNotFound('Страница не найдена')

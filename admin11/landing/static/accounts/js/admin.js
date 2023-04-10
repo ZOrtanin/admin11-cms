@@ -213,9 +213,14 @@ function SaveSettings(){
       
       let inputs = form.querySelectorAll('input');
       inputs.forEach(item =>{
-
-            console.log(item.value);
+            //console.log(item.value);
             item.setAttribute('value', item.value);
+      });
+
+      let textarea = form.querySelectorAll('textarea');
+      textarea.forEach(item =>{
+            //console.log(item.value);
+            item.innerHTML = item.value;
       });
 
 
@@ -227,7 +232,7 @@ function SaveSettings(){
       
       out.value = html.innerHTML;
 
-      console.log(inputs);
+      //console.log(inputs);
 }
 
 

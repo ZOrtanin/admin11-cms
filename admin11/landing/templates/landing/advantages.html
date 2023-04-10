@@ -1,4 +1,6 @@
 {% load static %}
+{% load poll_extras %}
+{% with block=item.content|strtoarr %}
 
 <!-- 4 причины -->
 <a name="features"></a>
@@ -18,10 +20,10 @@
             </path>
           </svg>
         </div>
-        <h2 class="pb-2">{{advantages.H2}}</h2>
+        <h2 class="pb-2">{{block.title2.H2}}</h2>
         <div class=" d-flex flex-column align-items-start gap-2">
-          <h2 class="fw-bold display-5">{{advantages.H1}}</h2>
-          <p class="text-muted fs-5">{{advantages.description}}</p>
+          <h2 class="fw-bold display-5">{{block.title.H1}}</h2>
+          <p class="text-muted fs-5">{{block.description.p}}</p>
           <!-- <a href="#" class="btn btn-primary btn-lg">Заказать</a> -->
         </div>
       </div>
@@ -41,7 +43,7 @@
 
             <ul class="nav nav-pills nav-fill bg-light " id="pills-tab" role="tablist">
 
-              {% for item in advantages.slider %}
+              {% for item in block.slider.item %}
                 <li class="nav-item" role="presentation">
                   <button class="nav-link list-group-item-light rounded-4 {{ item.visible }}" id="pills-{{item.index}}-tab" data-bs-toggle="pill" data-bs-target="#pills-{{item.index}}" type="button" role="tab" aria-controls="pills-{{item.index}}" aria-selected="true"><k class="d-none d-md-block me-md-0">{{item.label}}</k></button>
                 </li>
@@ -61,7 +63,7 @@
             
 
             <div class="tab-content" id="pills-tabContent">
-              {% for item in advantages.slider %}
+              {% for item in block.slider.item %}
 
                 <div class="tab-pane fade {{ item.visible }} show" id="pills-{{item.index}}" role="tabpanel" aria-labelledby="pills-{{item.index}}-tab" tabindex="0">
                   <div class="d-flex flex-column gap-2 p-md-5" >
@@ -94,7 +96,7 @@
             </div>
 
             
-            <img src="{% static 'landing/'%}{{advantages.image_to_slider}}" class="position-absolute top-100 start-50 translate-middle d-none d-md-block" style="width:200px;">
+            <img src="{% static 'landing/'%}{{block.image_to_slider.image}}" class="position-absolute top-100 start-50 translate-middle d-none d-md-block" style="width:200px;">
           </div>
         </div>
 
@@ -104,3 +106,4 @@
   </div>
 </div>
 <!-- 4 причины -->
+{% endwith %}
