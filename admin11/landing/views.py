@@ -34,17 +34,17 @@ class LandingHome(ListView):
 
         context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
 
-        for i in range(len(blocks)):
-            #print(blocks[i].title)
+        # for i in range(len(blocks)):
+        #     #print(blocks[i].title)
 
-            settings_block = blocks.filter(title=blocks[i].title)[0]
-            if settings_block.content != '':
-                if settings_block.type_block != 'html':
-                    context[blocks[i].title] = json.loads(settings_block.content)
-                else:
-                    context[blocks[i].title] = settings_block.content
-            else:
-                context[blocks[i].title] = ''
+        #     settings_block = blocks.filter(title=blocks[i].title)[0]
+        #     if settings_block.content != '':
+        #         if settings_block.type_block != 'html':
+        #             context[blocks[i].title] = json.loads(settings_block.content)
+        #         else:
+        #             context[blocks[i].title] = settings_block.content
+        #     else:
+        #         context[blocks[i].title] = ''
         
         # print(self.request.user.is_authenticated)
         num_visits=self.request.session.get('num_visits', 0)
@@ -156,36 +156,36 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
     def get_context_data(self,*, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        blocks = landing.objects.all().order_by('order')
+        #blocks = landing.objects.all().order_by('order')
         new_dictData = {}
 
         context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
         context['edit_mode']='True'
        
 
-        for i in range(len(blocks)):
-            #print(blocks[i].title)
+        # for i in range(len(blocks)):
+        #     #print(blocks[i].title)
 
-            settings_block = blocks.filter(title=blocks[i].title)[0]
-            if settings_block.content != '':
-                if settings_block.type_block != 'html':
-                    #print(blocks[i].title)
-                    new_blocks = ['header','hero','introductory','price','Important','advantages']
+        #     settings_block = blocks.filter(title=blocks[i].title)[0]
+        #     if settings_block.content != '':
+        #         if settings_block.type_block != 'html':
+        #             #print(blocks[i].title)
+        #             new_blocks = ['header','hero','introductory','price','Important','advantages','contacts']
 
-                    if str(blocks[i].title) in new_blocks:
-                        pass
-                        # context[blocks[i].title] = json.loads(settings_block.content, strict=False)
-                        # context[blocks[i].id] = json.loads(settings_block.content, strict=False)
-                    else:
-                        context[blocks[i].title] = json.loads(settings_block.content, strict=False)
-                        context[blocks[i].id] = json.loads(settings_block.content, strict=False)
+        #             # if str(blocks[i].title) in new_blocks:
+        #             #     pass
+        #             #     # context[blocks[i].title] = json.loads(settings_block.content, strict=False)
+        #             #     # context[blocks[i].id] = json.loads(settings_block.content, strict=False)
+        #             # else:
+        #             #     context[blocks[i].title] = json.loads(settings_block.content, strict=False)
+        #             #     context[blocks[i].id] = json.loads(settings_block.content, strict=False)
 
                     
-                    #print(context[blocks[i].title])
-                else:
-                    context[blocks[i].title] = settings_block.content
-            else:
-                context[blocks[i].title] = ''
+        #             #print(context[blocks[i].title])
+        #         else:
+        #             context[blocks[i].title] = settings_block.content
+        #     else:
+        #         context[blocks[i].title] = ''
         
         return context
 
@@ -216,7 +216,7 @@ def EditModeSaveBlock(request,id_block):
         block.content = request.POST.getlist('content')[0]
         block.save()
     else:
-        print('Ключа нет')
+        #print('Ключа нет')
         #print(request.POST)
         html = str(request.POST.getlist('content_admin'))
         # print('')
@@ -228,9 +228,10 @@ def EditModeSaveBlock(request,id_block):
         out2 = str(json_obj).replace('"', "'")
         #out2 = out2.replace('"', "'")
 
-        print(out2.replace('\\', "  ").replace("'", '"').replace('  "', "'"))
+        #print(out2.replace('\\', "  ").replace("'", '"').replace('  "', "'"))
 
         block.content = out2.replace('\\', "  ").replace("'", '"').replace('  "', "'")
+        block.content = block.content.replace('  ','')
         block.save()
 
         #print(request.POST.getlist('content_admin'))

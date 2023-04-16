@@ -1,5 +1,6 @@
 {% load static %}
 {% load poll_extras %}
+{% with block=item.content|strtoarr %}
 
 <!-- Контакты -->
 <a name="contacts"></a>
@@ -10,22 +11,24 @@
 
     <div class="col-12 col-md">
 
-      <h4 class="mb-5">{{contacts.H4}} </h4>
+      <h4 class="mb-5">{{block.title.H4}} </h4>
       <div class="card" >
         <div class="card-body">          
           <div class="mb-4">
             <h6>Адрес :</h6>
-            <small class="text-muted">{{contacts.adres}}</small>
+            {% for item in block.adres.item %}
+              <small class="text-muted">{{item.str}}</small>
+            {% endfor %}
           </div> 
           <div class="mb-4">
             <h6>Телефоны :</h6>
-            {% for item in contacts.telefons %}
+            {% for item in block.telefons.item %}
               <small class="text-muted">{{item.int}}</small>
             {% endfor %}
           </div>  
           <div class="mb-4">
             <h6>Эл. почта :</h6>
-            {% for item in contacts.emails %}
+            {% for item in block.emails.item %}
               <small class="text-muted"><a href="{{item}}">{{item.str}}</a></small>
             {% endfor %}
           </div>
@@ -37,7 +40,7 @@
 
     <div class="col d-none d-md-block align-self-center">
 
-      <img src="{% static 'landing/'%}{{contacts.image}}" class="rounded mx-auto d-block">
+      <img src="{% static 'landing/'%}{{block.picture.image}}" class="rounded mx-auto d-block">
 
     </div>
 
@@ -45,10 +48,10 @@
     <div class="col-12 col-md">  
       <form action="post/" method="POST">
         {% csrf_token %}
-        <h4 class="mb-5">{{contacts.form.label}}</h4>
+        <h4 class="mb-5">{{block.form.label}}</h4>
             <input name="form_name" type="hidden" value="{{contacts.form.label}}">
           
-            {{contacts.form.fields|get_form }}
+            {{block.form.fields|get_form }}
 
          <!--  <div class="form-floating mb-3">
             <input name="name" type="text" class="form-control" id="floatingInput" placeholder="123">
@@ -65,7 +68,7 @@
           </div> -->
 
           <div class="form-floating">
-            <button type="submit" class="btnSubmits btn btn-warning btn-lg">{{contacts.form.button}}</button>
+            <button type="submit" class="btnSubmits btn btn-warning btn-lg">{{block.form.button}}</button>
           </div>
         </form>  
     </div>
@@ -74,3 +77,4 @@
   </div>
 </div>
 <!-- Контакты -->
+{% endwith %}

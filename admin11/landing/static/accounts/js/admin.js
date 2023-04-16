@@ -188,6 +188,7 @@ btn_setings.forEach(item =>{
 function ShowModal(){
       let id_block = this.dataset.id;
       let form = modalSetingsWindow.querySelectorAll('.FormSettings')[0];
+      
       console.log(id_block);
       form.action = "save/"+id_block+"/";
       Post('/edit/block/'+id_block+'/','',OpenWindow);
@@ -196,8 +197,13 @@ function ShowModal(){
 
 function OpenWindow(value){
       let content = modalSetingsWindow.querySelectorAll('.modal-body')[0];
+
       modalSetings.show();
       content.innerHTML = value;
+      //console.log(value)
+      //arr = ['.menu-admin','social_link-admin']
+
+      add_button_button(content)
 }
 
 // Сохронение данных
@@ -234,7 +240,6 @@ function SaveSettings(){
 
       //console.log(inputs);
 }
-
 
 function TestSaveSettings(){
       //document.getElementById('my-form').addEventListener('submit', function(event) {
@@ -277,18 +282,102 @@ function TestSaveSettings(){
       //});
 }
 
-// const form = document.querySelector('#myForm');
 
-// // Преобразование FormData в JSON
-// const data = {};
-// for (const [key, value] of formData.entries()) {
-//   data[key] = value;
-// }
-// const jsonData = JSON.stringify(data);
+// Добовление кнопки нового элемента
+function add_button_button(content){      
+      let block_menu = content.querySelectorAll('.add_block');
+      let button = '<div class="col-3 ms-1 d-flex justify-content-center align-items-center"><button class="add_block_button btn btn-primary">Добавить +</button></div>';
+
+      block_menu.forEach(item =>{            
+            item.insertAdjacentHTML("beforeEnd", button);
+      });
+
+      let block_item = content.querySelectorAll('.item');
+      let button_close = '<div class="del_block btn btn-primary">X</div>';
+
+
+      block_item.forEach((item,index) =>{
+            // console.log(index);
+            // console.log(item.parentElement.classList.contains('add_block')) 
+            if(item.parentElement.classList.contains('add_block')){
+                  item.insertAdjacentHTML("afterBegin", button_close);
+            }           
+            
+      });
+      
+
+      // block_menu.appendChild(div)
+      console.log(block_menu); 
+      add_block_button();
+      del_buttons_adding();     
+
+}
+
+
+// удаление блоков
+function del_block_item(event){
+      event.preventDefault();
+      
+      parent = this.parentElement.parentElement.querySelectorAll('.item');;
+      console.log(parent.length);
+      if(parent.length >= 2){
+            this.parentElement.remove()
+      }else{
+            alert("Один элемент всегда должен остоваться!")
+      }
+}
+
+function del_buttons_adding(){
+      let buttons = document.querySelectorAll('.del_block');
+
+      buttons.forEach(item =>{            
+            item.addEventListener('click',del_block_item)
+      });
+}
+
+
+// добовление блоков
+function add_block_button(){
+      let buttons = document.querySelectorAll('.add_block_button');
+
+      buttons.forEach(item =>{            
+            item.addEventListener('click',add_block_item)
+      });
+}
+
+function add_block_item(event){
+      event.preventDefault();
+      
+      let parent = this.parentElement.parentElement
+      let new_block = this.parentElement.previousElementSibling.cloneNode(true);
+
+      let new_input = new_block.querySelectorAll('input');
+
+      new_input.forEach(item =>{
+            console.log('work');
+            console.log(item)
+            item.setAttribute('value', '');
+      });
 
 
 
+      //parent.append(new_block);
+      this.parentElement.insertAdjacentElement('beforeBegin', new_block);
+      console.log(parent)
+      del_buttons_adding();
+}
 
+
+// <div class="col-3 ms-1" name="item" style="background-color:rgb(218, 230, 237);padding:5px ; border-radius: 9px; margin-bottom: 10px;">
+// <div name="label" class="mb-3">
+// <label class="col-form-label" for="id_name">label:</label>
+// <input class="form-control" type="text" name="label-menu" value="Контакты2">
+// </div>
+// <div name="link" class="mb-3">
+// <label class="col-form-label" for="id_name">link:</label>
+// <input class="form-control" type="text" name="link-menu" value="#contacts">
+// </div>
+// </div>
 
 
 

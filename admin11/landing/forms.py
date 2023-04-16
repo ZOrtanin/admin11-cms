@@ -21,7 +21,7 @@ def modulinput(string,value,block,label=True):
 		#print(string)
 		#print(type(value))
 
-		out_form +=	f'<div class="col {string}" name="{string}">'
+		out_form +=	f'<div class="col {string}-admin" name="{string}">'
 		out_form += '<h3>'+str(string)+'</h3>'
 		for inp in value:
 			out_form += modulinput(inp,value[inp],block)
@@ -75,20 +75,37 @@ class MyWidget(forms.widgets.Widget):
 			print(arr_filds)
 
 			for item in arr_filds:
-				out_form +=	f'<div class="col-4 {item}" name="{item}">'
-				out_form += '<h3>'+str(item)+'</h3>'
+				
+
 				#print('work')
 				if 'item' in arr_filds[item]:
 					#print('есть')
+					add_block = ''
+					col = 'col'
+					
+					try:
+						if arr_filds[item]['add_block'] == 'true':
+							add_block = 'add_block'
+							col = 'col-3'
+					except:
+						pass
+
+					out_form +=	f'<div class="col-12 {item}-admin {add_block} row" name="{item}">'
+					out_form += '<h3>'+str(item)+'</h3>'
+					
 					for child in arr_filds[item]['item']:
 						#print(child)
-						out_form += '<div name="item" style="background-color:rgb(218, 230, 237);padding:5px ; border-radius: 9px; margin-bottom: 10px;">'
+						out_form += f'<div class="item {col} ms-1" name="item" style="background-color:rgb(218, 230, 237);padding:5px ; border-radius: 9px; margin-bottom: 10px;">'
 						for inp in child:
 							#print(inp)
 							out_form += modulinput(inp,child[inp],item)
 						out_form += '</div>'
+					
 				else:
 					#print('нету')
+					out_form +=	f'<div class="col-12 {item}-admin row" name="{item}">'
+					out_form += '<h3>'+str(item)+'</h3>'
+
 					#print(arr_filds[item])
 					for inp in arr_filds[item]:
 						#print(arr_filds[item][inp])
