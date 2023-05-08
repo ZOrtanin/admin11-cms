@@ -1,3 +1,12 @@
+{# Name → Герой #}
+{# File → hero #}
+{# Height → 692 px #}
+{# Description → Основной банер с привлекательной изображением #}
+{# Type → Дополнительный блок #}
+{# Type_base → themes #}
+{# Base → {"picture": {"picture": "picture", "image": "/static/landing/images/heroes.svg"}, "warning": {"warning": "warning", "h3": "Предупредим о возможных расходах"}, "title": {"title": "title", "H1": "Обслужим 20 ПК"}, "title2": {"title2": "title2", "H2": "за 70 т.р./месяц."}, "description": {"description": "description", "p": "Абонентское обслуживание в Сисадмине дешевле, быстрее, качественнее и надежнее, чем услуги частного мастера или ИТ-специалиста в штате."}, "button": {"button": "button", "label": "Заказать", "link": "#price"}} #}
+
+
 {% load static %}
 {% load poll_extras %}
 {% with block=item.content|strtoarr %}
@@ -29,7 +38,7 @@
 
         <div class="col-12 col-lg-6 pr-lg-5 d-block d-lg-none p">
 
-              <img src="{% static 'landing/'%}{{ block.image }}" class="rounded mx-auto d-block" alt="Admin11"  loading="lazy">           
+              <img src="{{ block.image }}" class="rounded mx-auto d-block" alt="Admin11"  loading="lazy">           
         </div>            
 
     </div>

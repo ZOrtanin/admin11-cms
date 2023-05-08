@@ -9,6 +9,8 @@ class DataMixin:
 							   {'title':'Заявки','url_name':'landing:order','icon':'fa-shopping-basket'},
 							   {'title':'Посетители','url_name':'landing:users','icon':'fa-users'},
 							   {'title':'Файлы','url_name':'landing:files','icon':'fa-folder-open'},
+							   {'title':'Настройки','url_name':'landing:settings','icon':'fa-gear'},
+							   
 			]
 
 		return context

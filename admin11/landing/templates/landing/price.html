@@ -1,3 +1,11 @@
+{# Name → Тарифы #}
+{# File → price #}
+{# Height → 827 px #}
+{# Description → Тарифные планы 3 шт + калькулятор #}
+{# Type → Дополнительный блок #}
+{# Type_base → themes #}
+{# Base → {"title": {"title": "title", "H1": "Цены"}, "description": {"description": "description", "p": "Рассчитайте стоимость обслуживания Вашей компании"}, "rates": {"rates": "rates", "item": [{"index": "Standart", "label": "Минимум 1", "highlighting": "False", "price": "4000", "image": "/static/landing/images/minimum.svg", "description": "<ul class= 'list-unstyled mt-3 mb-4'><li>Оплата почасовая</li><li>2000 ₽/час</li><li>Выезд по заявке</li><li>Мин. сделака 4000 ₽</li><li class='text-decoration-line-through'>Выезд по графику</li><li class='text-decoration-line-through'>Оплата ежемесячная</li></ul>", "button": {"button": "button", "label": "Вызвать админа", "link": "#Modal", "opacity": ""}}, {"index": "Optimum", "label": "Оптимум", "highlighting": "True", "price": {"price": "price", "comp": "2000", "serv": "6000"}, "image": "/static/landing/images/optimum.svg", "description": "<ul class='list-unstyled mt-3 mb-4'><li>Оплата ежемесячная</li><li>1000-4000 ₽/компьютер</li><li>Выезд по графику</li><li>Выезд на аварию</li><li>Оплаченное время работы:</li> <li><f id='time-work'>0.5</f> часа</li></ul>", "button": {"button": "button", "label": "Оформить", "link": "#Modal", "opacity": ""}}, {"index": "Maximum", "label": "Максимум", "highlighting": "False", "price": {"price": "price", "comp": "3000", "serv": "6000"}, "image": "/static/landing/images/maximum.svg", "description": " <ul class='list-unstyled mt-3 mb-4'><li>Оплата ежемесячная</li><li>от 2000 ₽/компьютер</li><li>Выезд по заявке</li><li>Выезд на аварию</li><li>Оплаченное время работы:</li><li>Время не ограничено</li></ul>", "button": {"button": "button", "label": "Заказать", "link": "#Modal", "opacity": ""}}]}} #}
+
 {% load static %}
 {% load poll_extras %}
 
@@ -53,13 +61,13 @@
               <div class="card-body">
                 {% if item.price.comp is defined %}
                   <h1 class="card-title pricing-card-title">₽<f> {{ item.price }}</f></h1>
-                  <img src="{% static 'landing/'%}{{item.image}}" class="mb-3">
+                  <img src="{{item.image}}" class="mb-3">
                 {% elif item.price.comp == '2000' %}
                   <h1 class="card-title pricing-card-title">₽<f id='price-opt'>8000</f></h1>
-                  <img src="{% static 'landing/'%}{{item.image}}" class="mb-3">
+                  <img src="{{item.image}}" class="mb-3">
                 {% elif item.price.comp == '3000' %}
                   <h1 class="card-title pricing-card-title">₽<f id='price-max'>9000</f></h1>
-                  <img src="{% static 'landing/'%}{{item.image}}" >
+                  <img src="{{item.image}}" >
                 {% endif %}
                 
                 

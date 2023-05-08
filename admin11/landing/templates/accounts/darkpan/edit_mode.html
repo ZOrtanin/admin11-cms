@@ -127,7 +127,10 @@
   
 </head>
 <body> 
-    <!-- Модальное -->
+   
+     
+
+    <!-- Модальное настройки блока -->
     <div class="modal fade" id="ModalSetings" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -143,9 +146,179 @@
               
             </div>
             <div class="modal-footer"> 
-                <button type="button" class="btn btn-outline-secondary button_save_test" >Тест</button>
+                <!-- <button type="button" class="btn btn-outline-secondary " >Тест</button> -->
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <button type="submit" class="btnSubmitsForm btn btn-warning" >Сохранить</button>         
+                <button type="submit" class="btnSubmitsForm btn btn-warning button_save_test" >Сохранить</button>         
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальное файлы -->
+    <div class="modal fade" id="ModalFiles" tabindex="-1" aria-labelledby="ModalFilesLabel" aria-hidden="true" style="z-index: 1053 !important;">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          
+            <div class="modal-header">
+              <h1 class="modal-title fs-5 ModalLabel" id="ModalLabel">Выберете изображение</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              картинки
+            </div>
+            <div class="modal-footer"> 
+                <!-- <button type="button" class="btn btn-outline-secondary " >Тест</button> -->
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-dismiss="modal" data-bs-target="#ModalSetings">Закрыть</button>
+                <!-- <button type="submit" class="btn btn-warning" >Сохранить</button>          -->
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+   
+
+     <!-- Модальное добовление блока -->
+    <div class="modal fade" id="ModalAddBlock" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true" style="z-index: 1053 !important;">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <form action="add/" class="FormSettings" method="POST"> 
+            {% csrf_token %}           
+            <input name="form_name" type="hidden" value="Модальное окно">
+            <input name="price_tarif" id='price_tarif' type="hidden" value="">
+            <input name="content_admin" type="hidden" value="">
+            <input name="TypeBlock" type="hidden" value="">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5 ModalLabel" id="ModalLabel">Добавить блок</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="NameBlock" class="form-label">Название блока</label>
+                    <input type="text" name="NameBlock" class="form-control"aria-describedby="NameBlockHelp">
+                    <div id="NameBlockHelp" class="form-text">Название блока должнобыть оригенальным</div>
+                  </div>
+                <div class="list-group">
+
+                  <!-- <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">Шапка</h5>
+                      <small>92 px</small>
+                    </div>
+                    <p class="mb-1">Навигационная панель</p>
+                    <small>Основной блок</small>
+                  </a>
+
+                  <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">Герой</h5>
+                      <small class="text-muted">692 px</small>
+                    </div>
+                    <p class="mb-1">Основной банер с привлекательной изображением</p>
+                    <small class="text-muted">Дополнительный блок</small>
+                  </a>
+
+                  <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">introductory</h5>
+                      <small class="text-muted">604 px</small>
+                    </div>
+                    <p class="mb-1">Текстовый блок выравнивание по левому краю и изображение</p>
+                    <small class="text-muted">Дополнительный блок</small>
+                  </a>
+
+                  <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">Тарифы</h5>
+                      <small class="text-muted">878 px</small>
+                    </div>
+                    <p class="mb-1">Тарифные планы 3 шт + калькулятор</p>
+                    <small class="text-muted">Дополнительный блок</small>
+                  </a>
+
+                  <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">Преимущества</h5>
+                      <small class="text-muted">513 px</small>
+                    </div>
+                    <p class="mb-1">Блок приемущества слайдер с описанием</p>
+                    <small class="text-muted">Дополнительный блок</small>
+                  </a>
+
+                  <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">Текстовый блок</h5>
+                      <small class="text-muted">827 px</small>
+                    </div>
+                    <p class="mb-1">Большой блок текста и списками с заголовками</p>
+                    <small class="text-muted">Дополнительный блок</small>
+                  </a>
+
+                  <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">Блок контактов</h5>
+                      <small class="text-muted">494 px</small>
+                    </div>
+                    <p class="mb-1">Блок с адресами, телефонами и электронной почтой </p>
+                    <small class="text-muted">Дополнительный блок</small>
+                  </a> -->
+
+                  <!-- <a href="add/html/" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">HTML блок</h5>
+                      <small class="text-muted">100 px</small>
+                    </div>
+                    <p class="mb-1">Блок для html</p>
+                    <small class="text-muted">Дополнительный блок</small>
+                  </a> -->
+                  <!-- <button type="submit" class="button_AddTypeBlock list-group-item list-group-item-action type_block_add"  data-type="html" disabled>
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">HTML блок</h5>
+                        <small class="text-muted">100 px</small>
+                    </div>
+                    <p class="mb-1">Блок для html</p>
+                    <small class="text-muted">Дополнительный блок</small>
+                  </button> -->
+                  {% for item in add_block %}
+
+                  <button type="submit" class="button_AddTypeBlock list-group-item list-group-item-action type_block_add"  data-type="{{item.file}}" disabled>
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{item.name}}</h5>
+                        <small class="text-muted">{{item.height}}</small>
+                    </div>
+                    <p class="mb-1">{{ item.description }}</p>
+                    <small class="text-muted">{{ item.type }}</small>
+                  </button>
+
+                  {% endfor %}
+
+
+                 <!--  <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">Блок разрабочика</h5>
+                      <small class="text-muted">100 px</small>
+                    </div>
+                    <p class="mb-1">Блок для разрабочика</p>
+                    <small class="text-muted">Дополнительный блок</small>
+                  </a>                  
+
+                  <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">Подвал</h5>
+                      <small class="text-muted">65 px</small>
+                    </div>
+                    <p class="mb-1">Закрывающий блок</p>
+                    <small class="text-muted">Основной блок</small>
+                  </a> -->
+
+                </div>
+
+
+              
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
             </div>
           </form>
         </div>
@@ -160,7 +333,7 @@
             <p class="text_color px-3" style="margin: auto 16px; font-size: 17.6px;">Режим редактирования сайта</p>
             <a href="{% url 'landing:dashboard' %}" class="btn btn-outline-warning btn-sm">Выйти из режима</a>
             <a href="{% url 'landing:home' %}" class="btn btn-outline-warning btn-sm ms-3">Перейти на сайт</a>
-            <a href="{% url 'landing:dashboard' %}" class="btn btn-outline-warning btn-sm ms-3">Добавить блок</a>
+            <a href="#" class="btn btn-outline-warning btn-sm ms-3" data-bs-toggle="modal" data-bs-target="#ModalAddBlock">Добавить блок</a>
             
             <div class="navbar-nav align-items-center ms-auto">                   
                 <div class="nav-item dropdown">
@@ -185,7 +358,7 @@
             <a name="{{item.title}}"></a>
             <div class="setings_layer container-fluid">
                 <div class="setings_block"> 
-                    {{item.title}}
+                    {{item.name}}
                     <span class="button_setings fa fa-cog" style="" data-id="{{item.id}}"></span>
                     {% if item.is_published %}
                         <span class="button_disable fa fa-eye-slash" data-id="{{item.id}}"></span>
@@ -194,6 +367,7 @@
                     {% endif %}
                     <span class="button_sort button_up fa fa-arrow-up"></span>
                     <span class="button_sort button_down fa fa-arrow-down"></span>
+                    <span class="button_del fa fa-trash" data-id="{{item.id}}"></span>
                      
                 </div> 
             </div>

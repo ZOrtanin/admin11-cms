@@ -31,7 +31,7 @@ def modulinput(string,value,block,label=True):
 
 		if string != block :
 
-			out_form = f'<div name="{string}" class="mb-3">'
+			out_form = f'<div name="{string}" class="mb-3 px-4 row">'
 
 			# if string != '':
 			# 	print(label)
@@ -43,10 +43,16 @@ def modulinput(string,value,block,label=True):
 
 			#print(len(value))
 
-			if len(value) > 50 :
-				out_form +=f'<textarea class="form-control" type="text" name="{string}-{block}" rows="10">{value}</textarea>'
+			if string == 'image':
+				out_form +=f'<div class="col-2 btn btn-warning me-1 px-1 add-file-base overflow-hiden" data-bs-toggle="modal" data-bs-dismiss="modal" data-bs-target="#ModalFiles"><i class="fa-regular fa-image"></i></div>'
+
+			if len(value) > 50 and string != 'image' :
+				out_form +=f'<textarea class=" form-control" type="text" name="{string}-{block}" rows="10">{value}</textarea>'
+			
 			else:
-				out_form +=f'<input class="form-control" type="text" name="{string}-{block}" value="{value}">'
+				out_form +=f'<input class="col form-control" type="text" name="{string}-{block}" value="{value}" aria-describedby="button-addon1">'
+
+			
 
 			out_form += '</div>'
 		else:

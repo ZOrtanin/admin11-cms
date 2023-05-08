@@ -1,0 +1,89 @@
+{% extends "accounts/darkpan/base.html" %}
+
+{% block content %}
+
+            <!-- Модальное окно загрузки -->           
+            <div class="modal fade" id="UploadModal" tabindex="-1" aria-labelledby="UploadModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content bg-secondary rounded ">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="UploadModalLabel">Загрузить файлы</h1>
+                            <button type="button" class="btn btn-square btn-secondary m-2" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <form action="{% url 'landing:upload_files' %}" method="POST" enctype="multipart/form-data" id="upload-form">
+                            <div class="modal-body">
+
+                                <div id="file-dropzone">
+                                    <p>Поместите файлы сюда или нажмите, чтобы выбрать файлы.</p>
+                                    <input style="display:none;" type="file" name="files" multiple="true" id="file-input">
+                                    <div id="selected-files"></div>
+                                    <button id="file-input-button" class="btn btn-outline-primary m-2" type="button">Выбрать файлы</button>                                    
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {% csrf_token %}
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Загрузить</button>
+                            </div>
+                        </form>                        
+                    </div>
+                </div>
+            </div>            
+
+            <!-- Модальное окно загрузки -->
+
+            <!-- Модальное окно детали -->
+
+            <div class="modal fade" id="DetailModal" tabindex="-1" aria-labelledby="DetailModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content bg-secondary rounded ">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="DetailModalLabel">Имя файла</h1>
+                            <button type="button" class="btn btn-square btn-secondary m-2"  data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                       
+                        <div class="modal-body">                            
+                        </div>
+
+                        <div class="modal-footer">                            
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                                               
+                    </div>
+                </div>
+            </div>            
+
+            <!-- Модальное окно детали -->
+
+            
+
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-left rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Настройки</h6>                        
+                    </div> 
+                    <div class="row">                  
+                        <div class="mb-3">
+                            <label class="form-label">Тема:</label>
+                            <select class="form-select mb-3" aria-label="Default select example">
+                                <option selected="">root</option>
+                                <option value="1">Администратор</option>
+                                <option value="2">Контент менеджер</option>
+                                <option value="3">Продажник</option>
+                            </select>
+                        </div>
+                           
+                    </div> 
+                </div>
+            </div>
+            <!-- Recent Sales End -->
+
+
+            
+
+{% endblock %}

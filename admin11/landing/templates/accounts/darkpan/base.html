@@ -52,8 +52,8 @@
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4 mt-4 w-100">
                     <div class="position-relative">
-                        <div class="rounded-circle">123</div>
-                        <!-- <img class="rounded-circle" src="img/user.jpg" alt="" style="width: 40px; height: 40px;"> -->
+                        
+                       <img class="rounded-circle" src="/media/files/2023/05/02/angry.png" alt="" style="width: 40px; height: 40px;"> 
                         <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                     </div>
                     <div class="ms-3">
@@ -170,8 +170,8 @@
                             <span class="d-none d-lg-inline-flex">{{ user.email }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-                            <a href="{% url "landing:dashboard" %}" class="dropdown-item">Панель упровления</a>
-                            <a href="#" class="dropdown-item">Профиль</a>
+                            <a href="{% url 'landing:dashboard' %}" class="dropdown-item">Панель упровления</a>
+                            <a href="{% url 'landing:profile' %}" class="dropdown-item">Профиль</a>
                             <a href="{% url 'landing:logout' %}" class="dropdown-item">Выход</a>
                         </div>
                     </div>

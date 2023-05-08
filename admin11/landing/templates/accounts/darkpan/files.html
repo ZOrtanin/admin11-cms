@@ -2,38 +2,106 @@
 
 {% block content %}
 
+            <!-- Модальное окно загрузки -->           
+            <div class="modal fade" id="UploadModal" tabindex="-1" aria-labelledby="UploadModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content bg-secondary rounded ">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="UploadModalLabel">Загрузить файлы</h1>
+                            <button type="button" class="btn btn-square btn-secondary m-2" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <form action="{% url 'landing:upload_files' %}" method="POST" enctype="multipart/form-data" id="upload-form">
+                            <div class="modal-body">
+
+                                <div id="file-dropzone">
+                                    <p>Поместите файлы сюда или нажмите, чтобы выбрать файлы.</p>
+                                    <input style="display:none;" type="file" name="files" multiple="true" id="file-input">
+                                    <div id="selected-files"></div>
+                                    <button id="file-input-button" class="btn btn-outline-primary m-2" type="button">Выбрать файлы</button>                                    
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {% csrf_token %}
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Загрузить</button>
+                            </div>
+                        </form>                        
+                    </div>
+                </div>
+            </div>            
+
+            <!-- Модальное окно загрузки -->
+
+            <!-- Модальное окно детали -->
+
+            <div class="modal fade" id="DetailModal" tabindex="-1" aria-labelledby="DetailModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content bg-secondary rounded ">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="DetailModalLabel">Имя файла</h1>
+                            <button type="button" class="btn btn-square btn-secondary m-2"  data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                       
+                        <div class="modal-body">                            
+                        </div>
+
+                        <div class="modal-footer">                            
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                                               
+                    </div>
+                </div>
+            </div>            
+
+            <!-- Модальное окно детали -->
+
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-left rounded p-4">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#UploadModal">Загрузить файлы</button>                    
+                </div>
+
+            </div>
+
 
             <!-- Recent Sales Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h6 class="mb-0">Файлы</h6>                        
-                    </div>
-                    <div class="table-responsive">
+                    </div>                    
+                    <div class="upload_files_table table-responsive">
                         <table class="table text-start align-middle table-bordered table-hover mb-0">
                             <thead>
                                 <tr class="text-white">
                                     <th scope="col">id</th>
+                                    <th scope="col">Миниатюра</th>
                                     <th scope="col">Имя</th>
+                                    <!-- <th scope="col">Путь</th> -->
                                     <th scope="col">Время</th>
-                                    <th scope="col">Форма</th>
-                                    <th scope="col">Телефон</th>
+                                    <th scope="col">Тип</th>                                    
                                     <th scope="col">Статус</th>
+                                    <th scope="col"></th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>                                
 
-                                {% for item in orders %}
+                                {% for item in files %}
                                   
                                     <tr>                                        
                                         <td>{{ item.id }}</td>
-                                        <td>{{ item.name }}</td>
+                                        <td><img src="{{ item.data }}" width="50px"></td>
+                                        <td>{{ item.title }}</td>
+                                        <!-- <td>{{ item.data }}</td> -->
                                         <td>{{ item.time_create }}</td>
-                                        <td>{{ item.which }}</td>
-                                        <td>{{ item.tel }}</td>
-                                        <td>{{ item.status }}</td>
-                                        <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                        <td>{{ item.type_file }}</td>                                        
+                                        <td>{{ item.is_published }}</td>
+                                        <td><button type="button" class="button-detail btn btn-sm btn-primary " data-id="{{ item.id }}" data-bs-toggle="modal" data-bs-target="#DetailModal">Детали</button></td>
+                                        <td><a class="btn btn-outline-danger m-2" href="del/{{ item.id }}"><i class="fa-regular fa-trash-can"></i></a></td>
                                     </tr>
 
                                 {% endfor %}

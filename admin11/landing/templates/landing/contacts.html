@@ -1,3 +1,12 @@
+{# Name → Блок контактов #}
+{# File → contacts #}
+{# Height → 494 px #}
+{# Description → Блок с адресами, телефонами и электронной почтой #}
+{# Type → Дополнительный блок #}
+{# Type_base → themes #}
+{# Base → {"title": {"title": "title", "H4": "Контакты "}, "adres": {"adres": "adres","add_block":"true", "item": [{"str": "Республика Коми, г.Ухта, ул. Западная, 18, офис 6"}, {"str": "Республика Коми, г.Ухта, ул. Западная, 18, офис 6"}]}, "telefons": {"telefons": "telefons","add_block":"true", "item": [{"int": "+7 (8216) 74-40-65"}, {"int": "+7 (8216) 74-40-65"}]}, "emails": {"emails": "emails","add_block":"true", "item": [{"str": "info@admin11.ru"}, {"str": "info@admin11.ru"}]}, "picture": {"picture": "picture", "image": "/static/landing/images/contact.svg"}, "form": {"form": "form", "label": "Обратная связь", "fields": "['name','email','message']", "button": "Отправить "}} #}
+
+
 {% load static %}
 {% load poll_extras %}
 {% with block=item.content|strtoarr %}
@@ -40,7 +49,7 @@
 
     <div class="col d-none d-md-block align-self-center">
 
-      <img src="{% static 'landing/'%}{{block.picture.image}}" class="rounded mx-auto d-block">
+      <img src="{{block.picture.image}}" class="rounded mx-auto d-block">
 
     </div>
 

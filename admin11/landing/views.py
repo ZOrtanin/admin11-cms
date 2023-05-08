@@ -10,6 +10,9 @@ from django.urls import reverse_lazy,reverse
 from django.shortcuts import render,redirect,get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView
 
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+
 from .models import *
 from .utils import *
 from .forms import *
@@ -18,6 +21,10 @@ from .forms import *
 import json
 from datetime import datetime
 from bs4 import BeautifulSoup
+import os
+import subprocess
+from datetime import date
+import urllib
 
 
 class LandingHome(ListView):
@@ -146,6 +153,36 @@ class DashboardPage(LoginRequiredMixin,DataMixin,ListView):
         c_def = self.get_user_context(title="Панель упровления",selected="landing:dashboard")
         context = dict(list(context.items())+list(c_def.items()))
         return context
+
+class ProfilePage(LoginRequiredMixin,DataMixin,ListView):
+    model = landing
+    template_name = 'accounts/darkpan/profile.html'
+    context_object_name ='items'
+    login_url = '/admin/'
+
+    def get_context_data(self,*, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        context['orders'] = bids.objects.order_by("-id")
+        context['orders_count'] =bids.objects.count()
+        c_def = self.get_user_context(title="Профиль",selected="landing:profile")
+        context = dict(list(context.items())+list(c_def.items()))
+        return context
+
+class SettingsPage(LoginRequiredMixin,DataMixin,ListView):
+    model = landing
+    template_name = 'accounts/darkpan/settings.html'
+    context_object_name ='items'
+    login_url = '/admin/'
+
+    def get_context_data(self,*, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        context['orders'] = bids.objects.order_by("-id")
+        context['orders_count'] =bids.objects.count()
+        c_def = self.get_user_context(title="Настройки",selected="landing:settings")
+        context = dict(list(context.items())+list(c_def.items()))
+        return context
     
 class EditMode(LoginRequiredMixin,DataMixin,ListView):
     model = landing
@@ -161,36 +198,39 @@ class EditMode(LoginRequiredMixin,DataMixin,ListView):
 
         context['title'] = 'ООО Сисадмин — Обслуживание информационых систем'
         context['edit_mode']='True'
-       
+        #context['add_block']=['header','html','footer']
+        context['add_block'] = []
+           
 
-        # for i in range(len(blocks)):
-        #     #print(blocks[i].title)
+        for item in get_template_file_name():
+            context['add_block'].append(get_template_info(item))
 
-        #     settings_block = blocks.filter(title=blocks[i].title)[0]
-        #     if settings_block.content != '':
-        #         if settings_block.type_block != 'html':
-        #             #print(blocks[i].title)
-        #             new_blocks = ['header','hero','introductory','price','Important','advantages','contacts']
-
-        #             # if str(blocks[i].title) in new_blocks:
-        #             #     pass
-        #             #     # context[blocks[i].title] = json.loads(settings_block.content, strict=False)
-        #             #     # context[blocks[i].id] = json.loads(settings_block.content, strict=False)
-        #             # else:
-        #             #     context[blocks[i].title] = json.loads(settings_block.content, strict=False)
-        #             #     context[blocks[i].id] = json.loads(settings_block.content, strict=False)
-
-                    
-        #             #print(context[blocks[i].title])
-        #         else:
-        #             context[blocks[i].title] = settings_block.content
-        #     else:
-        #         context[blocks[i].title] = ''
+        
         
         return context
 
     def get_queryset(self):
         return landing.objects.all().order_by('order')
+
+@login_required
+def EditModeAddBlock(request):
+
+    print(request.POST.getlist('NameBlock')[0])
+    print(request.POST.getlist('TypeBlock')[0])
+
+    info = get_template_info(request.POST.getlist('TypeBlock')[0])
+
+    new_block = landing(
+            title = request.POST.getlist('TypeBlock')[0].replace(' \n',''),
+            name = request.POST.getlist('NameBlock')[0],
+            content = info['base'],
+            type_block = info['type_base'],
+               
+            )
+    new_block.save()
+
+    #return redirect('/edit/#'+block.title)
+    return redirect('landing:edit')
 
 @login_required
 def EditModeDisableBlock(request,id_block):
@@ -232,6 +272,8 @@ def EditModeSaveBlock(request,id_block):
 
         block.content = out2.replace('\\', "  ").replace("'", '"').replace('  "', "'")
         block.content = block.content.replace('  ','')
+        block.content = str(json.dumps(json.loads(block.content), indent=4))
+        print(str(json.dumps(json.loads(block.content), indent=4)))
         block.save()
 
         #print(request.POST.getlist('content_admin'))
@@ -245,6 +287,13 @@ def EditModeSaveBlock(request,id_block):
         
 
     print(request.POST.getlist('content'))
+    return redirect('landing:edit')
+
+@login_required
+def EditModeDelBlock(request,id_block):
+    record = landing.objects.get(id=id_block)
+    record.delete()
+
     return redirect('landing:edit')
 
 @login_required
@@ -313,9 +362,11 @@ class EditBlock(LoginRequiredMixin,DataMixin,ListView):
     # def get_queryset(self):
     #     return landing.objects.all()
 
+
 class OrderPage(LoginRequiredMixin,DataMixin,ListView):
     model = landing
     template_name = 'accounts/darkpan/order.html'
+
 
     def get_context_data(self,*, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -339,8 +390,8 @@ def getOrderOut(request, order_id):
 
 @login_required
 def OrderEdit(request, order_id):
-    print(request.POST)
-    print(order_id)
+    #print(request.POST)
+    #print(order_id)
     order = bids.objects.get(id=order_id)
 
 
@@ -391,18 +442,79 @@ class UsersPage(LoginRequiredMixin,DataMixin,ListView):
         return context
 
 class FilesPage(LoginRequiredMixin,DataMixin,ListView):
-    model = landing
+    model = Files
     template_name = 'accounts/darkpan/files.html'
+    context_object_name ='files'
 
     def get_context_data(self,*, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         print(self.request.user)
         context['user'] = self.request.user
-        context['orders'] = bids.objects.order_by("-id")
-        context['orders_count'] =bids.objects.count()
+        # context['orders'] = bids.objects.order_by("-id")
+        # context['orders_count'] =bids.objects.count()
         c_def = self.get_user_context(title="Файлы",selected="landing:files")
         context = dict(list(context.items())+list(c_def.items()))
         return context
+
+@login_required
+def UploadFiles(request):
+    if request.method == 'POST' and request.FILES.getlist('files'):
+        #uploaded_files = []
+
+        today = date.today()
+
+        print('work')
+
+        for myfile in request.FILES.getlist('files'):
+            #fs = FileSystemStorage()
+            path = os.path.join('media/files', today.strftime('%Y/%m/%d'))
+            fs = FileSystemStorage(location=path)
+            filename = fs.save(myfile.name, myfile)
+            
+            uploaded_file_url = fs.url(filename)
+            print(path+filename)
+            print(uploaded_file_url)
+            new_file_name = uploaded_file_url.split('/')[-1]
+            print(path+'/'+new_file_name)
+            #uploaded_files.append(uploaded_file_url)
+
+            image = Files(
+                title=filename,
+                type_file='image',
+                data='/'+path+'/'+new_file_name,
+                is_published=False                
+                )
+            image.save()
+
+        #print(uploaded_files)
+
+    return redirect('landing:files')
+
+@login_required
+def DelFileDate(request,id_image):
+    print("Удаляем фаил")
+    image = Files.objects.get(id = id_image)
+    path = urllib.parse.unquote(str(image.data))
+
+    
+    if delete_file(path):
+        image.delete()
+
+    return redirect('landing:files')
+
+def GetFile(request,id_file):
+    file = Files.objects.get(id = id_file)
+    out_line = {}
+    out_line['file'] = file
+
+    return render(request,'modals/file.html',out_line)
+
+def GetFiles(request):
+    files = Files.objects.all()
+    out_line = {}
+    out_line['files'] = files
+
+    return render(request,'modals/files.html',out_line)
 
 # def sorting(request):
 
@@ -472,6 +584,7 @@ def pageNotFound(request,exception):
     #return HttpResponseNotFound('Страница не найдена')
     return render(request,'landing/404.html')
 
+# Парсер элементов админки
 def parse_element(element,level,level_name,item=[]):
     obj = {}
     name = level_name
@@ -504,7 +617,7 @@ def parse_element(element,level,level_name,item=[]):
                 if 'type' in new_element and flag == False:
                     #print(child.name)
                     if child.name != 'textarea':
-                        obj[name] = new_element['value']
+                        obj[name] = new_element['value']                    
                     else:
                         obj[name] = child.text
 
@@ -534,4 +647,66 @@ def parse_element(element,level,level_name,item=[]):
         if 'type' in element.attrs:            
             obj[attr]=value
 
+        if attr in 'class':
+            if 'add_block' in value :
+                obj['add_block']='true'
+                print(value)
+
     return obj
+
+# Получаем шаблоны
+def get_template_file_name():
+    arr = []
+
+    ls = subprocess.Popen(["ls", "", "landing/templates/landing"],stdout=subprocess.PIPE,).stdout
+
+    for line in ls:  
+        #print(line)
+        name_file=line.decode('ascii').replace('.html\n','')            
+        arr.append(name_file)
+
+    arr.pop(0)
+
+    if '404' in arr:
+        arr.remove('404')
+        arr.remove('modals')
+        arr.remove('base')
+        arr.remove('index')
+    print(arr)
+
+    return arr
+
+# Достаем из шаблона описание и контент
+def get_template_info(name):
+
+    name = name.replace(' \r\n','')
+
+    f = open('landing/templates/landing/'+name+'.html', 'r')
+
+    out = {}
+    #out_arr = []
+
+    for line in f:
+        if '{#' in line:
+            tmp = line.replace('{#','').replace('#}','')
+            print(tmp)
+            arr = tmp.split(' → ')
+
+            out[arr[0].replace(' ','').lower()] = str(arr[1].replace(' \n',''))
+            #out_arr.append(arr[1])
+    print(out)
+    #print(out_arr)
+    f.close()
+
+    return out
+
+# Удаляем файлы
+def delete_file(file_path):
+   
+    new_path = settings.MEDIA_ROOT+file_path.replace('media/','')
+
+    print(os.path.exists(new_path))
+    if os.path.exists(new_path):
+        os.remove(new_path)
+        return True
+    return False

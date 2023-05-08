@@ -1,3 +1,11 @@
+{# Name → 4 причины #}
+{# File → advantages #}
+{# Height → 513 px #}
+{# Description → Блок приемущества слайдер с описанием #}
+{# Type → Дополнительный блок #}
+{# Type_base → themes #}
+{# Base → {"title2": {"title2": "title2", "H2": "4 Причины"}, "title": {"title": "title", "H1": "Обратится именно к нам"}, "description": {"description": "description", "p": "«СИСАДМИН» — это тот случай, когда вы получаете двойную выгоду: сокращаете расходы на ИТ-обслуживание в разы и заметно повышаете качество обслуживания."}, "picture": {"picture": "picture", "image": "/static/landing/images/push.svg"}, "slider": {"slider": "slider","add_block":"true", "item": [{"index": "quality", "label": "Качество", "description": "Команда отличных ИТ-специалистов разного профиля, каждый из которых знает не только свое дело, но и обладает большим запасом знаний по смежным специальностям. Мы умеем и любим работать: проектировать сети, устанавливать программные продукты и настраивать их для пользователей, устранять неполадки в работе компьютерной и офисной техники.", "visible": "active"}, {"index": "price", "label": "Цена", "description": "Аутсорсинговые услуги всегда дешевле, чем содержание штатных специалистов. Вопрос цены особенно важен в нестабильной экономической ситуации. ИТ-аутсорсинг в компании «СИСАДМИН» — это тот случай, когда вы получаете двойную выгоду: сокращаете расходы на ИТ-обслуживание в разы и заметно повышаете качество обслуживания."}, {"index": "service", "label": "Сервис", "description": "Мы заинтересованы в том, чтобы ваш компьютерный парк был работоспособным, эффективным и прослужил вам как можно дольше. Мы поможем вам оптимизировать затраты на содержание вашей ИТ-инфраструктуры, дадим взвешенные профессиональные рекомендации и решим любые технические проблемы в кратчайшие сроки."}, {"index": "experience", "label": "Опыт", "description": "Работая с разными заказчиками, мы сталкиваемся с огромным количеством разноплановых задач и накапливаем уникальный разносторонний опыт, поэтому тратим значительно меньше времени на диагностику и устранение уже знакомых проблем."}]}, "image_to_slider": {"image_to_slider": "image_to_slider", "image": "/static/landing/images/mark.svg"}} #}
+
 {% load static %}
 {% load poll_extras %}
 {% with block=item.content|strtoarr %}
@@ -33,7 +41,7 @@
       <div class="row">
 
         <div class="col-2 align-self-end d-none d-xl-block">
-          <img src="{% static 'landing/'%}images/push.svg" class="rounded float-end">
+          <img src="{{block.picture.image}}" class="rounded float-end">
         </div>
 
         <div class="col-12 col-xl-10">
@@ -96,7 +104,7 @@
             </div>
 
             
-            <img src="{% static 'landing/'%}{{block.image_to_slider.image}}" class="position-absolute top-100 start-50 translate-middle d-none d-md-block" style="width:200px;">
+            <img src="{{block.image_to_slider.image}}" class="position-absolute top-100 start-50 translate-middle d-none d-md-block" style="width:200px;">
           </div>
         </div>
 

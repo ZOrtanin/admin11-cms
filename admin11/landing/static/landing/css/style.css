@@ -137,3 +137,8 @@ body{
 /*#BtnUpTop a{
   background: linear-gradient( #fff 50%, rgb(255, 193, 7) 50%) !important; 
 }*/
+
+/** Допы **/
+.overflow-hiden{
+    overflow: hidden;
+}

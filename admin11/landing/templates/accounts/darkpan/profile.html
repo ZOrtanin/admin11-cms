@@ -1,0 +1,209 @@
+{% extends "accounts/darkpan/base.html" %}
+
+{% block content %}
+
+            <!-- Модальное окно загрузки -->           
+            <div class="modal fade" id="UploadModal" tabindex="-1" aria-labelledby="UploadModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content bg-secondary rounded ">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="UploadModalLabel">Загрузить файлы</h1>
+                            <button type="button" class="btn btn-square btn-secondary m-2" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <form action="{% url 'landing:upload_files' %}" method="POST" enctype="multipart/form-data" id="upload-form">
+                            <div class="modal-body">
+
+                                <div id="file-dropzone">
+                                    <p>Поместите файлы сюда или нажмите, чтобы выбрать файлы.</p>
+                                    <input style="display:none;" type="file" name="files" multiple="true" id="file-input">
+                                    <div id="selected-files"></div>
+                                    <button id="file-input-button" class="btn btn-outline-primary m-2" type="button">Выбрать файлы</button>                                    
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {% csrf_token %}
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Загрузить</button>
+                            </div>
+                        </form>                        
+                    </div>
+                </div>
+            </div>            
+
+            <!-- Модальное окно загрузки -->
+
+            <!-- Модальное окно детали -->
+
+            <div class="modal fade" id="DetailModal" tabindex="-1" aria-labelledby="DetailModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                    <div class="modal-content bg-secondary rounded ">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="DetailModalLabel">Имя файла</h1>
+                            <button type="button" class="btn btn-square btn-secondary m-2"  data-bs-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-close" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                       
+                        <div class="modal-body">                            
+                        </div>
+
+                        <div class="modal-footer">                            
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                                               
+                    </div>
+                </div>
+            </div>            
+
+            <!-- Модальное окно детали -->
+
+            
+
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-left rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Профиль</h6>                        
+                    </div> 
+                    <div class="row">                  
+                        <div class="col-5 upload_files_table table-responsive overflow-hiden">
+                            <form>
+                                <div class="mb-3 row">
+                                    <div class="col-3">
+                                        <img src="/media/files/2023/05/02/angry.png" width="80px">
+                                    </div>
+                                    <div class="col">
+                                        <label for="exampleInputPassword1" class="form-label">Аватар:</label>
+                                       
+                                        <div class="col px-3 row">
+                                            <div class="col-2 btn btn-warning me-2 px-1 add-file-base overflow-hiden" data-bs-toggle="modal" data-bs-dismiss="modal" data-bs-target="#ModalFiles"><i class="fa-regular fa-image"></i></div>
+                                            <input type="text" class="col form-control" value="/" >
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Логин:</label>
+                                    <input type="text" class="form-control" value="root" >
+                                </div>
+                                <hr>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">Имя:</label>
+                                    <input type="text" class="form-control" value="Егор" >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">Фамилия:</label>
+                                    <input type="text" class="form-control" value="Кукольщиков" >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">Отчество:</label>
+                                    <input type="text" class="form-control" value="Андреевич" >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1" class="form-label">Почта:</label>
+                                    <input type="text" class="form-control" value="root@mail.ru">
+                                    <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Роль:</label>
+                                    <select class="form-select mb-3" aria-label="Default select example">
+                                        <option selected="">root</option>
+                                        <option value="1">Администратор</option>
+                                        <option value="2">Контент менеджер</option>
+                                        <option value="3">Продажник</option>
+                                    </select>
+                                </div>
+                                <!-- <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="exampleInputPassword1">
+                                </div> -->
+                               <!--  <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                </div> -->
+                                <button type="submit" class="btn btn-warning m-2">Сохранить</button>
+                            </form>
+                        </div>
+                        <div class="col-4 upload_files_table table-responsive overflow-hiden">
+                            <div class="border rounded p-4 pb-0 mb-4">
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <h6 class="mb-0">Изменить пароль</h6>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">Пароль:</label>
+                                    <input type="password" class="form-control" value="123456" >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleInputPassword1" class="form-label">Еще раз пароль:</label>
+                                    <input type="password" class="form-control" value="123456" >
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mb-4">
+                                    <button type="submit" class="btn btn-warning m-2">Изменить пароль</button>
+                                </div>
+                            </div>
+                            <div >
+                                <div class="col text-light bg-dark p-3 rounded" style="height: 381px;">
+                            <p>Действия :</p>
+                            <p style=" height: 320px; overflow-x:auto; white-space: pre-wrap;">Тариф: Минимум
+                                Компьютеров: 1
+                                Серверов: 1
+                                Цена:  4000
+                                Время: 
+                                ------------
+
+
+                                -------
+                                123213123123
+                                -------
+                                Изменен статус2023-03-07
+                                -------
+                                123123123
+                                -------
+                                Изменен статус 2023-03-07 14:57:45.179135
+                                -------
+                                Изменен статус на 
+                                new
+                                2023-03-07 14:59:48.128774
+                                -------
+                                Изменен статус на 
+                                processing
+                                2023-03-07 15:01:28.016065
+                                -------
+                                Заметка:
+                                Трудный заказчик
+                                2023-03-07 15:01:28.016103
+                                -------
+                                Изменен статус на 
+                                Новая
+                                2023-03-07 15:13:00.177969
+                                -------
+                                Изменен статус на 
+                                Завершенна
+                                2023-03-07 15:22:48.302495
+                                -------
+                                Изменен статус на 
+                                Новая
+                                2023-03-11 05:54:06.609530
+                                -------
+                                Изменен статус на 
+                                Обработка
+                                2023-03-11 05:54:20.788226
+                                -------
+                                Изменен статус на 
+                                Завершенна
+                                2023-03-11 06:00:26.556972</p>
+                        </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            <!-- Recent Sales End -->
+
+
+            
+
+{% endblock %}

@@ -31,6 +31,7 @@ class BidsAdmin(admin.ModelAdmin):
 	# search_fields = ('title', 'content')
 	# list_editable = ('is_published' ,)
 	list_filter = ('time_create','status','which')
+
 admin.site.register(bids,BidsAdmin)
 #admin.site.register(bids)
 
