@@ -5,3 +5,4 @@ class LandingConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'landing'
     verbose_name = 'Блоки лэндинга'
+    label = 'landing'

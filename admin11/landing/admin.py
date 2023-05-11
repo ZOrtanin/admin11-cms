@@ -2,6 +2,23 @@ from adminsortable2.admin import SortableAdminMixin
 
 from django.contrib import admin
 from .models import *
+from django.contrib.auth.admin import UserAdmin
+#from landing.models import CustomUser
+
+# class CustomUserAdmin(UserAdmin):
+#     list_display = ['first_name', 'last_name']
+#     ordering = ['first_name']
+
+#     def get_user_model(self, request):
+#     	return CustomUser
+
+# admin.site.register(CustomUser, CustomUserAdmin)
+
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'date_of_birth', 'photo']
+
+admin.site.register(Profile, ProfileAdmin)
+
 
 class MyModelAdmin(SortableAdminMixin, admin.ModelAdmin):
 	list_display = ('id', 'title','name','time_update','is_published','type_block','order')
